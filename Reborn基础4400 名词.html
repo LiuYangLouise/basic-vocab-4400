@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Reborner 基础核心词汇 · 名词</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; }
+html,body { height:100%; overflow:hidden; }
+body { background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); }
+
+#homePage {
+  position:fixed; inset:0; z-index:10;
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:flex-start;
+  padding:2rem 1rem;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  transition:transform .5s cubic-bezier(.65,0,.35,1);
+}
+#homePage.slide-left { transform:translateX(-30%); }
+.home-header { text-align:center; margin-bottom:1.8rem; flex-shrink:0; }
+.home-header h1 { font-size:1.8rem; font-weight:380; color:#2d543b; line-height:1.3; margin-bottom:.3rem; }
+.home-header .sub1 { font-size:1.15rem; color:#4f7b5a; font-weight:340; }
+.home-header .sub2 { font-size:.95rem; color:#618967; font-weight:300; margin-top:.2rem; }
+.home-buttons {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:.8rem;
+  width:100%;
+  max-width:420px;
+  padding-bottom:2.5rem;
+}
+.home-btn {
+  background:#fcfff8;
+  border:1px solid #d2e2c7;
+  border-radius:30px;
+  padding:.9rem .6rem;
+  font-size:.95rem;
+  font-weight:460;
+  color:#2b5538;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(150,180,140,.16);
+  transition:all .2s ease;
+  text-align:center;
+  line-height:1.4;
+}
+.home-btn:hover { background:#eef9e6; border-color:#9abb90; transform:translateY(-2px); }
+.home-btn:active { transform:translateY(0); }
+.home-btn .badge {
+  display:block;
+  font-size:.68rem;
+  background:#c3ddb6;
+  border-radius:20px;
+  padding:.1rem .45rem;
+  margin:.25rem auto 0;
+  color:#23522e;
+  font-weight:400;
+  width:fit-content;
+}
+
+.part-page {
+  position:fixed; inset:0; z-index:100;
+  background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%);
+  transform:translateX(100%);
+  transition:transform .5s cubic-bezier(.65,0,.35,1);
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:1.5rem 1rem 2rem 1rem;
+}
+.part-page.slide-in { transform:translateX(0); }
+.part-inner { max-width:620px; width:100%; margin:0 auto; }
+
+.back-btn {
+  position:sticky; top:0; z-index:50;
+  display:inline-flex; align-items:center; gap:.35rem;
+  background:rgba(252,255,248,.92); backdrop-filter:blur(8px);
+  border:1px solid #cde0c3; border-radius:40px;
+  padding:.5rem 1.1rem; font-size:.95rem; color:#295e36;
+  cursor:pointer; margin-bottom:.8rem; box-shadow:0 2px 8px rgba(150,180,140,.18);
+}
+.back-btn:active { transform:scale(.96); }
+
+.header { margin-bottom:1.5rem; text-align:center; }
+.header h1 { font-size:2.1rem; font-weight:380; color:#2d543b; line-height:1.3; letter-spacing:-.2px; margin-bottom:.2rem; }
+.header .sub1 { font-size:1.5rem; color:#4f7b5a; font-weight:340; line-height:1.4; }
+.header .sub2 { font-size:1.2rem; color:#618967; font-weight:300; line-height:1.4; }
+.header .sub3 { font-size:.9rem; color:#7a9f7e; font-weight:300; margin-top:.2rem; }
+
+.chapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:.2rem 0 .4rem 0; scrollbar-width:none; }
+.chapter-scroll::-webkit-scrollbar { display:none; }
+.chap-flex { display:inline-flex; gap:.7rem; padding:0 .2rem; }
+.chap-btn { background:#f3fcee; border:1px solid #d2e2c7; border-radius:40px; padding:.6rem 1.8rem; font-size:1.2rem; font-weight:430; color:#2b5538; white-space:nowrap; box-shadow:0 2px 6px rgba(150,180,140,.08); cursor:pointer; }
+.chap-btn.active { background:#cde5c2; border-color:#8bb282; color:#1b4125; font-weight:500; }
+
+.subchapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .4rem 0; scrollbar-width:none; }
+.subchapter-scroll::-webkit-scrollbar { display:none; }
+.sub-flex { display:inline-flex; gap:.6rem; padding:0 .2rem; }
+.sub-btn { background:#ecf7e4; border:1px solid #cde0c0; border-radius:30px; padding:.4rem 1.3rem; font-size:.96rem; font-weight:400; color:#336941; white-space:nowrap; box-shadow:0 1px 4px rgba(120,150,100,.1); cursor:pointer; }
+.sub-btn.active-sub { background:#d4ebc5; border-color:#9abb90; color:#1e4529; font-weight:460; }
+
+.unit-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .8rem 0; scrollbar-width:none; }
+.unit-scroll::-webkit-scrollbar { display:none; }
+.unit-flex { display:inline-flex; gap:.5rem; padding:0 .2rem; }
+.unit-btn { background:#f5fcf0; border:1px solid #dae8cf; border-radius:20px; padding:.3rem 1.1rem; font-size:.85rem; font-weight:380; color:#3d734a; white-space:nowrap; box-shadow:0 1px 3px rgba(120,150,100,.06); cursor:pointer; }
+.unit-btn.active-unit { background:#d0e8c2; border-color:#9ec092; color:#1a4024; font-weight:460; }
+.word-count-badge { font-size:.7rem; background:#c3ddb6; border-radius:20px; padding:.1rem .5rem; margin-left:.4rem; color:#23522e; }
+
+.flip-container { perspective:1000px; width:100%; margin:.8rem 0 1.2rem 0; }
+.flipper { position:relative; width:100%; height:auto; transition:transform .4s ease; transform-style:preserve-3d; }
+.flipper.flipped { transform:rotateY(180deg); }
+.front,.back { backface-visibility:hidden; -webkit-backface-visibility:hidden; position:relative; top:0; left:0; width:100%; border-radius:42px; padding:2.2rem 1.2rem; background:#fcfff8; border:1px solid #e3f0da; box-shadow:0 10px 20px rgba(130,160,120,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:220px; }
+.back { position:absolute; transform:rotateY(180deg); min-height:220px; }
+.en-word { font-size:2.8rem; font-weight:370; color:#1c4a2a; line-height:1.3; word-break:break-word; text-align:center; width:100%; }
+.ph-word { font-size:1rem; color:#7a9f7e; font-weight:340; margin-top:.3rem; text-align:center; width:100%; }
+.pos { font-size:1.1rem; color:#719b79; font-weight:380; text-align:center; width:100%; margin-top:.2rem; }
+.ch-word { font-size:1.6rem; font-weight:340; color:#316a42; margin-top:.6rem; text-align:center; width:100%; }
+.inflection-box { width:100%; margin-top:.8rem; padding:.6rem .8rem; background:#f6ffee; border-radius:14px; border:1px dashed #cde0c3; }
+.inflection-row { display:flex; justify-content:space-between; font-size:.9rem; line-height:1.6; color:#5a8a63; }
+.inflection-row.irregular { color:#d97706; font-weight:500; }
+.inflection-label { color:#8aab8e; }
+.other-group { width:100%; margin-top:.6rem; font-size:.85rem; color:#8aab8e; text-align:center; }
+
+.nav-row { display:flex; align-items:center; justify-content:center; gap:.8rem; margin:1.2rem 0 1.8rem 0; flex-wrap:wrap; }
+.nav-btn { background:#f1fde9; border:1px solid #cde0c3; border-radius:60px; padding:.6rem 1.5rem; font-size:1.1rem; color:#295e36; box-shadow:0 2px 6px rgba(0,0,0,.02); cursor:pointer; }
+
+.thumb-header { display:flex; justify-content:space-between; align-items:center; margin:1rem 0 .8rem; flex-wrap:wrap; gap:.5rem; }
+.thumb-header span { font-size:1.1rem; color:#3d6d4b; font-weight:330; }
+.thumb-header .actions { display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; }
+.thumb-header .actions button { background:#dbeace; border:1px solid #adc9a2; border-radius:40px; padding:.3rem 1.1rem; font-size:.9rem; color:#23562f; cursor:pointer; white-space:nowrap; }
+.thumb-header .actions button.select-all-btn { background:#c8e0b9; border-color:#9abb90; }
+
+.thumb-grid-container { max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch; border-radius:20px; padding:.2rem .2rem .5rem .2rem; scrollbar-width:thin; scrollbar-color:#b5d3ae #e8f3e0; }
+.thumb-grid-container::-webkit-scrollbar { width:5px; }
+.thumb-grid-container::-webkit-scrollbar-track { background:#e8f3e0; border-radius:10px; }
+.thumb-grid-container::-webkit-scrollbar-thumb { background:#b5d3ae; border-radius:10px; }
+.thumb-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; padding:.2rem; }
+.thumb-item { background:#f9fff3; border:1px solid #dbefd0; border-radius:24px; padding:.6rem .2rem .6rem .5rem; display:flex; align-items:center; gap:.2rem; box-shadow:0 2px 6px rgba(160,180,140,.1); min-width:0; }
+.thumb-item input[type="checkbox"] { width:1.1rem; height:1.1rem; accent-color:#86b07c; border-radius:4px; flex-shrink:0; }
+.thumb-item label { font-size:.85rem; color:#2e623d; font-weight:420; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; cursor:pointer; }
+.tip { color:#799e7a; font-size:.9rem; margin-top:.8rem; text-align:center; }
+
+@media (max-width:480px) {
+  .thumb-grid { grid-template-columns:repeat(3,1fr); }
+  .en-word { font-size:2.2rem; }
+  .ch-word { font-size:1.4rem; }
+  .front,.back { padding:1.6rem 1rem; min-height:180px; }
+  .header h1 { font-size:1.6rem; }
+  .home-header h1 { font-size:1.5rem; }
+  .chap-btn { font-size:1rem; padding:.4rem 1.2rem; }
+  .sub-btn { font-size:.85rem; padding:.3rem 1rem; }
+  .unit-btn { font-size:.75rem; padding:.2rem .8rem; }
+}
+/* ==== 返回入口悬浮按钮 ==== */
+.go-home {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 99999;
+  background: rgba(252,255,248,0.95);
+  border: 1px solid #cde0c3;
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #2d543b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(100,140,90,0.22);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s;
+}
+.go-home:hover { background: #eef9e6; transform: translateY(-1px); }
+.go-home:active { transform: scale(.96); }
+
+</style>
+</head>
+<body>
+
+<div id="homePage">
+  <div class="home-header">
+    <h1>Reborner 基础核心词汇</h1>
+    <div class="sub1">名词 · 全量版</div>
+    <div class="sub2">天天进步，每日新生</div>
+  </div>
+  <div class="home-buttons" id="homeButtons"></div>
+</div>
+
+<div class="part-page" id="partPage1"><div class="part-inner" id="partInner1"></div></div>
+<div class="part-page" id="partPage2"><div class="part-inner" id="partInner2"></div></div>
+<div class="part-page" id="partPage3"><div class="part-inner" id="partInner3"></div></div>
+<div class="part-page" id="partPage4"><div class="part-inner" id="partInner4"></div></div>
+<div class="part-page" id="partPage5"><div class="part-inner" id="partInner5"></div></div>
+<div class="part-page" id="partPage6"><div class="part-inner" id="partInner6"></div></div>
+<div class="part-page" id="partPage7"><div class="part-inner" id="partInner7"></div></div>
+<div class="part-page" id="partPage8"><div class="part-inner" id="partInner8"></div></div>
+<div class="part-page" id="partPage9"><div class="part-inner" id="partInner9"></div></div>
+<div class="part-page" id="partPage10"><div class="part-inner" id="partInner10"></div></div>
+<div class="part-page" id="partPage11"><div class="part-inner" id="partInner11"></div></div>
+<div class="part-page" id="partPage12"><div class="part-inner" id="partInner12"></div></div>
+<div class="part-page" id="partPage13"><div class="part-inner" id="partInner13"></div></div>
+<div class="part-page" id="partPage14"><div class="part-inner" id="partInner14"></div></div>
+<div class="part-page" id="partPage15"><div class="part-inner" id="partInner15"></div></div>
+<div class="part-page" id="partPage16"><div class="part-inner" id="partInner16"></div></div>
+<div class="part-page" id="partPage17"><div class="part-inner" id="partInner17"></div></div>
+<div class="part-page" id="partPage18"><div class="part-inner" id="partInner18"></div></div>
+<div class="part-page" id="partPage19"><div class="part-inner" id="partInner19"></div></div>
+<div class="part-page" id="partPage20"><div class="part-inner" id="partInner20"></div></div>
+
+<script>
+/* ================================================================
+   名词全量 · 20 主题 · 约 1400 词
+   ================================================================ */
+const VOCAB_DATA = {};
+
+VOCAB_DATA[1] = {
+'人物与身份': { units: {
+'Unit 1': [
+{en:'adult',ph:"ə'dʌlt",pos:'n.',posLabel:'名词',ch:'成年人',infl:{plural:'adults'}},
+{en:'agent',ph:"'eidʒənt",pos:'n.',posLabel:'名词',ch:'代理人、代理商、特工人员',infl:{plural:'agents'}},
+{en:'announcer',ph:"ə'naunsə",pos:'n.',posLabel:'名词',ch:'宣告者、播音员、广播员',infl:{plural:'announcers'}},
+{en:'astronaut',ph:"'æstrənɔ:t",pos:'n.',posLabel:'名词',ch:'宇宙航行员、宇航员',infl:{plural:'astronauts'}},
+{en:'athlete',ph:"'æθli:t",pos:'n.',posLabel:'名词',ch:'运动员、田径运动员',infl:{plural:'athletes'}},
+{en:'aunt',ph:"ɑ:nt",pos:'n.',posLabel:'名词',ch:'伯母、婶母、姑母、姨',infl:{plural:'aunts'}},
+{en:'author',ph:"'ɔ:θə",pos:'n.',posLabel:'名词',ch:'作者、作家、创造者',infl:{plural:'authors'}},
+{en:'baby',ph:"'beibi",pos:'n.',posLabel:'名词',ch:'婴儿、孩子气的人',infl:{plural:'babies'}},
+{en:'boy',ph:"bɔi",pos:'n.',posLabel:'名词',ch:'男孩、儿子、少年',infl:{plural:'boys'}},
+{en:'bride',ph:"braid",pos:'n.',posLabel:'名词',ch:'新娘',infl:{plural:'brides'}},
+{en:'bridegroom',ph:"'braidgrum",pos:'n.',posLabel:'名词',ch:'新郎',infl:{plural:'bridegrooms'}},
+{en:'brother',ph:"'brʌðə",pos:'n.',posLabel:'名词',ch:'兄弟、同事、同胞',infl:{plural:'brothers'}},
+{en:'captain',ph:"'kæptin",pos:'n.',posLabel:'名词',ch:'队长、船长、首领',infl:{plural:'captains'}},
+{en:'chairman',ph:"'tʃɛəmən",pos:'n.',posLabel:'名词',ch:'主席、议长、会长',infl:{plural:'chairmen',irregular:true}},
+{en:'champion',ph:"'tʃæmpjən",pos:'n.',posLabel:'名词',ch:'冠军、得胜者、拥护者',infl:{plural:'champions'}},
+{en:'chief',ph:"tʃi:f",pos:'n.',posLabel:'名词',ch:'首领',infl:{plural:'chiefs'}},
+{en:'child',ph:"tʃaild",pos:'n.',posLabel:'名词',ch:'小孩、儿童、儿子',infl:{plural:'children',irregular:true}},
+{en:'citizen',ph:"'sitizn",pos:'n.',posLabel:'名词',ch:'公民、市民、居民',infl:{plural:'citizens'}},
+{en:'coach',ph:"kəutʃ",pos:'n.',posLabel:'名词',ch:'教练、长途公共汽车',infl:{plural:'coaches'}},
+{en:'colonel',ph:"'kə:nl",pos:'n.',posLabel:'名词',ch:'陆军上校、中校',infl:{plural:'colonels'}},
+{en:'cousin',ph:"'kʌzn",pos:'n.',posLabel:'名词',ch:'堂兄弟、表兄弟',infl:{plural:'cousins'}},
+{en:'coward',ph:"'kauəd",pos:'n.',posLabel:'名词',ch:'懦夫、胆怯者',infl:{plural:'cowards'}},
+{en:'crew',ph:"kru:",pos:'n.',posLabel:'名词',ch:'全体船员、全体乘务员',infl:{plural:'crews'}},
+{en:'customer',ph:"'kʌstəmə",pos:'n.',posLabel:'名词',ch:'顾客、主顾、家伙',infl:{plural:'customers'}},
+{en:'dad',ph:"dæd",pos:'n.',posLabel:'名词',ch:'爸爸',infl:{plural:'dads'}},
+{en:'daughter',ph:"'dɔ:tə",pos:'n.',posLabel:'名词',ch:'女儿',infl:{plural:'daughters'}}
+],
+'Unit 2': [
+{en:'detective',ph:"di'tektiv",pos:'n.',posLabel:'名词',ch:'侦探',infl:{plural:'detectives'}},
+{en:'director',ph:"di'rektə",pos:'n.',posLabel:'名词',ch:'指导者、董事、经理、导演',infl:{plural:'directors'}},
+{en:'doctor',ph:"'dɔktə",pos:'n.',posLabel:'名词',ch:'医生、医师、博士',infl:{plural:'doctors'}},
+{en:'driver',ph:"'draivə",pos:'n.',posLabel:'名词',ch:'驾驶员、司机',infl:{plural:'drivers'}},
+{en:'editor',ph:"'editə",pos:'n.',posLabel:'名词',ch:'编辑、编者、校订者',infl:{plural:'editors'}},
+{en:'engineer',ph:".endʒi'niə",pos:'n.',posLabel:'名词',ch:'工程师、技师、机械师',infl:{plural:'engineers'}},
+{en:'enemy',ph:"'enimi",pos:'n.',posLabel:'名词',ch:'敌人、仇敌、敌兵',infl:{plural:'enemies'}},
+{en:'farmer',ph:"'fɑ:mə",pos:'n.',posLabel:'名词',ch:'农民、农夫、农场主',infl:{plural:'farmers'}},
+{en:'fellow',ph:"'feləu",pos:'n.',posLabel:'名词',ch:'人、家伙、伙伴',infl:{plural:'fellows'}},
+{en:'fisherman',ph:"'fiʃəmən",pos:'n.',posLabel:'名词',ch:'渔民、渔夫、打鱼人',infl:{plural:'fishermen',irregular:true}},
+{en:'foreigner',ph:"'fɔ:rinə",pos:'n.',posLabel:'名词',ch:'外国人',infl:{plural:'foreigners'}},
+{en:'friend',ph:"frend",pos:'n.',posLabel:'名词',ch:'朋友、友人、赞助者',infl:{plural:'friends'}},
+{en:'genius',ph:"'dʒi:njəs",pos:'n.',posLabel:'名词',ch:'天才、天赋、天资',infl:{plural:'geniuses'}},
+{en:'gentleman',ph:"'dʒentlmən",pos:'n.',posLabel:'名词',ch:'绅士、先生、有教养的人',infl:{plural:'gentlemen',irregular:true}},
+{en:'girl',ph:"gə:l",pos:'n.',posLabel:'名词',ch:'女孩子、姑娘、女儿',infl:{plural:'girls'}},
+{en:'god',ph:"gɔd",pos:'n.',posLabel:'名词',ch:'神、神像、上帝',infl:{plural:'gods'}},
+{en:'grandfather',ph:"'grænd.fɑ:ðə",pos:'n.',posLabel:'名词',ch:'祖父、外祖父',infl:{plural:'grandfathers'}},
+{en:'grandmother',ph:"'grænd.mʌðə",pos:'n.',posLabel:'名词',ch:'祖母、外祖母',infl:{plural:'grandmothers'}},
+{en:'grandson',ph:"'grændsʌn",pos:'n.',posLabel:'名词',ch:'孙子、外孙子',infl:{plural:'grandsons'}},
+{en:'guest',ph:"gest",pos:'n.',posLabel:'名词',ch:'客人、宾客、旅客',infl:{plural:'guests'}},
+{en:'guide',ph:"gaid",pos:'n.',posLabel:'名词',ch:'导游、领路者、指南',infl:{plural:'guides'}},
+{en:'hero',ph:"'hiərəu",pos:'n.',posLabel:'名词',ch:'英雄、男主角',infl:{plural:'heroes'}},
+{en:'heroine',ph:"'herəuin",pos:'n.',posLabel:'名词',ch:'女英雄、女主角',infl:{plural:'heroines'}},
+{en:'host',ph:"həust",pos:'n.',posLabel:'名词',ch:'主人、东道主',infl:{plural:'hosts'}},
+{en:'hostess',ph:"'həustis",pos:'n.',posLabel:'名词',ch:'女主人、空姐',infl:{plural:'hostesses'}},
+{en:'human',ph:"'hju:mən",pos:'n.',posLabel:'名词',ch:'人',infl:{plural:'humans'}}
+],
+'Unit 3': [
+{en:'husband',ph:"'hʌzbənd",pos:'n.',posLabel:'名词',ch:'丈夫',infl:{plural:'husbands'}},
+{en:'inventor',ph:"in'ventə",pos:'n.',posLabel:'名词',ch:'发明者、发明家、创造者',infl:{plural:'inventors'}},
+{en:'journalist',ph:"'dʒə:nəlist",pos:'n.',posLabel:'名词',ch:'记者、新闻工作者',infl:{plural:'journalists'}},
+{en:'kid',ph:"kid",pos:'n.',posLabel:'名词',ch:'小孩、儿童、少年',infl:{plural:'kids'}},
+{en:'king',ph:"kiŋ",pos:'n.',posLabel:'名词',ch:'国王、君主',infl:{plural:'kings'}},
+{en:'lady',ph:"'leidi",pos:'n.',posLabel:'名词',ch:'女士、夫人、贵妇人',infl:{plural:'ladies'}},
+{en:'leader',ph:"'li:də",pos:'n.',posLabel:'名词',ch:'领袖、领导人、首领',infl:{plural:'leaders'}},
+{en:'liar',ph:"'laiə",pos:'n.',posLabel:'名词',ch:'说谎的人',infl:{plural:'liars'}},
+{en:'lord',ph:"lɔ:d",pos:'n.',posLabel:'名词',ch:'贵族、上帝、基督',infl:{plural:'lords'}},
+{en:'madam',ph:"'mædəm",pos:'n.',posLabel:'名词',ch:'夫人、女士、太太',infl:{plural:'madams'}},
+{en:'maid',ph:"meid",pos:'n.',posLabel:'名词',ch:'女佣、女仆、侍女',infl:{plural:'maids'}},
+{en:'man',ph:"mæn",pos:'n.',posLabel:'名词',ch:'男人、人、人类',infl:{plural:'men',irregular:true}},
+{en:'manager',ph:"'mænidʒə",pos:'n.',posLabel:'名词',ch:'经理、管理人',infl:{plural:'managers'}},
+{en:'manufacturer',ph:".mænju'fæktʃərə",pos:'n.',posLabel:'名词',ch:'制造商、制造厂',infl:{plural:'manufacturers'}},
+{en:'mayor',ph:"'mɛə",pos:'n.',posLabel:'名词',ch:'市长',infl:{plural:'mayors'}},
+{en:'merchant',ph:"'mə:tʃənt",pos:'n.',posLabel:'名词',ch:'商人、零售商、店主',infl:{plural:'merchants'}},
+{en:'miner',ph:"'mainə",pos:'n.',posLabel:'名词',ch:'矿工',infl:{plural:'miners'}},
+{en:'minister',ph:"'ministə",pos:'n.',posLabel:'名词',ch:'部长、大臣、公使',infl:{plural:'ministers'}},
+{en:'mother',ph:"'mʌðə",pos:'n.',posLabel:'名词',ch:'母亲、妈妈',infl:{plural:'mothers'}},
+{en:'murderer',ph:"'mə:dərə",pos:'n.',posLabel:'名词',ch:'杀人犯、凶手',infl:{plural:'murderers'}},
+{en:'musician',ph:"mju:'ziʃən",pos:'n.',posLabel:'名词',ch:'音乐家、作曲家',infl:{plural:'musicians'}},
+{en:'nation',ph:"'neiʃən",pos:'n.',posLabel:'名词',ch:'民族、国家',infl:{plural:'nations'}},
+{en:'native',ph:"'neitiv",pos:'n.',posLabel:'名词',ch:'本地人、土著人',infl:{plural:'natives'}},
+{en:'neighbour',ph:"'neibə",pos:'n.',posLabel:'名词',ch:'邻居、邻国、邻人',infl:{plural:'neighbours'}},
+{en:'nephew',ph:"'nefju:",pos:'n.',posLabel:'名词',ch:'侄子、外甥',infl:{plural:'nephews'}},
+{en:'niece',ph:"ni:s",pos:'n.',posLabel:'名词',ch:'侄女、外甥女',infl:{plural:'nieces'}}
+],
+'Unit 4': [
+{en:'opponent',ph:"ə'pəunənt",pos:'n.',posLabel:'名词',ch:'对手、敌手、对抗者',infl:{plural:'opponents'}},
+{en:'orphan',ph:"'ɔ:fən",pos:'n.',posLabel:'名词',ch:'孤儿',infl:{plural:'orphans'}},
+{en:'owner',ph:"'əunə",pos:'n.',posLabel:'名词',ch:'物主、所有人',infl:{plural:'owners'}},
+{en:'parent',ph:"'pɛərənt",pos:'n.',posLabel:'名词',ch:'父母、双亲',infl:{plural:'parents'}},
+{en:'partner',ph:"'pɑ:tnə",pos:'n.',posLabel:'名词',ch:'搭档、配偶、伙伴',infl:{plural:'partners'}},
+{en:'passenger',ph:"'pæsindʒə",pos:'n.',posLabel:'名词',ch:'乘客、旅客',infl:{plural:'passengers'}},
+{en:'peasant',ph:"'pezənt",pos:'n.',posLabel:'名词',ch:'农民、小农',infl:{plural:'peasants'}},
+{en:'person',ph:"'pə:sn",pos:'n.',posLabel:'名词',ch:'人、身体、容貌',infl:{plural:'persons'}},
+{en:'pioneer',ph:".paiə'niə",pos:'n.',posLabel:'名词',ch:'拓荒者、先驱者、先锋',infl:{plural:'pioneers'}},
+{en:'poet',ph:"'pəuit",pos:'n.',posLabel:'名词',ch:'诗人',infl:{plural:'poets'}},
+{en:'policeman',ph:"pə'li:smən",pos:'n.',posLabel:'名词',ch:'警察',infl:{plural:'policemen',irregular:true}},
+{en:'porter',ph:"'pɔ:tə",pos:'n.',posLabel:'名词',ch:'搬运工人、门房',infl:{plural:'porters'}},
+{en:'president',ph:"'prezidənt",pos:'n.',posLabel:'名词',ch:'总统、总裁、校长',infl:{plural:'presidents'}},
+{en:'priest',ph:"pri:st",pos:'n.',posLabel:'名词',ch:'教士、牧师、神父',infl:{plural:'priests'}},
+{en:'prince',ph:"prins",pos:'n.',posLabel:'名词',ch:'王子、亲王、佼佼者',infl:{plural:'princes'}},
+{en:'princess',ph:"'prin'ses",pos:'n.',posLabel:'名词',ch:'公主、王妃、贵妇',infl:{plural:'princesses'}},
+{en:'prisoner',ph:"'prizənə",pos:'n.',posLabel:'名词',ch:'囚犯',infl:{plural:'prisoners'}},
+{en:'professor',ph:"prə'fesə",pos:'n.',posLabel:'名词',ch:'教授',infl:{plural:'professors'}},
+{en:'pupil',ph:"'pju:pl",pos:'n.',posLabel:'名词',ch:'学生、小学生、学徒',infl:{plural:'pupils'}},
+{en:'queen',ph:"kwi:n",pos:'n.',posLabel:'名词',ch:'王后、女王',infl:{plural:'queens'}},
+{en:'reporter',ph:"ri'pɔ:tə",pos:'n.',posLabel:'名词',ch:'记者、通讯员',infl:{plural:'reporters'}},
+{en:'resident',ph:"'rezidənt",pos:'n.',posLabel:'名词',ch:'居民、住客',infl:{plural:'residents'}},
+{en:'rival',ph:"'raivəl",pos:'n.',posLabel:'名词',ch:'对手、同伴、竞争者',infl:{plural:'rivals'}},
+{en:'sailor',ph:"'seilə",pos:'n.',posLabel:'名词',ch:'水手、海员、水兵',infl:{plural:'sailors'}},
+{en:'scientist',ph:"'saiəntist",pos:'n.',posLabel:'名词',ch:'科学家',infl:{plural:'scientists'}},
+{en:'secretary',ph:"'sekrətri",pos:'n.',posLabel:'名词',ch:'秘书、书记、大臣',infl:{plural:'secretaries'}}
+],
+'Unit 5': [
+{en:'servant',ph:"'sə:vənt",pos:'n.',posLabel:'名词',ch:'仆人、佣人、雇工',infl:{plural:'servants'}},
+{en:'shepherd',ph:"'ʃepəd",pos:'n.',posLabel:'名词',ch:'牧羊人、羊倌',infl:{plural:'shepherds'}},
+{en:'singer',ph:"'siŋə",pos:'n.',posLabel:'名词',ch:'歌唱家、歌手、鸣禽',infl:{plural:'singers'}},
+{en:'sister',ph:"'sistə",pos:'n.',posLabel:'名词',ch:'姐妹、姐、妹',infl:{plural:'sisters'}},
+{en:'soldier',ph:"'səuldʒə",pos:'n.',posLabel:'名词',ch:'士兵、军人',infl:{plural:'soldiers'}},
+{en:'son',ph:"sʌn",pos:'n.',posLabel:'名词',ch:'儿子、孩子',infl:{plural:'sons'}},
+{en:'speaker',ph:"'spi:kə",pos:'n.',posLabel:'名词',ch:'说话者、发言者、扬声器',infl:{plural:'speakers'}},
+{en:'specialist',ph:"'speʃəlist",pos:'n.',posLabel:'名词',ch:'专家',infl:{plural:'specialists'}},
+{en:'sportsman',ph:"'spɔ:tsmən",pos:'n.',posLabel:'名词',ch:'运动员',infl:{plural:'sportsmen',irregular:true}},
+{en:'statesman',ph:"'steitsmən",pos:'n.',posLabel:'名词',ch:'政治家、国务活动家',infl:{plural:'statesmen',irregular:true}},
+{en:'stranger',ph:"'streindʒə",pos:'n.',posLabel:'名词',ch:'陌生人、新来者、外地人',infl:{plural:'strangers'}},
+{en:'student',ph:"'stju:dənt",pos:'n.',posLabel:'名词',ch:'学生、研究生、学者',infl:{plural:'students'}},
+{en:'surgeon',ph:"'sə:dʒən",pos:'n.',posLabel:'名词',ch:'外科医师、军医',infl:{plural:'surgeons'}},
+{en:'teacher',ph:"'ti:tʃə",pos:'n.',posLabel:'名词',ch:'教师、老师、先生',infl:{plural:'teachers'}},
+{en:'traveller',ph:"'trævlə",pos:'n.',posLabel:'名词',ch:'旅行者、旅客',infl:{plural:'travellers'}},
+{en:'tutor',ph:"'tju:tə",pos:'n.',posLabel:'名词',ch:'家庭教师、导师',infl:{plural:'tutors'}},
+{en:'twin',ph:"twin",pos:'n.',posLabel:'名词',ch:'孪生儿、双胞胎之一',infl:{plural:'twins'}},
+{en:'uncle',ph:"'ʌŋkl",pos:'n.',posLabel:'名词',ch:'伯父、叔父、舅父、姨父',infl:{plural:'uncles'}},
+{en:'visitor',ph:"'vizitə",pos:'n.',posLabel:'名词',ch:'访问者、游客、参观者',infl:{plural:'visitors'}},
+{en:'waiter',ph:"'weitə",pos:'n.',posLabel:'名词',ch:'侍者、服务员',infl:{plural:'waiters'}},
+{en:'waitress',ph:"'weitris",pos:'n.',posLabel:'名词',ch:'女服务员',infl:{plural:'waitresses'}},
+{en:'wife',ph:"waif",pos:'n.',posLabel:'名词',ch:'妻子、夫人',infl:{plural:'wives',irregular:true}},
+{en:'winner',ph:"'winə",pos:'n.',posLabel:'名词',ch:'获胜者、优胜者',infl:{plural:'winners'}},
+{en:'woman',ph:"'wumən",pos:'n.',posLabel:'名词',ch:'妇女、女人、女性',infl:{plural:'women',irregular:true}},
+{en:'worker',ph:"'wə:kə",pos:'n.',posLabel:'名词',ch:'工人、工作者、人员',infl:{plural:'workers'}},
+{en:'workman',ph:"'wə:kmən",pos:'n.',posLabel:'名词',ch:'工人、劳动者、工匠',infl:{plural:'workmen',irregular:true}},
+{en:'writer',ph:"'raitə",pos:'n.',posLabel:'名词',ch:'作者、作家、文学家',infl:{plural:'writers'}},
+{en:'youth',ph:"ju:θ",pos:'n.',posLabel:'名词',ch:'青春、青年人、青年',infl:{plural:'youths'}}
+]
+}}
+};
+
+VOCAB_DATA[2] = {
+'身体与健康': { units: {
+'Unit 1': [
+{en:'ache',ph:"eik",pos:'n.',posLabel:'名词',ch:'疼痛',infl:{plural:'aches'}},
+{en:'blood',ph:"blʌd",pos:'n.',posLabel:'名词',ch:'血、血液、血统',infl:{plural:'—'}},
+{en:'bone',ph:"bəun",pos:'n.',posLabel:'名词',ch:'骨、骨骼、核心',infl:{plural:'bones'}},
+{en:'brain',ph:"brein",pos:'n.',posLabel:'名词',ch:'脑、脑髓、脑力',infl:{plural:'brains'}},
+{en:'breath',ph:"breθ",pos:'n.',posLabel:'名词',ch:'气息、呼吸、气味',infl:{plural:'breaths'}},
+{en:'cancer',ph:"'kænsə",pos:'n.',posLabel:'名词',ch:'癌、癌症、肿瘤',infl:{plural:'cancers'}},
+{en:'chest',ph:"tʃest",pos:'n.',posLabel:'名词',ch:'胸腔、胸膛、箱子',infl:{plural:'chests'}},
+{en:'cough',ph:"kɔf",pos:'n.',posLabel:'名词',ch:'咳嗽',infl:{plural:'coughs'}},
+{en:'disease',ph:"di'zi:z",pos:'n.',posLabel:'名词',ch:'病、疾病、病害',infl:{plural:'diseases'}},
+{en:'ear',ph:"iə",pos:'n.',posLabel:'名词',ch:'耳朵、听力、听觉',infl:{plural:'ears'}},
+{en:'eye',ph:"ai",pos:'n.',posLabel:'名词',ch:'眼睛、眼力、鉴赏力',infl:{plural:'eyes'}},
+{en:'eyesight',ph:"'aisait",pos:'n.',posLabel:'名词',ch:'视力、目力',infl:{plural:'—'}},
+{en:'fever',ph:"'fi:və",pos:'n.',posLabel:'名词',ch:'发热、发烧、狂热',infl:{plural:'fevers'}},
+{en:'finger',ph:"'fiŋgə",pos:'n.',posLabel:'名词',ch:'手指、指针、指状物',infl:{plural:'fingers'}},
+{en:'flesh',ph:"fleʃ",pos:'n.',posLabel:'名词',ch:'肉、肌肉、肉体',infl:{plural:'—'}},
+{en:'flu',ph:"flu:",pos:'n.',posLabel:'名词',ch:'流行性感冒',infl:{plural:'—'}},
+{en:'foot',ph:"fut",pos:'n.',posLabel:'名词',ch:'脚、最下部、英尺',infl:{plural:'feet',irregular:true}},
+{en:'hair',ph:"hɛə",pos:'n.',posLabel:'名词',ch:'头发、毛发、毛',infl:{plural:'hairs'}},
+{en:'hand',ph:"hænd",pos:'n.',posLabel:'名词',ch:'手、人手、指针',infl:{plural:'hands'}},
+{en:'headache',ph:"'hedeik",pos:'n.',posLabel:'名词',ch:'头痛、头痛的事',infl:{plural:'headaches'}},
+{en:'health',ph:"helθ",pos:'n.',posLabel:'名词',ch:'健康、健康状况、卫生',infl:{plural:'—'}},
+{en:'heart',ph:"hɑ:t",pos:'n.',posLabel:'名词',ch:'心、内心、中心',infl:{plural:'hearts'}},
+{en:'heel',ph:"hi:l",pos:'n.',posLabel:'名词',ch:'脚后跟、踵、后跟',infl:{plural:'heels'}},
+{en:'illness',ph:"'ilnis",pos:'n.',posLabel:'名词',ch:'病、疾病',infl:{plural:'illnesses'}},
+{en:'injury',ph:"'indʒəri",pos:'n.',posLabel:'名词',ch:'损害、伤害、受伤处',infl:{plural:'injuries'}},
+{en:'knee',ph:"ni:",pos:'n.',posLabel:'名词',ch:'膝、膝盖、膝关节',infl:{plural:'knees'}},
+{en:'leg',ph:"leg",pos:'n.',posLabel:'名词',ch:'腿、腿部、支柱',infl:{plural:'legs'}},
+{en:'lip',ph:"lip",pos:'n.',posLabel:'名词',ch:'嘴唇',infl:{plural:'lips'}},
+{en:'liver',ph:"'livə",pos:'n.',posLabel:'名词',ch:'肝、肝脏',infl:{plural:'livers'}},
+{en:'lung',ph:"lʌŋ",pos:'n.',posLabel:'名词',ch:'肺脏、肺、呼吸器官',infl:{plural:'lungs'}}
+],
+'Unit 2': [
+{en:'medicine',ph:"'medisin",pos:'n.',posLabel:'名词',ch:'内服药、医学',infl:{plural:'medicines'}},
+{en:'muscle',ph:"'mʌsl",pos:'n.',posLabel:'名词',ch:'肌肉、肌、体力',infl:{plural:'muscles'}},
+{en:'nerve',ph:"nə:v",pos:'n.',posLabel:'名词',ch:'神经、勇敢、胆量',infl:{plural:'nerves'}},
+{en:'nose',ph:"nəuz",pos:'n.',posLabel:'名词',ch:'鼻子、突出部分、嗅觉',infl:{plural:'noses'}},
+{en:'pain',ph:"pein",pos:'n.',posLabel:'名词',ch:'疼痛、痛苦',infl:{plural:'pains'}},
+{en:'pulse',ph:"pʌls",pos:'n.',posLabel:'名词',ch:'脉搏、脉冲、脉动',infl:{plural:'pulses'}},
+{en:'shoulder',ph:"'ʃəuldə",pos:'n.',posLabel:'名词',ch:'肩、肩膀、挑起',infl:{plural:'shoulders'}},
+{en:'skin',ph:"skin",pos:'n.',posLabel:'名词',ch:'皮、皮肤、兽皮',infl:{plural:'skins'}},
+{en:'stomach',ph:"'stʌmək",pos:'n.',posLabel:'名词',ch:'胃、胃口、肚子',infl:{plural:'stomachs'}},
+{en:'throat',ph:"θrəut",pos:'n.',posLabel:'名词',ch:'咽喉、喉咙、嗓音',infl:{plural:'throats'}},
+{en:'thumb',ph:"θʌm",pos:'n.',posLabel:'名词',ch:'大拇指',infl:{plural:'thumbs'}},
+{en:'toe',ph:"təu",pos:'n.',posLabel:'名词',ch:'脚趾、足尖',infl:{plural:'toes'}},
+{en:'tongue',ph:"tʌŋ",pos:'n.',posLabel:'名词',ch:'舌、舌头、语言',infl:{plural:'tongues'}},
+{en:'tooth',ph:"tu:θ",pos:'n.',posLabel:'名词',ch:'牙齿、齿状物',infl:{plural:'teeth',irregular:true}},
+{en:'waist',ph:"weist",pos:'n.',posLabel:'名词',ch:'腰、腰部',infl:{plural:'waists'}},
+{en:'wrist',ph:"rist",pos:'n.',posLabel:'名词',ch:'腕、腕关节、手腕',infl:{plural:'wrists'}},
+{en:'wound',ph:"wu:nd",pos:'n.',posLabel:'名词',ch:'创伤、伤口、伤',infl:{plural:'wounds'}},
+{en:'surgeon',ph:"'sə:dʒən",pos:'n.',posLabel:'名词',ch:'外科医师、军医',infl:{plural:'surgeons'}},
+{en:'surgery',ph:"'sə:dʒəri",pos:'n.',posLabel:'名词',ch:'外科、外科手术、诊所',infl:{plural:'surgeries'}},
+{en:'hospital',ph:"'hɔspitl",pos:'n.',posLabel:'名词',ch:'医院',infl:{plural:'hospitals'}},
+{en:'nurse',ph:"nə:s",pos:'n.',posLabel:'名词',ch:'护士、保姆',infl:{plural:'nurses'}},
+{en:'drug',ph:"drʌg",pos:'n.',posLabel:'名词',ch:'药、药物、药材',infl:{plural:'drugs'}},
+{en:'pill',ph:"pil",pos:'n.',posLabel:'名词',ch:'药丸、丸剂',infl:{plural:'pills'}},
+{en:'poison',ph:"'pɔizn",pos:'n.',posLabel:'名词',ch:'毒、毒药、败坏道德之事',infl:{plural:'poisons'}},
+{en:'protein',ph:"'prəuti:n",pos:'n.',posLabel:'名词',ch:'蛋白质、朊',infl:{plural:'—'}},
+{en:'vitamin',ph:"'vaitəmin",pos:'n.',posLabel:'名词',ch:'维生素、维他命',infl:{plural:'vitamins'}},
+{en:'cure',ph:"kjuə",pos:'n.',posLabel:'名词',ch:'治疗、治愈、治疗法',infl:{plural:'cures'}},
+{en:'diet',ph:"'daiət",pos:'n.',posLabel:'名词',ch:'日常饮食',infl:{plural:'diets'}},
+{en:'clinic',ph:"'klinik",pos:'n.',posLabel:'名词',ch:'诊所',infl:{plural:'clinics'}},
+{en:'patient',ph:"'peiʃənt",pos:'n.',posLabel:'名词',ch:'病人、患者',infl:{plural:'patients'}}
+]
+}}
+};
+
+VOCAB_DATA[3] = {
+'家庭与关系': { units: {
+'Unit 1': [
+{en:'aunt',ph:"ɑ:nt",pos:'n.',posLabel:'名词',ch:'伯母、婶母、姑母、姨',infl:{plural:'aunts'}},
+{en:'brother',ph:"'brʌðə",pos:'n.',posLabel:'名词',ch:'兄弟、同事、同胞',infl:{plural:'brothers'}},
+{en:'cousin',ph:"'kʌzn",pos:'n.',posLabel:'名词',ch:'堂兄弟、表兄弟',infl:{plural:'cousins'}},
+{en:'couple',ph:"'kʌpl",pos:'n.',posLabel:'名词',ch:'夫妇、一对、几个',infl:{plural:'couples'}},
+{en:'dad',ph:"dæd",pos:'n.',posLabel:'名词',ch:'爸爸',infl:{plural:'dads'}},
+{en:'daughter',ph:"'dɔ:tə",pos:'n.',posLabel:'名词',ch:'女儿',infl:{plural:'daughters'}},
+{en:'divorce',ph:"di'vɔ:s",pos:'n.',posLabel:'名词',ch:'离婚、离异',infl:{plural:'divorces'}},
+{en:'family',ph:"'fæmili",pos:'n.',posLabel:'名词',ch:'家、家庭、家族',infl:{plural:'families'}},
+{en:'father',ph:"'fɑ:ðə",pos:'n.',posLabel:'名词',ch:'父亲、神父、创始人',infl:{plural:'fathers'}},
+{en:'grandfather',ph:"'grænd.fɑ:ðə",pos:'n.',posLabel:'名词',ch:'祖父、外祖父',infl:{plural:'grandfathers'}},
+{en:'grandmother',ph:"'grænd.mʌðə",pos:'n.',posLabel:'名词',ch:'祖母、外祖母',infl:{plural:'grandmothers'}},
+{en:'grandson',ph:"'grændsʌn",pos:'n.',posLabel:'名词',ch:'孙子、外孙子',infl:{plural:'grandsons'}},
+{en:'husband',ph:"'hʌzbənd",pos:'n.',posLabel:'名词',ch:'丈夫',infl:{plural:'husbands'}},
+{en:'marriage',ph:"'mæridʒ",pos:'n.',posLabel:'名词',ch:'结婚、婚姻、婚礼',infl:{plural:'marriages'}},
+{en:'mother',ph:"'mʌðə",pos:'n.',posLabel:'名词',ch:'母亲、妈妈',infl:{plural:'mothers'}},
+{en:'nephew',ph:"'nefju:",pos:'n.',posLabel:'名词',ch:'侄子、外甥',infl:{plural:'nephews'}},
+{en:'niece',ph:"ni:s",pos:'n.',posLabel:'名词',ch:'侄女、外甥女',infl:{plural:'nieces'}},
+{en:'parent',ph:"'pɛərənt",pos:'n.',posLabel:'名词',ch:'父母、双亲',infl:{plural:'parents'}},
+{en:'relation',ph:"ri'leiʃən",pos:'n.',posLabel:'名词',ch:'关系、联系、家属',infl:{plural:'relations'}},
+{en:'relationship',ph:"ri'leiʃənʃip",pos:'n.',posLabel:'名词',ch:'关系、联系',infl:{plural:'relationships'}},
+{en:'sister',ph:"'sistə",pos:'n.',posLabel:'名词',ch:'姐妹、姐、妹',infl:{plural:'sisters'}},
+{en:'son',ph:"sʌn",pos:'n.',posLabel:'名词',ch:'儿子、孩子',infl:{plural:'sons'}},
+{en:'uncle',ph:"'ʌŋkl",pos:'n.',posLabel:'名词',ch:'伯父、叔父、舅父、姨父',infl:{plural:'uncles'}},
+{en:'wedding',ph:"'wediŋ",pos:'n.',posLabel:'名词',ch:'婚礼、结合',infl:{plural:'weddings'}},
+{en:'wife',ph:"waif",pos:'n.',posLabel:'名词',ch:'妻子、夫人',infl:{plural:'wives',irregular:true}},
+{en:'widow',ph:"'widəu",pos:'n.',posLabel:'名词',ch:'寡妇、遗孀',infl:{plural:'widows'}},
+{en:'bride',ph:"braid",pos:'n.',posLabel:'名词',ch:'新娘',infl:{plural:'brides'}},
+{en:'bridegroom',ph:"'braidgrum",pos:'n.',posLabel:'名词',ch:'新郎',infl:{plural:'bridegrooms'}},
+{en:'engagement',ph:"in'geidʒmənt",pos:'n.',posLabel:'名词',ch:'订婚、约定',infl:{plural:'engagements'}},
+{en:'household',ph:"'haushəuld",pos:'n.',posLabel:'名词',ch:'家庭、户、家务',infl:{plural:'households'}}
+]
+}}
+};
+
+VOCAB_DATA[4] = {
+'食物与饮食': { units: {
+'Unit 1': [
+{en:'apple',ph:"'æpəl",pos:'n.',posLabel:'名词',ch:'苹果、苹果树',infl:{plural:'apples'}},
+{en:'banana',ph:"bə'nɑ:nə",pos:'n.',posLabel:'名词',ch:'香蕉、芭蕉属植物',infl:{plural:'bananas'}},
+{en:'beef',ph:"bi:f",pos:'n.',posLabel:'名词',ch:'牛肉、菜牛',infl:{plural:'beefs'}},
+{en:'beer',ph:"biə",pos:'n.',posLabel:'名词',ch:'啤酒',infl:{plural:'beers'}},
+{en:'biscuit',ph:"'biskit",pos:'n.',posLabel:'名词',ch:'饼干',infl:{plural:'biscuits'}},
+{en:'bread',ph:"bred",pos:'n.',posLabel:'名词',ch:'面包、食物、粮食',infl:{plural:'breads'}},
+{en:'breakfast',ph:"'brekfəst",pos:'n.',posLabel:'名词',ch:'早饭、早餐',infl:{plural:'breakfasts'}},
+{en:'butter',ph:"'bʌtə",pos:'n.',posLabel:'名词',ch:'黄油、阿谀奉承',infl:{plural:'—'}},
+{en:'cabbage',ph:"'kæbidʒ",pos:'n.',posLabel:'名词',ch:'洋白菜、卷心菜',infl:{plural:'cabbages'}},
+{en:'cake',ph:"keik",pos:'n.',posLabel:'名词',ch:'饼、糕、蛋糕',infl:{plural:'cakes'}},
+{en:'candy',ph:"'kændi",pos:'n.',posLabel:'名词',ch:'糖果、砂糖结晶',infl:{plural:'candies'}},
+{en:'carrot',ph:"'kærət",pos:'n.',posLabel:'名词',ch:'胡罗卜、报酬',infl:{plural:'carrots'}},
+{en:'cheese',ph:"tʃi:z",pos:'n.',posLabel:'名词',ch:'乳酪、干酪',infl:{plural:'cheeses'}},
+{en:'chicken',ph:"'tʃikin",pos:'n.',posLabel:'名词',ch:'小鸡、鸡肉、胆小',infl:{plural:'chickens'}},
+{en:'chocolate',ph:"'tʃɔkəlit",pos:'n.',posLabel:'名词',ch:'巧克力、巧克力糖',infl:{plural:'chocolates'}},
+{en:'coffee',ph:"'kɔfi",pos:'n.',posLabel:'名词',ch:'咖啡、咖啡茶',infl:{plural:'coffees'}},
+{en:'corn',ph:"kɔ:n",pos:'n.',posLabel:'名词',ch:'谷物、谷粒',infl:{plural:'corns'}},
+{en:'cream',ph:"kri:m",pos:'n.',posLabel:'名词',ch:'奶油、乳酪、乳脂',infl:{plural:'creams'}},
+{en:'cucumber',ph:"'kju:kəmbə",pos:'n.',posLabel:'名词',ch:'黄瓜',infl:{plural:'cucumbers'}},
+{en:'dinner',ph:"'dinə",pos:'n.',posLabel:'名词',ch:'正餐、主餐、宴会',infl:{plural:'dinners'}},
+{en:'dish',ph:"diʃ",pos:'n.',posLabel:'名词',ch:'碟、盘子、菜肴',infl:{plural:'dishes'}},
+{en:'drink',ph:"driŋk",pos:'n.',posLabel:'名词',ch:'饮料',infl:{plural:'drinks'}},
+{en:'egg',ph:"eg",pos:'n.',posLabel:'名词',ch:'蛋、鸡蛋、卵',infl:{plural:'eggs'}},
+{en:'fish',ph:"fiʃ",pos:'n.',posLabel:'名词',ch:'鱼、鱼肉',infl:{plural:'fish'}},
+{en:'flour',ph:"flauə",pos:'n.',posLabel:'名词',ch:'面粉、粉、粉状物质',infl:{plural:'—'}},
+{en:'food',ph:"fu:d",pos:'n.',posLabel:'名词',ch:'食物、食品、养料',infl:{plural:'foods'}},
+{en:'fruit',ph:"fru:t",pos:'n.',posLabel:'名词',ch:'水果、果实、成果',infl:{plural:'fruits'}},
+{en:'grape',ph:"greip",pos:'n.',posLabel:'名词',ch:'葡萄、葡萄藤',infl:{plural:'grapes'}},
+{en:'hamburger',ph:"'hæmbə:gə",pos:'n.',posLabel:'名词',ch:'汉堡包、牛肉饼',infl:{plural:'hamburgers'}},
+{en:'honey',ph:"'hʌni",pos:'n.',posLabel:'名词',ch:'蜜、蜂蜜、甜',infl:{plural:'—'}}
+],
+'Unit 2': [
+{en:'ice-cream',ph:"'aiskri:m",pos:'n.',posLabel:'名词',ch:'冰淇淋',infl:{plural:'ice-creams'}},
+{en:'jam',ph:"dʒæm",pos:'n.',posLabel:'名词',ch:'果酱、拥塞之物',infl:{plural:'jams'}},
+{en:'juice',ph:"dʒu:s",pos:'n.',posLabel:'名词',ch:'汁、液、果汁',infl:{plural:'juices'}},
+{en:'lemon',ph:"'lemən",pos:'n.',posLabel:'名词',ch:'柠檬、柠檬树',infl:{plural:'lemons'}},
+{en:'lunch',ph:"lʌntʃ",pos:'n.',posLabel:'名词',ch:'午餐',infl:{plural:'lunches'}},
+{en:'meat',ph:"mi:t",pos:'n.',posLabel:'名词',ch:'肉',infl:{plural:'meats'}},
+{en:'milk',ph:"milk",pos:'n.',posLabel:'名词',ch:'乳、牛奶',infl:{plural:'—'}},
+{en:'mutton',ph:"'mʌtn",pos:'n.',posLabel:'名词',ch:'羊肉',infl:{plural:'—'}},
+{en:'orange',ph:"'ɔ:rindʒ",pos:'n.',posLabel:'名词',ch:'橙、柑、橙黄色',infl:{plural:'oranges'}},
+{en:'pea',ph:"pi:",pos:'n.',posLabel:'名词',ch:'豌豆',infl:{plural:'peas'}},
+{en:'pear',ph:"pɛə",pos:'n.',posLabel:'名词',ch:'梨',infl:{plural:'pears'}},
+{en:'pepper',ph:"'pepə",pos:'n.',posLabel:'名词',ch:'胡椒、辣椒',infl:{plural:'peppers'}},
+{en:'picnic',ph:"'piknik",pos:'n.',posLabel:'名词',ch:'郊游、野餐',infl:{plural:'picnics'}},
+{en:'pie',ph:"pai",pos:'n.',posLabel:'名词',ch:'馅饼、派',infl:{plural:'pies'}},
+{en:'pork',ph:"pɔ:k",pos:'n.',posLabel:'名词',ch:'猪肉',infl:{plural:'—'}},
+{en:'porridge',ph:"'pɔridʒ",pos:'n.',posLabel:'名词',ch:'粥、麦片粥',infl:{plural:'—'}},
+{en:'potato',ph:"pə'teitəu",pos:'n.',posLabel:'名词',ch:'马铃薯、土豆',infl:{plural:'potatoes'}},
+{en:'rice',ph:"rais",pos:'n.',posLabel:'名词',ch:'稻、米、饭',infl:{plural:'—'}},
+{en:'salad',ph:"'sæləd",pos:'n.',posLabel:'名词',ch:'色拉、凉拌生菜',infl:{plural:'salads'}},
+{en:'salt',ph:"sɔ:lt",pos:'n.',posLabel:'名词',ch:'盐、盐类',infl:{plural:'salts'}},
+{en:'sandwich',ph:"'sændwitʃ",pos:'n.',posLabel:'名词',ch:'三明治',infl:{plural:'sandwiches'}},
+{en:'sauce',ph:"sɔ:s",pos:'n.',posLabel:'名词',ch:'调味汁、酱汁',infl:{plural:'sauces'}},
+{en:'sausage',ph:"'sɔ:sidʒ",pos:'n.',posLabel:'名词',ch:'香肠、腊肠',infl:{plural:'sausages'}},
+{en:'soup',ph:"su:p",pos:'n.',posLabel:'名词',ch:'汤、羹',infl:{plural:'soups'}},
+{en:'strawberry',ph:"'strɔ:bəri",pos:'n.',posLabel:'名词',ch:'草莓',infl:{plural:'strawberries'}},
+{en:'sugar',ph:"'ʃugə",pos:'n.',posLabel:'名词',ch:'糖',infl:{plural:'—'}},
+{en:'supper',ph:"'sʌpə",pos:'n.',posLabel:'名词',ch:'晚饭、晚餐、晚餐会',infl:{plural:'suppers'}},
+{en:'tea',ph:"ti:",pos:'n.',posLabel:'名词',ch:'茶、茶叶、茶树',infl:{plural:'teas'}},
+{en:'tomato',ph:"tə'mɑ:təu",pos:'n.',posLabel:'名词',ch:'番茄、西红柿',infl:{plural:'tomatoes'}},
+{en:'vegetable',ph:"'vedʒitəbl",pos:'n.',posLabel:'名词',ch:'植物、蔬菜',infl:{plural:'vegetables'}},
+{en:'wine',ph:"wain",pos:'n.',posLabel:'名词',ch:'葡萄酒、果酒、酒',infl:{plural:'wines'}}
+]
+}}
+};
+
+
+VOCAB_DATA[5] = {
+'动物与植物': { units: {
+'Unit 1': [
+{en:'ant',ph:"ænt",pos:'n.',posLabel:'名词',ch:'蚂蚁',infl:{plural:'ants'}},
+{en:'beast',ph:"bi:st",pos:'n.',posLabel:'名词',ch:'兽、野兽、牲畜',infl:{plural:'beasts'}},
+{en:'bee',ph:"bi:",pos:'n.',posLabel:'名词',ch:'蜂、密蜂、忙碌的人',infl:{plural:'bees'}},
+{en:'bird',ph:"bə:d",pos:'n.',posLabel:'名词',ch:'鸟、家禽、伙伴',infl:{plural:'birds'}},
+{en:'butterfly',ph:"'bʌtəflai",pos:'n.',posLabel:'名词',ch:'蝴蝶、蝶状物、蝶泳',infl:{plural:'butterflies'}},
+{en:'camel',ph:"'kæməl",pos:'n.',posLabel:'名词',ch:'骆驼、浅黄棕色',infl:{plural:'camels'}},
+{en:'cat',ph:"kæt",pos:'n.',posLabel:'名词',ch:'猫、猫科、猫皮',infl:{plural:'cats'}},
+{en:'cattle',ph:"'kætl",pos:'n.',posLabel:'名词',ch:'牛、牲口、家畜',infl:{plural:'cattle'}},
+{en:'chicken',ph:"'tʃikin",pos:'n.',posLabel:'名词',ch:'小鸡、鸡肉、胆小',infl:{plural:'chickens'}},
+{en:'cow',ph:"kau",pos:'n.',posLabel:'名词',ch:'母牛、奶牛、母兽',infl:{plural:'cows'}},
+{en:'creature',ph:"'kri:tʃə",pos:'n.',posLabel:'名词',ch:'生物、动物、家畜',infl:{plural:'creatures'}},
+{en:'crop',ph:"krɔp",pos:'n.',posLabel:'名词',ch:'农作物、庄稼、收成',infl:{plural:'crops'}},
+{en:'dog',ph:"dɔg",pos:'n.',posLabel:'名词',ch:'狗、犬、犬科动物',infl:{plural:'dogs'}},
+{en:'donkey',ph:"'dɔŋki",pos:'n.',posLabel:'名词',ch:'驴、笨蛋',infl:{plural:'donkeys'}},
+{en:'dragon',ph:"'drægən",pos:'n.',posLabel:'名词',ch:'龙、凶暴的人',infl:{plural:'dragons'}},
+{en:'duck',ph:"dʌk",pos:'n.',posLabel:'名词',ch:'鸭、雌鸭、鸭肉',infl:{plural:'ducks'}},
+{en:'eagle',ph:"'i:gl",pos:'n.',posLabel:'名词',ch:'鹰',infl:{plural:'eagles'}},
+{en:'elephant',ph:"'elifənt",pos:'n.',posLabel:'名词',ch:'象',infl:{plural:'elephants'}},
+{en:'fish',ph:"fiʃ",pos:'n.',posLabel:'名词',ch:'鱼、鱼肉',infl:{plural:'fish'}},
+{en:'fisherman',ph:"'fiʃəmən",pos:'n.',posLabel:'名词',ch:'渔民、渔夫、打鱼人',infl:{plural:'fishermen',irregular:true}},
+{en:'flock',ph:"flɔk",pos:'n.',posLabel:'名词',ch:'羊群、群、大量',infl:{plural:'flocks'}},
+{en:'flower',ph:"'flauə",pos:'n.',posLabel:'名词',ch:'花、花卉、开花',infl:{plural:'flowers'}},
+{en:'forest',ph:"'fɔrist",pos:'n.',posLabel:'名词',ch:'森林、森林地带、园林',infl:{plural:'forests'}},
+{en:'fox',ph:"fɔks",pos:'n.',posLabel:'名词',ch:'狐狸、狡猾的人',infl:{plural:'foxes'}}
+],
+'Unit 2': [
+{en:'frog',ph:"frɔg",pos:'n.',posLabel:'名词',ch:'蛙、马蹄叉',infl:{plural:'frogs'}},
+{en:'fruit',ph:"fru:t",pos:'n.',posLabel:'名词',ch:'水果、果实、成果',infl:{plural:'fruits'}},
+{en:'garden',ph:"'gɑ:dn",pos:'n.',posLabel:'名词',ch:'花园、菜园、果园',infl:{plural:'gardens'}},
+{en:'goat',ph:"gəut",pos:'n.',posLabel:'名词',ch:'山羊、好色之徒',infl:{plural:'goats'}},
+{en:'goose',ph:"gu:s",pos:'n.',posLabel:'名词',ch:'鹅、雌鹅、鹅肉',infl:{plural:'geese',irregular:true}},
+{en:'grass',ph:"grɑ:s",pos:'n.',posLabel:'名词',ch:'草、牧草、草地',infl:{plural:'grasses'}},
+{en:'hare',ph:"hɛə",pos:'n.',posLabel:'名词',ch:'野兔',infl:{plural:'hares'}},
+{en:'hen',ph:"hen",pos:'n.',posLabel:'名词',ch:'母鸡、雌禽',infl:{plural:'hens'}},
+{en:'herd',ph:"hə:d",pos:'n.',posLabel:'名词',ch:'兽群、牧群、人群',infl:{plural:'herds'}},
+{en:'horse',ph:"hɔ:s",pos:'n.',posLabel:'名词',ch:'马、马科动物',infl:{plural:'horses'}},
+{en:'insect',ph:"'insekt",pos:'n.',posLabel:'名词',ch:'昆虫、虫',infl:{plural:'insects'}},
+{en:'lion',ph:"'laiən",pos:'n.',posLabel:'名词',ch:'狮子、勇猛的人',infl:{plural:'lions'}},
+{en:'livestock',ph:"'laivstɔk",pos:'n.',posLabel:'名词',ch:'家畜、牲畜',infl:{plural:'—'}},
+{en:'monkey',ph:"'mʌŋki",pos:'n.',posLabel:'名词',ch:'猴子、猿',infl:{plural:'monkeys'}},
+{en:'mosquito',ph:"məs'ki:təu",pos:'n.',posLabel:'名词',ch:'蚊子',infl:{plural:'mosquitoes'}},
+{en:'mouse',ph:"maus",pos:'n.',posLabel:'名词',ch:'老鼠、耗子、鼠标',infl:{plural:'mice',irregular:true}},
+{en:'oak',ph:"əuk",pos:'n.',posLabel:'名词',ch:'栎属植物、橡树、橡木',infl:{plural:'oaks'}},
+{en:'ox',ph:"ɔks",pos:'n.',posLabel:'名词',ch:'牛、公牛、阉牛',infl:{plural:'oxen',irregular:true}},
+{en:'pearl',ph:"pə:l",pos:'n.',posLabel:'名词',ch:'珍珠、珍品',infl:{plural:'pearls'}},
+{en:'pine',ph:"pain",pos:'n.',posLabel:'名词',ch:'松树、松木',infl:{plural:'pines'}},
+{en:'plant',ph:"plɑ:nt",pos:'n.',posLabel:'名词',ch:'植物、工厂、设施',infl:{plural:'plants'}},
+{en:'rabbit',ph:"'ræbit",pos:'n.',posLabel:'名词',ch:'兔子、野兔',infl:{plural:'rabbits'}},
+{en:'rat',ph:"ræt",pos:'n.',posLabel:'名词',ch:'老鼠、耗子、卑鄙的人',infl:{plural:'rats'}},
+{en:'sheep',ph:"ʃi:p",pos:'n.',posLabel:'名词',ch:'羊、绵羊',infl:{plural:'sheep'}}
+],
+'Unit 3': [
+{en:'spider',ph:"'spaidə",pos:'n.',posLabel:'名词',ch:'蜘蛛',infl:{plural:'spiders'}},
+{en:'squirrel',ph:"'skwirəl",pos:'n.',posLabel:'名词',ch:'松鼠、松鼠皮毛',infl:{plural:'squirrels'}},
+{en:'swan',ph:"swɔn",pos:'n.',posLabel:'名词',ch:'天鹅',infl:{plural:'swans'}},
+{en:'swine',ph:"swain",pos:'n.',posLabel:'名词',ch:'猪',infl:{plural:'swine'}},
+{en:'tiger',ph:"'taigə",pos:'n.',posLabel:'名词',ch:'老虎、凶残之人',infl:{plural:'tigers'}},
+{en:'tree',ph:"tri:",pos:'n.',posLabel:'名词',ch:'树、树状物',infl:{plural:'trees'}},
+{en:'turkey',ph:"'tə:ki",pos:'n.',posLabel:'名词',ch:'火鸡、火鸡肉',infl:{plural:'turkeys'}},
+{en:'vine',ph:"vain",pos:'n.',posLabel:'名词',ch:'葡萄树、攀爬植物、藤',infl:{plural:'vines'}},
+{en:'whale',ph:"weil",pos:'n.',posLabel:'名词',ch:'鲸鱼',infl:{plural:'whales'}},
+{en:'wolf',ph:"wulf",pos:'n.',posLabel:'名词',ch:'狼、残暴的人',infl:{plural:'wolves',irregular:true}},
+{en:'worm',ph:"wə:m",pos:'n.',posLabel:'名词',ch:'虫、蠕虫、可鄙之人',infl:{plural:'worms'}},
+{en:'zebra',ph:"'zi:brə",pos:'n.',posLabel:'名词',ch:'斑马、斑马线',infl:{plural:'zebras'}},
+{en:'zoo',ph:"zu:",pos:'n.',posLabel:'名词',ch:'动物园、拥挤杂乱的地方',infl:{plural:'zoos'}},
+{en:'seed',ph:"si:d",pos:'n.',posLabel:'名词',ch:'种、籽、萌芽',infl:{plural:'seeds'}},
+{en:'root',ph:"ru:t",pos:'n.',posLabel:'名词',ch:'根、根子、根源',infl:{plural:'roots'}},
+{en:'leaf',ph:"li:f",pos:'n.',posLabel:'名词',ch:'叶、叶子、树叶',infl:{plural:'leaves',irregular:true}},
+{en:'branch',ph:"brɑ:ntʃ",pos:'n.',posLabel:'名词',ch:'分支、树枝、分部',infl:{plural:'branches'}},
+{en:'trunk',ph:"trʌŋk",pos:'n.',posLabel:'名词',ch:'树干、大衣箱、躯干',infl:{plural:'trunks'}},
+{en:'bud',ph:"bʌd",pos:'n.',posLabel:'名词',ch:'芽、萌芽、蓓蕾',infl:{plural:'buds'}},
+{en:'blossom',ph:"'blɔsəm",pos:'n.',posLabel:'名词',ch:'花、开花、全盛期',infl:{plural:'blossoms'}},
+{en:'weed',ph:"wi:d",pos:'n.',posLabel:'名词',ch:'杂草、野草',infl:{plural:'weeds'}},
+{en:'herb',ph:"hə:b",pos:'n.',posLabel:'名词',ch:'药草、香草',infl:{plural:'herbs'}}
+]
+}}
+};
+
+VOCAB_DATA[6] = {
+'自然与地理': { units: {
+'Unit 1': [
+{en:'air',ph:"ɛə",pos:'n.',posLabel:'名词',ch:'空气、空中、外观',infl:{plural:'—'}},
+{en:'atmosphere',ph:"'ætməsfiə",pos:'n.',posLabel:'名词',ch:'大气、空气、气氛',infl:{plural:'atmospheres'}},
+{en:'beach',ph:"bi:tʃ",pos:'n.',posLabel:'名词',ch:'海滩、湖滩、河滩',infl:{plural:'beaches'}},
+{en:'breeze',ph:"bri:z",pos:'n.',posLabel:'名词',ch:'微风、和风、轻而易举的事',infl:{plural:'breezes'}},
+{en:'brook',ph:"bruk",pos:'n.',posLabel:'名词',ch:'小河、溪流',infl:{plural:'brooks'}},
+{en:'canal',ph:"kə'næl",pos:'n.',posLabel:'名词',ch:'运河、沟渠、管',infl:{plural:'canals'}},
+{en:'cave',ph:"keiv",pos:'n.',posLabel:'名词',ch:'山洞、洞穴、窑洞',infl:{plural:'caves'}},
+{en:'cliff',ph:"klif",pos:'n.',posLabel:'名词',ch:'悬崖、峭壁',infl:{plural:'cliffs'}},
+{en:'climate',ph:"'klaimit",pos:'n.',posLabel:'名词',ch:'气候、风土、地带',infl:{plural:'climates'}},
+{en:'cloud',ph:"klaud",pos:'n.',posLabel:'名词',ch:'云、云状物',infl:{plural:'clouds'}},
+{en:'coast',ph:"kəust",pos:'n.',posLabel:'名词',ch:'海岸、海滨',infl:{plural:'coasts'}},
+{en:'countryside',ph:"'kʌntri'said",pos:'n.',posLabel:'名词',ch:'乡下、农村',infl:{plural:'—'}},
+{en:'dawn',ph:"dɔ:n",pos:'n.',posLabel:'名词',ch:'黎明、破晓、开端',infl:{plural:'dawns'}},
+{en:'day',ph:"dei",pos:'n.',posLabel:'名词',ch:'天、白昼、白天',infl:{plural:'days'}},
+{en:'daylight',ph:"'deilait",pos:'n.',posLabel:'名词',ch:'白昼、日光、黎明',infl:{plural:'—'}},
+{en:'desert',ph:"'dezət",pos:'n.',posLabel:'名词',ch:'沙漠、荒地',infl:{plural:'deserts'}},
+{en:'dew',ph:"dju:",pos:'n.',posLabel:'名词',ch:'露、露水',infl:{plural:'—'}},
+{en:'earth',ph:"ə:θ",pos:'n.',posLabel:'名词',ch:'地球、陆地、地面',infl:{plural:'—'}},
+{en:'earthquake',ph:"'ə:θkweik",pos:'n.',posLabel:'名词',ch:'地震、大震荡',infl:{plural:'earthquakes'}},
+{en:'environment',ph:"in'vaiərənmənt",pos:'n.',posLabel:'名词',ch:'环境、外界、围绕',infl:{plural:'environments'}},
+{en:'equator',ph:"i'kweitə",pos:'n.',posLabel:'名词',ch:'赤道',infl:{plural:'equators'}},
+{en:'fog',ph:"fɔg",pos:'n.',posLabel:'名词',ch:'雾、烟雾、尘雾',infl:{plural:'fogs'}},
+{en:'forest',ph:"'fɔrist",pos:'n.',posLabel:'名词',ch:'森林、森林地带、园林',infl:{plural:'forests'}},
+{en:'fountain',ph:"'fauntin",pos:'n.',posLabel:'名词',ch:'泉水、喷泉、源泉',infl:{plural:'fountains'}},
+{en:'frost',ph:"frɔst",pos:'n.',posLabel:'名词',ch:'冰冻、严寒、霜',infl:{plural:'frosts'}}
+],
+'Unit 2': [
+{en:'geography',ph:"dʒi'ɔgrəfi",pos:'n.',posLabel:'名词',ch:'地理、地理学',infl:{plural:'—'}},
+{en:'globe',ph:"gləub",pos:'n.',posLabel:'名词',ch:'地球、世界、地界仪',infl:{plural:'globes'}},
+{en:'grass',ph:"grɑ:s",pos:'n.',posLabel:'名词',ch:'草、牧草、草地',infl:{plural:'grasses'}},
+{en:'gulf',ph:"gʌlf",pos:'n.',posLabel:'名词',ch:'海湾',infl:{plural:'gulfs'}},
+{en:'hail',ph:"heil",pos:'n.',posLabel:'名词',ch:'冰雹',infl:{plural:'—'}},
+{en:'harbour',ph:"'hɑ:bə",pos:'n.',posLabel:'名词',ch:'海港、港口',infl:{plural:'harbours'}},
+{en:'heaven',ph:"'hevn",pos:'n.',posLabel:'名词',ch:'天堂、天、天空',infl:{plural:'heavens'}},
+{en:'hill',ph:"hil",pos:'n.',posLabel:'名词',ch:'小山、小堆、斜坡',infl:{plural:'hills'}},
+{en:'horizon',ph:"hə'raizn",pos:'n.',posLabel:'名词',ch:'地平线、眼界、见识',infl:{plural:'horizons'}},
+{en:'ice',ph:"ais",pos:'n.',posLabel:'名词',ch:'冰、冰块、矜持',infl:{plural:'—'}},
+{en:'island',ph:"'ailənd",pos:'n.',posLabel:'名词',ch:'岛、岛屿、孤立体',infl:{plural:'islands'}},
+{en:'lake',ph:"leik",pos:'n.',posLabel:'名词',ch:'湖',infl:{plural:'lakes'}},
+{en:'land',ph:"lænd",pos:'n.',posLabel:'名词',ch:'陆地、国土、土地',infl:{plural:'lands'}},
+{en:'mainland',ph:"'meinlənd",pos:'n.',posLabel:'名词',ch:'大陆、本土',infl:{plural:'mainlands'}},
+{en:'meadow',ph:"'medəu",pos:'n.',posLabel:'名词',ch:'草地、牧场、牧草地',infl:{plural:'meadows'}},
+{en:'moon',ph:"mu:n",pos:'n.',posLabel:'名词',ch:'月球、月亮、卫星',infl:{plural:'moons'}},
+{en:'mountain',ph:"'mauntin",pos:'n.',posLabel:'名词',ch:'山、山岳、山脉',infl:{plural:'mountains'}},
+{en:'nature',ph:"'neitʃə",pos:'n.',posLabel:'名词',ch:'大自然、自然界、自然状态',infl:{plural:'—'}},
+{en:'ocean',ph:"'əuʃən",pos:'n.',posLabel:'名词',ch:'海洋、洋、大量',infl:{plural:'oceans'}},
+{en:'peak',ph:"pi:k",pos:'n.',posLabel:'名词',ch:'山顶、最高点、峰值',infl:{plural:'peaks'}},
+{en:'planet',ph:"'plænit",pos:'n.',posLabel:'名词',ch:'行星',infl:{plural:'planets'}},
+{en:'pond',ph:"pɔnd",pos:'n.',posLabel:'名词',ch:'池塘',infl:{plural:'ponds'}},
+{en:'pool',ph:"pu:l",pos:'n.',posLabel:'名词',ch:'水塘、游泳池、水池',infl:{plural:'pools'}},
+{en:'rain',ph:"rein",pos:'n.',posLabel:'名词',ch:'雨、雨水',infl:{plural:'rains'}},
+{en:'rainbow',ph:"'reinbəu",pos:'n.',posLabel:'名词',ch:'虹、彩虹',infl:{plural:'rainbows'}}
+],
+'Unit 3': [
+{en:'river',ph:"'rivə",pos:'n.',posLabel:'名词',ch:'江、河、水道',infl:{plural:'rivers'}},
+{en:'rock',ph:"rɔk",pos:'n.',posLabel:'名词',ch:'岩石、巨石、石头',infl:{plural:'rocks'}},
+{en:'sand',ph:"sænd",pos:'n.',posLabel:'名词',ch:'沙、沙子、沙滩',infl:{plural:'—'}},
+{en:'sea',ph:"si:",pos:'n.',posLabel:'名词',ch:'海、海洋',infl:{plural:'seas'}},
+{en:'seaport',ph:"'si:pɔ:t",pos:'n.',posLabel:'名词',ch:'海港、港市',infl:{plural:'seaports'}},
+{en:'season',ph:"'si:zn",pos:'n.',posLabel:'名词',ch:'季、季节、时节',infl:{plural:'seasons'}},
+{en:'sky',ph:"skai",pos:'n.',posLabel:'名词',ch:'天、天空',infl:{plural:'skies'}},
+{en:'snow',ph:"snəu",pos:'n.',posLabel:'名词',ch:'雪、下雪',infl:{plural:'snows'}},
+{en:'soil',ph:"sɔil",pos:'n.',posLabel:'名词',ch:'泥土、土壤、土地',infl:{plural:'soils'}},
+{en:'spring',ph:"spriŋ",pos:'n.',posLabel:'名词',ch:'春天、春季、跳跃',infl:{plural:'springs'}},
+{en:'star',ph:"stɑ:",pos:'n.',posLabel:'名词',ch:'星、恒星、明星',infl:{plural:'stars'}},
+{en:'stone',ph:"stəun",pos:'n.',posLabel:'名词',ch:'石、石头、石块',infl:{plural:'stones'}},
+{en:'storm',ph:"stɔ:m",pos:'n.',posLabel:'名词',ch:'风暴、暴风雨',infl:{plural:'storms'}},
+{en:'stream',ph:"stri:m",pos:'n.',posLabel:'名词',ch:'河、流、水流',infl:{plural:'streams'}},
+{en:'sun',ph:"sʌn",pos:'n.',posLabel:'名词',ch:'太阳、日、阳光',infl:{plural:'suns'}},
+{en:'sunrise',ph:"'sʌnraiz",pos:'n.',posLabel:'名词',ch:'日出',infl:{plural:'sunrises'}},
+{en:'sunset',ph:"'sʌnset",pos:'n.',posLabel:'名词',ch:'日落',infl:{plural:'sunsets'}},
+{en:'thunder',ph:"'θʌndə",pos:'n.',posLabel:'名词',ch:'雷、雷声',infl:{plural:'thunders'}},
+{en:'tide',ph:"taid",pos:'n.',posLabel:'名词',ch:'潮、潮汐、潮流',infl:{plural:'tides'}},
+{en:'valley',ph:"'væli",pos:'n.',posLabel:'名词',ch:'山谷、溪谷、流域',infl:{plural:'valleys'}},
+{en:'volcano',ph:"vɔl'keinəu",pos:'n.',posLabel:'名词',ch:'火山',infl:{plural:'volcanoes'}},
+{en:'waterfall',ph:"'wɔ:təfɔ:l",pos:'n.',posLabel:'名词',ch:'瀑布',infl:{plural:'waterfalls'}},
+{en:'wave',ph:"weiv",pos:'n.',posLabel:'名词',ch:'波、波涛、波浪',infl:{plural:'waves'}},
+{en:'weather',ph:"'weðə",pos:'n.',posLabel:'名词',ch:'天气、气候、气象',infl:{plural:'—'}},
+{en:'wind',ph:"wind",pos:'n.',posLabel:'名词',ch:'风、气息、呼吸',infl:{plural:'winds'}},
+{en:'world',ph:"wə:ld",pos:'n.',posLabel:'名词',ch:'世界、世人、世间',infl:{plural:'worlds'}}
+]
+}}
+};
+
+VOCAB_DATA[7] = {
+'时间与日期': { units: {
+'Unit 1': [
+{en:'afternoon',ph:"'ɑ:ftə'nu:n",pos:'n.',posLabel:'名词',ch:'下午、午后',infl:{plural:'afternoons'}},
+{en:'age',ph:"eidʒ",pos:'n.',posLabel:'名词',ch:'年龄、时代、时期',infl:{plural:'ages'}},
+{en:'April',ph:"'eiprəl",pos:'n.',posLabel:'名词',ch:'四月',infl:{plural:'—'}},
+{en:'August',ph:"'ɔ:gʌst",pos:'n.',posLabel:'名词',ch:'八月',infl:{plural:'—'}},
+{en:'autumn',ph:"'ɔ:təm",pos:'n.',posLabel:'名词',ch:'秋、秋季、秋天',infl:{plural:'autumns'}},
+{en:'birthday',ph:"'bə:θdei",pos:'n.',posLabel:'名词',ch:'生日、诞生的日期',infl:{plural:'birthdays'}},
+{en:'century',ph:"'sentʃuri",pos:'n.',posLabel:'名词',ch:'世纪、一百年',infl:{plural:'centuries'}},
+{en:'date',ph:"deit",pos:'n.',posLabel:'名词',ch:'日期、约会、枣椰子',infl:{plural:'dates'}},
+{en:'dawn',ph:"dɔ:n",pos:'n.',posLabel:'名词',ch:'黎明、破晓、开端',infl:{plural:'dawns'}},
+{en:'day',ph:"dei",pos:'n.',posLabel:'名词',ch:'天、白昼、白天',infl:{plural:'days'}},
+{en:'daylight',ph:"'deilait",pos:'n.',posLabel:'名词',ch:'白昼、日光、黎明',infl:{plural:'—'}},
+{en:'decade',ph:"'dekeid",pos:'n.',posLabel:'名词',ch:'十年、十年期',infl:{plural:'decades'}},
+{en:'December',ph:"di'sembə",pos:'n.',posLabel:'名词',ch:'十二月',infl:{plural:'—'}},
+{en:'dusk',ph:"dʌsk",pos:'n.',posLabel:'名词',ch:'薄暮、黄昏、幽暗',infl:{plural:'—'}},
+{en:'era',ph:"'iərə",pos:'n.',posLabel:'名词',ch:'时代、年代、纪元',infl:{plural:'eras'}},
+{en:'evening',ph:"'i:vniŋ",pos:'n.',posLabel:'名词',ch:'傍晚、黄昏、晚上',infl:{plural:'evenings'}},
+{en:'eve',ph:"i:v",pos:'n.',posLabel:'名词',ch:'前夜、前夕、前一刻',infl:{plural:'eves'}},
+{en:'February',ph:"'februəri",pos:'n.',posLabel:'名词',ch:'二月',infl:{plural:'—'}},
+{en:'Friday',ph:"'fraidi",pos:'n.',posLabel:'名词',ch:'星期五',infl:{plural:'Fridays'}},
+{en:'future',ph:"'fju:tʃə",pos:'n.',posLabel:'名词',ch:'将来、未来、前途',infl:{plural:'futures'}},
+{en:'holiday',ph:"'hɔlədi",pos:'n.',posLabel:'名词',ch:'假日、节日、假期',infl:{plural:'holidays'}},
+{en:'hour',ph:"auə",pos:'n.',posLabel:'名词',ch:'小时、时间、时刻',infl:{plural:'hours'}},
+{en:'January',ph:"'dʒænjuəri",pos:'n.',posLabel:'名词',ch:'一月',infl:{plural:'—'}},
+{en:'July',ph:"dʒu(:)'lai",pos:'n.',posLabel:'名词',ch:'七月',infl:{plural:'—'}},
+{en:'June',ph:"dʒu:n",pos:'n.',posLabel:'名词',ch:'六月',infl:{plural:'—'}},
+{en:'March',ph:"mɑ:tʃ",pos:'n.',posLabel:'名词',ch:'三月',infl:{plural:'—'}},
+{en:'May',ph:"mei",pos:'n.',posLabel:'名词',ch:'五月',infl:{plural:'—'}},
+{en:'midnight',ph:"'midnait",pos:'n.',posLabel:'名词',ch:'午夜、子夜、夜半',infl:{plural:'—'}},
+{en:'minute',ph:"'minit",pos:'n.',posLabel:'名词',ch:'分、分钟、一会儿',infl:{plural:'minutes'}},
+{en:'moment',ph:"'məumənt",pos:'n.',posLabel:'名词',ch:'片刻、瞬间、时刻',infl:{plural:'moments'}}
+],
+'Unit 2': [
+{en:'Monday',ph:"'mʌndi",pos:'n.',posLabel:'名词',ch:'星期一',infl:{plural:'Mondays'}},
+{en:'month',ph:"mʌnθ",pos:'n.',posLabel:'名词',ch:'月、月份',infl:{plural:'months'}},
+{en:'morning',ph:"'mɔ:niŋ",pos:'n.',posLabel:'名词',ch:'早晨、上午、开端',infl:{plural:'mornings'}},
+{en:'night',ph:"nait",pos:'n.',posLabel:'名词',ch:'夜、夜间',infl:{plural:'nights'}},
+{en:'noon',ph:"nu:n",pos:'n.',posLabel:'名词',ch:'正午、中午、全盛期',infl:{plural:'—'}},
+{en:'November',ph:"nəu'vembə",pos:'n.',posLabel:'名词',ch:'十一月',infl:{plural:'—'}},
+{en:'October',ph:"ɔk'təubə",pos:'n.',posLabel:'名词',ch:'十月',infl:{plural:'—'}},
+{en:'past',ph:"pɑ:st",pos:'n.',posLabel:'名词',ch:'过去、往事',infl:{plural:'—'}},
+{en:'period',ph:"'piəriəd",pos:'n.',posLabel:'名词',ch:'时期、时代、周期',infl:{plural:'periods'}},
+{en:'present',ph:"'preznt",pos:'n.',posLabel:'名词',ch:'礼物、赠送物、现在',infl:{plural:'presents'}},
+{en:'Saturday',ph:"'sætədi",pos:'n.',posLabel:'名词',ch:'星期六',infl:{plural:'Saturdays'}},
+{en:'season',ph:"'si:zn",pos:'n.',posLabel:'名词',ch:'季、季节、时节',infl:{plural:'seasons'}},
+{en:'second',ph:"'sekənd",pos:'n.',posLabel:'名词',ch:'第二、秒',infl:{plural:'seconds'}},
+{en:'September',ph:"səp'tembə",pos:'n.',posLabel:'名词',ch:'九月',infl:{plural:'—'}},
+{en:'spring',ph:"spriŋ",pos:'n.',posLabel:'名词',ch:'春天、春季、跳跃',infl:{plural:'springs'}},
+{en:'summer',ph:"'sʌmə",pos:'n.',posLabel:'名词',ch:'夏、夏季',infl:{plural:'summers'}},
+{en:'Sunday',ph:"'sʌndi",pos:'n.',posLabel:'名词',ch:'星期日、礼拜日',infl:{plural:'Sundays'}},
+{en:'Thursday',ph:"'θə:zdi",pos:'n.',posLabel:'名词',ch:'星期四',infl:{plural:'Thursdays'}},
+{en:'time',ph:"taim",pos:'n.',posLabel:'名词',ch:'时间、时机、次数',infl:{plural:'times'}},
+{en:'timetable',ph:"'taim.teibl",pos:'n.',posLabel:'名词',ch:'时间表、时刻表、课程表',infl:{plural:'timetables'}},
+{en:'today',ph:"tə'dei",pos:'n.',posLabel:'名词',ch:'今天、当今',infl:{plural:'—'}},
+{en:'tomorrow',ph:"tə'mɔrəu",pos:'n.',posLabel:'名词',ch:'明天、将来',infl:{plural:'—'}},
+{en:'Tuesday',ph:"'tju:zdi",pos:'n.',posLabel:'名词',ch:'星期二',infl:{plural:'Tuesdays'}},
+{en:'twilight',ph:"'twailait",pos:'n.',posLabel:'名词',ch:'黄昏、黎明、暮色',infl:{plural:'—'}},
+{en:'Wednesday',ph:"'wenzdei",pos:'n.',posLabel:'名词',ch:'星期三',infl:{plural:'Wednesdays'}},
+{en:'week',ph:"wi:k",pos:'n.',posLabel:'名词',ch:'星期、周',infl:{plural:'weeks'}},
+{en:'weekday',ph:"'wi:kdei",pos:'n.',posLabel:'名词',ch:'周日、工作日',infl:{plural:'weekdays'}},
+{en:'weekend',ph:"wi:k'end",pos:'n.',posLabel:'名词',ch:'周末、周末假期',infl:{plural:'weekends'}},
+{en:'winter',ph:"'wintə",pos:'n.',posLabel:'名词',ch:'冬天、冬季',infl:{plural:'winters'}},
+{en:'year',ph:"jə:",pos:'n.',posLabel:'名词',ch:'年、年年、年度',infl:{plural:'years'}},
+{en:'yesterday',ph:"'jestədi",pos:'n.',posLabel:'名词',ch:'昨天、昨日',infl:{plural:'—'}}
+]
+}}
+};
+
+VOCAB_DATA[8] = {
+'地点与建筑': { units: {
+'Unit 1': [
+{en:'academy',ph:"ə'kædəmi",pos:'n.',posLabel:'名词',ch:'私立中学、专科院校、学院',infl:{plural:'academies'}},
+{en:'airport',ph:"'eəpɔ:t",pos:'n.',posLabel:'名词',ch:'机场、航空站',infl:{plural:'airports'}},
+{en:'apartment',ph:"ə'pɑ:tmənt",pos:'n.',posLabel:'名词',ch:'一套公寓房间',infl:{plural:'apartments'}},
+{en:'architecture',ph:"'ɑ:kitektʃə",pos:'n.',posLabel:'名词',ch:'建筑学、建筑式样、建筑业',infl:{plural:'architectures'}},
+{en:'avenue',ph:"'ævənju:",pos:'n.',posLabel:'名词',ch:'林荫道、道路、大街',infl:{plural:'avenues'}},
+{en:'bank',ph:"bæŋk",pos:'n.',posLabel:'名词',ch:'银行、库、岩、堤',infl:{plural:'banks'}},
+{en:'basement',ph:"'beismənt",pos:'n.',posLabel:'名词',ch:'地下室',infl:{plural:'basements'}},
+{en:'bathroom',ph:"'bɑ:θrum",pos:'n.',posLabel:'名词',ch:'浴室、盥洗室',infl:{plural:'bathrooms'}},
+{en:'bedroom',ph:"'bedrum",pos:'n.',posLabel:'名词',ch:'卧室',infl:{plural:'bedrooms'}},
+{en:'booth',ph:"bu:θ",pos:'n.',posLabel:'名词',ch:'货摊、公用电话亭、小间',infl:{plural:'booths'}},
+{en:'bridge',ph:"bridʒ",pos:'n.',posLabel:'名词',ch:'桥、桥梁、桥牌',infl:{plural:'bridges'}},
+{en:'building',ph:"'bildiŋ",pos:'n.',posLabel:'名词',ch:'建筑物、大楼、建筑',infl:{plural:'buildings'}},
+{en:'bungalow',ph:"'bʌŋgələu",pos:'n.',posLabel:'名词',ch:'平房',infl:{plural:'bungalows'}},
+{en:'cabin',ph:"'kæbin",pos:'n.',posLabel:'名词',ch:'小木屋、船舱、机舱',infl:{plural:'cabins'}},
+{en:'cafe',ph:"kə'fei",pos:'n.',posLabel:'名词',ch:'咖啡馆、小餐厅',infl:{plural:'cafes'}},
+{en:'campus',ph:"'kæmpəs",pos:'n.',posLabel:'名词',ch:'校园、学校场地',infl:{plural:'campuses'}},
+{en:'castle',ph:"'kɑ:sl",pos:'n.',posLabel:'名词',ch:'城堡、巨大建筑物',infl:{plural:'castles'}},
+{en:'cathedral',ph:"kə'θi:drəl",pos:'n.',posLabel:'名词',ch:'总教堂、大教堂',infl:{plural:'cathedrals'}},
+{en:'cave',ph:"keiv",pos:'n.',posLabel:'名词',ch:'山洞、洞穴、窑洞',infl:{plural:'caves'}},
+{en:'ceiling',ph:"'si:liŋ",pos:'n.',posLabel:'名词',ch:'天花板、顶蓬',infl:{plural:'ceilings'}},
+{en:'cellar',ph:"'selə",pos:'n.',posLabel:'名词',ch:'地窑、地下室',infl:{plural:'cellars'}},
+{en:'cemetery',ph:"'semitri",pos:'n.',posLabel:'名词',ch:'墓地、公墓',infl:{plural:'cemeteries'}},
+{en:'chapel',ph:"'tʃæpəl",pos:'n.',posLabel:'名词',ch:'小教堂、礼拜堂',infl:{plural:'chapels'}},
+{en:'church',ph:"tʃə:tʃ",pos:'n.',posLabel:'名词',ch:'教堂、礼拜堂',infl:{plural:'churches'}},
+{en:'cinema',ph:"'sinimə",pos:'n.',posLabel:'名词',ch:'电影院、电影',infl:{plural:'cinemas'}},
+{en:'city',ph:"'siti",pos:'n.',posLabel:'名词',ch:'城市、都市',infl:{plural:'cities'}},
+{en:'classroom',ph:"'klɑ:srum",pos:'n.',posLabel:'名词',ch:'教室、课堂',infl:{plural:'classrooms'}},
+{en:'clinic',ph:"'klinik",pos:'n.',posLabel:'名词',ch:'诊所',infl:{plural:'clinics'}},
+{en:'college',ph:"'kɔlidʒ",pos:'n.',posLabel:'名词',ch:'学院、学校、社团',infl:{plural:'colleges'}},
+{en:'corridor',ph:"'kɔridɔ:",pos:'n.',posLabel:'名词',ch:'走廊、回廊、通路',infl:{plural:'corridors'}}
+],
+'Unit 2': [
+{en:'cottage',ph:"'kɔtidʒ",pos:'n.',posLabel:'名词',ch:'村舍、小屋',infl:{plural:'cottages'}},
+{en:'country',ph:"'kʌntri",pos:'n.',posLabel:'名词',ch:'国家、国土、农村',infl:{plural:'countries'}},
+{en:'courtyard',ph:"'kɔ:tjɑ:d",pos:'n.',posLabel:'名词',ch:'庭院、院子',infl:{plural:'courtyards'}},
+{en:'dam',ph:"dæm",pos:'n.',posLabel:'名词',ch:'水坝、水堤、障碍物',infl:{plural:'dams'}},
+{en:'department',ph:"di'pɑ:tmənt",pos:'n.',posLabel:'名词',ch:'部、司、局、处、系',infl:{plural:'departments'}},
+{en:'dormitory',ph:"'dɔ:mitri",pos:'n.',posLabel:'名词',ch:'集体寝室、宿舍',infl:{plural:'dormitories'}},
+{en:'downtown',ph:"'daun'taun",pos:'n.',posLabel:'名词',ch:'市中心区',infl:{plural:'—'}},
+{en:'dwelling',ph:"'dweliŋ",pos:'n.',posLabel:'名词',ch:'住处、寓所',infl:{plural:'dwellings'}},
+{en:'embassy',ph:"'embəsi",pos:'n.',posLabel:'名词',ch:'大使馆',infl:{plural:'embassies'}},
+{en:'entrance',ph:"'entrəns",pos:'n.',posLabel:'名词',ch:'入口、门口、进入',infl:{plural:'entrances'}},
+{en:'factory',ph:"'fæktəri",pos:'n.',posLabel:'名词',ch:'工厂、制造厂',infl:{plural:'factories'}},
+{en:'farm',ph:"fɑ:m",pos:'n.',posLabel:'名词',ch:'农场、农庄、农田',infl:{plural:'farms'}},
+{en:'garage',ph:"'gærɑ:ʒ",pos:'n.',posLabel:'名词',ch:'车库、加油站',infl:{plural:'garages'}},
+{en:'garden',ph:"'gɑ:dn",pos:'n.',posLabel:'名词',ch:'花园、菜园、果园',infl:{plural:'gardens'}},
+{en:'gate',ph:"geit",pos:'n.',posLabel:'名词',ch:'大门、入口、篱笆门',infl:{plural:'gates'}},
+{en:'gymnasium',ph:"dʒim'neiziəm",pos:'n.',posLabel:'名词',ch:'体育馆、健身房',infl:{plural:'gymnasiums'}},
+{en:'hall',ph:"hɔ:l",pos:'n.',posLabel:'名词',ch:'门厅、过道、会堂',infl:{plural:'halls'}},
+{en:'harbour',ph:"'hɑ:bə",pos:'n.',posLabel:'名词',ch:'海港、港口',infl:{plural:'harbours'}},
+{en:'hospital',ph:"'hɔspitl",pos:'n.',posLabel:'名词',ch:'医院',infl:{plural:'hospitals'}},
+{en:'hotel',ph:"həu'tel",pos:'n.',posLabel:'名词',ch:'旅馆、宾馆、酒店',infl:{plural:'hotels'}},
+{en:'house',ph:"haus",pos:'n.',posLabel:'名词',ch:'房屋、住宅、商号',infl:{plural:'houses'}},
+{en:'hut',ph:"hʌt",pos:'n.',posLabel:'名词',ch:'小屋、棚屋',infl:{plural:'huts'}},
+{en:'inn',ph:"in",pos:'n.',posLabel:'名词',ch:'客栈、小旅店、小酒店',infl:{plural:'inns'}},
+{en:'jail',ph:"dʒeil",pos:'n.',posLabel:'名词',ch:'监狱、拘留所',infl:{plural:'jails'}},
+{en:'kitchen',ph:"'kitʃin",pos:'n.',posLabel:'名词',ch:'厨房、灶间',infl:{plural:'kitchens'}},
+{en:'lab',ph:"læb",pos:'n.',posLabel:'名词',ch:'实验室、研究室',infl:{plural:'labs'}},
+{en:'laboratory',ph:"'læbrətɔ:ri",pos:'n.',posLabel:'名词',ch:'实验室、研究室、实验大楼',infl:{plural:'laboratories'}},
+{en:'library',ph:"'laibrəri",pos:'n.',posLabel:'名词',ch:'图书馆、藏书',infl:{plural:'libraries'}},
+{en:'lighthouse',ph:"'laithaus",pos:'n.',posLabel:'名词',ch:'灯塔',infl:{plural:'lighthouses'}},
+{en:'lodge',ph:"lɔdʒ",pos:'n.',posLabel:'名词',ch:'小屋、门房、支部',infl:{plural:'lodges'}}
+],
+'Unit 3': [
+{en:'mall',ph:"mɔ:l",pos:'n.',posLabel:'名词',ch:'购物中心',infl:{plural:'malls'}},
+{en:'market',ph:"'mɑ:kit",pos:'n.',posLabel:'名词',ch:'市场、集市、销路',infl:{plural:'markets'}},
+{en:'monument',ph:"'mɔnjumənt",pos:'n.',posLabel:'名词',ch:'纪念碑、纪念馆、历史遗迹',infl:{plural:'monuments'}},
+{en:'museum',ph:"mju:'ziəm",pos:'n.',posLabel:'名词',ch:'博物馆、展览馆',infl:{plural:'museums'}},
+{en:'office',ph:"'ɔ:fis",pos:'n.',posLabel:'名词',ch:'办公室、职务、事务',infl:{plural:'offices'}},
+{en:'palace',ph:"'pælis",pos:'n.',posLabel:'名词',ch:'宫、宫殿',infl:{plural:'palaces'}},
+{en:'park',ph:"pɑ:k",pos:'n.',posLabel:'名词',ch:'公园、停车场',infl:{plural:'parks'}},
+{en:'passage',ph:"'pæsidʒ",pos:'n.',posLabel:'名词',ch:'通道、通过、航程',infl:{plural:'passages'}},
+{en:'pavement',ph:"'peivmənt",pos:'n.',posLabel:'名词',ch:'人行道',infl:{plural:'pavements'}},
+{en:'playground',ph:"'pleigraund",pos:'n.',posLabel:'名词',ch:'操场、运动场',infl:{plural:'playgrounds'}},
+{en:'prison',ph:"'prizn",pos:'n.',posLabel:'名词',ch:'监狱、监禁',infl:{plural:'prisons'}},
+{en:'restaurant',ph:"'restərɔnt",pos:'n.',posLabel:'名词',ch:'餐馆、饭店、菜馆',infl:{plural:'restaurants'}},
+{en:'roof',ph:"ru:f",pos:'n.',posLabel:'名词',ch:'屋顶、车顶、顶',infl:{plural:'roofs'}},
+{en:'room',ph:"ru:m",pos:'n.',posLabel:'名词',ch:'房间、空间、地位',infl:{plural:'rooms'}},
+{en:'school',ph:"sku:l",pos:'n.',posLabel:'名词',ch:'学校、学院、学派',infl:{plural:'schools'}},
+{en:'shop',ph:"ʃɔp",pos:'n.',posLabel:'名词',ch:'商店、店铺、车间',infl:{plural:'shops'}},
+{en:'stadium',ph:"'steidiəm",pos:'n.',posLabel:'名词',ch:'露天大型运动场、竞技场',infl:{plural:'stadiums'}},
+{en:'store',ph:"stɔ:",pos:'n.',posLabel:'名词',ch:'贮藏、贮存品、商店',infl:{plural:'stores'}},
+{en:'studio',ph:"'stju:diəu",pos:'n.',posLabel:'名词',ch:'工作室、演播室',infl:{plural:'studios'}},
+{en:'suburb',ph:"'sʌbə:b",pos:'n.',posLabel:'名词',ch:'郊区、郊外、近郊',infl:{plural:'suburbs'}},
+{en:'supermarket',ph:"'sju:pə.mɑ:kit",pos:'n.',posLabel:'名词',ch:'超级市场',infl:{plural:'supermarkets'}},
+{en:'temple',ph:"'templ",pos:'n.',posLabel:'名词',ch:'圣堂、神殿、庙宇',infl:{plural:'temples'}},
+{en:'theatre',ph:"'θiətə",pos:'n.',posLabel:'名词',ch:'戏院、戏剧、教室',infl:{plural:'theatres'}},
+{en:'tower',ph:"'tauə",pos:'n.',posLabel:'名词',ch:'塔、高楼',infl:{plural:'towers'}},
+{en:'town',ph:"taun",pos:'n.',posLabel:'名词',ch:'镇、市镇、城镇',infl:{plural:'towns'}},
+{en:'university',ph:".ju:ni'və:siti",pos:'n.',posLabel:'名词',ch:'大学、综合性大学',infl:{plural:'universities'}},
+{en:'valley',ph:"'væli",pos:'n.',posLabel:'名词',ch:'山谷、溪谷、流域',infl:{plural:'valleys'}},
+{en:'village',ph:"'vilidʒ",pos:'n.',posLabel:'名词',ch:'乡村、村庄',infl:{plural:'villages'}},
+{en:'warehouse',ph:"'weəhaus",pos:'n.',posLabel:'名词',ch:'仓库、货栈',infl:{plural:'warehouses'}},
+{en:'workshop',ph:"'wə:kʃɔp",pos:'n.',posLabel:'名词',ch:'车间、工场、创作室',infl:{plural:'workshops'}},
+{en:'yard',ph:"jɑ:d",pos:'n.',posLabel:'名词',ch:'院子、庭院、场地',infl:{plural:'yards'}},
+{en:'zoo',ph:"zu:",pos:'n.',posLabel:'名词',ch:'动物园、拥挤杂乱的地方',infl:{plural:'zoos'}}
+]
+}}
+};
+
+
+VOCAB_DATA[9] = {
+'交通与出行': { units: {
+'Unit 1': [
+{en:'aeroplane',ph:".eərə.plein",pos:'n.',posLabel:'名词',ch:'飞机',infl:{plural:'aeroplanes'}},
+{en:'airline',ph:"'eəlain",pos:'n.',posLabel:'名词',ch:'航空公司、航线',infl:{plural:'airlines'}},
+{en:'airplane',ph:"'eəplein",pos:'n.',posLabel:'名词',ch:'飞机',infl:{plural:'airplanes'}},
+{en:'airport',ph:"'eəpɔ:t",pos:'n.',posLabel:'名词',ch:'机场、航空站',infl:{plural:'airports'}},
+{en:'ambulance',ph:"'æmbjuləns",pos:'n.',posLabel:'名词',ch:'救护车、野战医院',infl:{plural:'ambulances'}},
+{en:'automobile',ph:"'ɔ:təməbi:l",pos:'n.',posLabel:'名词',ch:'汽车、机动车',infl:{plural:'automobiles'}},
+{en:'bicycle',ph:"'baisik(ə)l",pos:'n.',posLabel:'名词',ch:'自行车、脚踏车',infl:{plural:'bicycles'}},
+{en:'boat',ph:"bəut",pos:'n.',posLabel:'名词',ch:'小船、艇、渔船',infl:{plural:'boats'}},
+{en:'brake',ph:"breik",pos:'n.',posLabel:'名词',ch:'蕨菜、闸、刹车',infl:{plural:'brakes'}},
+{en:'bus',ph:"bʌs",pos:'n.',posLabel:'名词',ch:'公共汽车',infl:{plural:'buses'}},
+{en:'cab',ph:"kæb",pos:'n.',posLabel:'名词',ch:'出租车、驾驶室',infl:{plural:'cabs'}},
+{en:'canal',ph:"kə'næl",pos:'n.',posLabel:'名词',ch:'运河、沟渠、管',infl:{plural:'canals'}},
+{en:'captain',ph:"'kæptin",pos:'n.',posLabel:'名词',ch:'队长、船长、首领',infl:{plural:'captains'}},
+{en:'carriage',ph:"'kæridʒ",pos:'n.',posLabel:'名词',ch:'客车厢、四轮马车',infl:{plural:'carriages'}},
+{en:'cart',ph:"kɑ:t",pos:'n.',posLabel:'名词',ch:'运货马车、手推车',infl:{plural:'carts'}},
+{en:'coach',ph:"kəutʃ",pos:'n.',posLabel:'名词',ch:'长途公共汽车、教练',infl:{plural:'coaches'}},
+{en:'deck',ph:"dek",pos:'n.',posLabel:'名词',ch:'甲板、舱面、层面',infl:{plural:'decks'}},
+{en:'driver',ph:"'draivə",pos:'n.',posLabel:'名词',ch:'驾驶员、司机',infl:{plural:'drivers'}},
+{en:'engine',ph:"'endʒin",pos:'n.',posLabel:'名词',ch:'发动机、引擎、机车',infl:{plural:'engines'}},
+{en:'ferry',ph:"'feri",pos:'n.',posLabel:'名词',ch:'渡船、渡口',infl:{plural:'ferries'}},
+{en:'flight',ph:"flait",pos:'n.',posLabel:'名词',ch:'航班、飞行、逃跑',infl:{plural:'flights'}},
+{en:'garage',ph:"'gærɑ:ʒ",pos:'n.',posLabel:'名词',ch:'车库、加油站',infl:{plural:'garages'}},
+{en:'helicopter',ph:"'helikɔptə",pos:'n.',posLabel:'名词',ch:'直升机',infl:{plural:'helicopters'}},
+{en:'highway',ph:"'haiwei",pos:'n.',posLabel:'名词',ch:'公路、大路',infl:{plural:'highways'}},
+{en:'journey',ph:"'dʒə:ni",pos:'n.',posLabel:'名词',ch:'旅行、旅程、行程',infl:{plural:'journeys'}},
+{en:'lane',ph:"lein",pos:'n.',posLabel:'名词',ch:'小路、小巷、行车道',infl:{plural:'lanes'}},
+{en:'lorry',ph:"'lɔri",pos:'n.',posLabel:'名词',ch:'运货汽车、卡车',infl:{plural:'lorries'}},
+{en:'motor',ph:"'məutə",pos:'n.',posLabel:'名词',ch:'发动机、机动车',infl:{plural:'motors'}},
+{en:'motorcycle',ph:"'məutəsaikl",pos:'n.',posLabel:'名词',ch:'摩托车',infl:{plural:'motorcycles'}},
+{en:'oil',ph:"ɔil",pos:'n.',posLabel:'名词',ch:'油、石油、油画颜料',infl:{plural:'oils'}}
+],
+'Unit 2': [
+{en:'path',ph:"pɑ:θ",pos:'n.',posLabel:'名词',ch:'路、小路、路径',infl:{plural:'paths'}},
+{en:'petrol',ph:"'petrəl",pos:'n.',posLabel:'名词',ch:'汽油',infl:{plural:'—'}},
+{en:'pilot',ph:"'pailət",pos:'n.',posLabel:'名词',ch:'飞行员、领航员',infl:{plural:'pilots'}},
+{en:'plane',ph:"plein",pos:'n.',posLabel:'名词',ch:'平面、飞机、刨子',infl:{plural:'planes'}},
+{en:'port',ph:"pɔ:t",pos:'n.',posLabel:'名词',ch:'港、港口、舱门',infl:{plural:'ports'}},
+{en:'railway',ph:"'reilwei",pos:'n.',posLabel:'名词',ch:'铁路、铁道',infl:{plural:'railways'}},
+{en:'road',ph:"rəud",pos:'n.',posLabel:'名词',ch:'路、道路、公路',infl:{plural:'roads'}},
+{en:'rocket',ph:"'rɔkit",pos:'n.',posLabel:'名词',ch:'火箭、火箭发动机',infl:{plural:'rockets'}},
+{en:'route',ph:"ru:t",pos:'n.',posLabel:'名词',ch:'路、路线、路程',infl:{plural:'routes'}},
+{en:'sailor',ph:"'seilə",pos:'n.',posLabel:'名词',ch:'水手、海员、水兵',infl:{plural:'sailors'}},
+{en:'seaport',ph:"'si:pɔ:t",pos:'n.',posLabel:'名词',ch:'海港、港市',infl:{plural:'seaports'}},
+{en:'ship',ph:"ʃip",pos:'n.',posLabel:'名词',ch:'大船、海船、舰',infl:{plural:'ships'}},
+{en:'spaceship',ph:"'speisʃip",pos:'n.',posLabel:'名词',ch:'航天飞船',infl:{plural:'spaceships'}},
+{en:'station',ph:"'steiʃən",pos:'n.',posLabel:'名词',ch:'站、台、所',infl:{plural:'stations'}},
+{en:'steamer',ph:"'sti:mə",pos:'n.',posLabel:'名词',ch:'轮船、汽船、蒸笼',infl:{plural:'steamers'}},
+{en:'street',ph:"stri:t",pos:'n.',posLabel:'名词',ch:'街、街道、行车道',infl:{plural:'streets'}},
+{en:'taxi',ph:"'tæksi",pos:'n.',posLabel:'名词',ch:'出租汽车',infl:{plural:'taxis'}},
+{en:'tire',ph:"'taiə",pos:'n.',posLabel:'名词',ch:'轮胎、金属圈',infl:{plural:'tires'}},
+{en:'traffic',ph:"'træfik",pos:'n.',posLabel:'名词',ch:'交通、通行',infl:{plural:'—'}},
+{en:'train',ph:"trein",pos:'n.',posLabel:'名词',ch:'列车、火车、队列',infl:{plural:'trains'}},
+{en:'tram',ph:"træm",pos:'n.',posLabel:'名词',ch:'电车、矿车、煤车',infl:{plural:'trams'}},
+{en:'transfer',ph:"træns'fə:",pos:'n.',posLabel:'名词',ch:'迁移、移动、换车',infl:{plural:'transfers'}},
+{en:'transport',ph:"træns'pɔ:t",pos:'n.',posLabel:'名词',ch:'运输、运输工具',infl:{plural:'transports'}},
+{en:'travel',ph:"'trævl",pos:'n.',posLabel:'名词',ch:'旅行、传播、移动',infl:{plural:'travels'}},
+{en:'trip',ph:"trip",pos:'n.',posLabel:'名词',ch:'旅行、摔倒、差错',infl:{plural:'trips'}},
+{en:'truck',ph:"trʌk",pos:'n.',posLabel:'名词',ch:'卡车、载重汽车',infl:{plural:'trucks'}},
+{en:'tyre',ph:"taiə",pos:'n.',posLabel:'名词',ch:'轮胎、车胎',infl:{plural:'tyres'}},
+{en:'van',ph:"væn",pos:'n.',posLabel:'名词',ch:'大篷车、运货车、面包车',infl:{plural:'vans'}},
+{en:'vehicle',ph:"'vi:ikl",pos:'n.',posLabel:'名词',ch:'车辆、机动车、交通工具',infl:{plural:'vehicles'}},
+{en:'voyage',ph:"'vɔiidʒ",pos:'n.',posLabel:'名词',ch:'航海、航空、航行',infl:{plural:'voyages'}},
+{en:'way',ph:"wei",pos:'n.',posLabel:'名词',ch:'路、路线、道路',infl:{plural:'ways'}},
+{en:'wheel',ph:"wi:l",pos:'n.',posLabel:'名词',ch:'轮、车轮、方向盘',infl:{plural:'wheels'}}
+]
+}}
+};
+
+VOCAB_DATA[10] = {
+'教育与学习': { units: {
+'Unit 1': [
+{en:'academy',ph:"ə'kædəmi",pos:'n.',posLabel:'名词',ch:'私立中学、专科院校、学院',infl:{plural:'academies'}},
+{en:'alphabet',ph:"'ælfəbet",pos:'n.',posLabel:'名词',ch:'字母表、字母系统',infl:{plural:'alphabets'}},
+{en:'arithmetic',ph:"ə'riθmətik",pos:'n.',posLabel:'名词',ch:'算术、四则运算',infl:{plural:'—'}},
+{en:'assignment',ph:"ə'sainmənt",pos:'n.',posLabel:'名词',ch:'分配、功课、任务',infl:{plural:'assignments'}},
+{en:'blackboard',ph:"'blækbɔ:d",pos:'n.',posLabel:'名词',ch:'黑板',infl:{plural:'blackboards'}},
+{en:'book',ph:"buk",pos:'n.',posLabel:'名词',ch:'书、书籍',infl:{plural:'books'}},
+{en:'campus',ph:"'kæmpəs",pos:'n.',posLabel:'名词',ch:'校园、学校场地',infl:{plural:'campuses'}},
+{en:'certificate',ph:"sə'tifikit",pos:'n.',posLabel:'名词',ch:'证书、证件、执照',infl:{plural:'certificates'}},
+{en:'chapter',ph:"'tʃæptə",pos:'n.',posLabel:'名词',ch:'章、回、篇',infl:{plural:'chapters'}},
+{en:'class',ph:"klɑ:s",pos:'n.',posLabel:'名词',ch:'班、班级、阶级',infl:{plural:'classes'}},
+{en:'classmate',ph:"'klɑ:smeit",pos:'n.',posLabel:'名词',ch:'同班同学',infl:{plural:'classmates'}},
+{en:'classroom',ph:"'klɑ:srum",pos:'n.',posLabel:'名词',ch:'教室、课堂',infl:{plural:'classrooms'}},
+{en:'college',ph:"'kɔlidʒ",pos:'n.',posLabel:'名词',ch:'学院、学校、社团',infl:{plural:'colleges'}},
+{en:'composition',ph:".kɔmpə'ziʃən",pos:'n.',posLabel:'名词',ch:'构成、作品、写作',infl:{plural:'compositions'}},
+{en:'course',ph:"kɔ:s",pos:'n.',posLabel:'名词',ch:'课程、讲座、过程',infl:{plural:'courses'}},
+{en:'degree',ph:"di'gri:",pos:'n.',posLabel:'名词',ch:'程度、度、度数',infl:{plural:'degrees'}},
+{en:'desk',ph:"desk",pos:'n.',posLabel:'名词',ch:'书桌、办公桌',infl:{plural:'desks'}},
+{en:'dictation',ph:"dik'teiʃən",pos:'n.',posLabel:'名词',ch:'口授笔录、听写',infl:{plural:'dictations'}},
+{en:'dictionary',ph:"'dikʃəneri",pos:'n.',posLabel:'名词',ch:'词典、字典、辞典',infl:{plural:'dictionaries'}},
+{en:'diploma',ph:"di'pləumə",pos:'n.',posLabel:'名词',ch:'文凭、毕业证书',infl:{plural:'diplomas'}},
+{en:'education',ph:".edjukeiʃn",pos:'n.',posLabel:'名词',ch:'教育、培养、训导',infl:{plural:'educations'}},
+{en:'exam',ph:"ig'zæm",pos:'n.',posLabel:'名词',ch:'考试、检查、细查',infl:{plural:'exams'}},
+{en:'examination',ph:"ig.zæmi'neiʃən",pos:'n.',posLabel:'名词',ch:'考试、检查、细查',infl:{plural:'examinations'}},
+{en:'exercise',ph:"'eksəsaiz",pos:'n.',posLabel:'名词',ch:'锻炼、训练、练习',infl:{plural:'exercises'}},
+{en:'grade',ph:"greid",pos:'n.',posLabel:'名词',ch:'等级、年级、阶段',infl:{plural:'grades'}},
+{en:'grammar',ph:"'græmə",pos:'n.',posLabel:'名词',ch:'语法、语法书',infl:{plural:'grammars'}},
+{en:'homework',ph:"'həumwə:k",pos:'n.',posLabel:'名词',ch:'家庭作业',infl:{plural:'—'}},
+{en:'institute',ph:"'institju:t",pos:'n.',posLabel:'名词',ch:'研究所、学院、学会',infl:{plural:'institutes'}},
+{en:'instruction',ph:"in'strʌkʃən",pos:'n.',posLabel:'名词',ch:'命令、指令、教学',infl:{plural:'instructions'}},
+{en:'knowledge',ph:"'nɔlidʒ",pos:'n.',posLabel:'名词',ch:'知识、学识、知道',infl:{plural:'—'}}
+],
+'Unit 2': [
+{en:'lab',ph:"læb",pos:'n.',posLabel:'名词',ch:'实验室、研究室',infl:{plural:'labs'}},
+{en:'laboratory',ph:"'læbrətɔ:ri",pos:'n.',posLabel:'名词',ch:'实验室、研究室、实验大楼',infl:{plural:'laboratories'}},
+{en:'lecture',ph:"'lektʃə",pos:'n.',posLabel:'名词',ch:'演讲、讲课、教导',infl:{plural:'lectures'}},
+{en:'lesson',ph:"'lesn",pos:'n.',posLabel:'名词',ch:'功课、课、课程',infl:{plural:'lessons'}},
+{en:'library',ph:"'laibrəri",pos:'n.',posLabel:'名词',ch:'图书馆、藏书',infl:{plural:'libraries'}},
+{en:'mathematics',ph:".mæθi'mætiks",pos:'n.',posLabel:'名词',ch:'数学',infl:{plural:'—'}},
+{en:'notebook',ph:"'nəutbuk",pos:'n.',posLabel:'名词',ch:'笔记本、笔记本电脑',infl:{plural:'notebooks'}},
+{en:'paper',ph:"'peipə",pos:'n.',posLabel:'名词',ch:'纸、报纸、论文',infl:{plural:'papers'}},
+{en:'pen',ph:"pen",pos:'n.',posLabel:'名词',ch:'钢笔、笔',infl:{plural:'pens'}},
+{en:'pencil',ph:"'pensl",pos:'n.',posLabel:'名词',ch:'铅笔',infl:{plural:'pencils'}},
+{en:'physics',ph:"'fiziks",pos:'n.',posLabel:'名词',ch:'物理学',infl:{plural:'—'}},
+{en:'playground',ph:"'pleigraund",pos:'n.',posLabel:'名词',ch:'操场、运动场',infl:{plural:'playgrounds'}},
+{en:'practice',ph:"'præktis",pos:'n.',posLabel:'名词',ch:'实践、练习、业务',infl:{plural:'practices'}},
+{en:'primary',ph:"'praiməri",pos:'n.',posLabel:'名词',ch:'最主要者、初选、原色',infl:{plural:'primaries'}},
+{en:'professor',ph:"prə'fesə",pos:'n.',posLabel:'名词',ch:'教授',infl:{plural:'professors'}},
+{en:'pupil',ph:"'pju:pl",pos:'n.',posLabel:'名词',ch:'学生、小学生、学徒',infl:{plural:'pupils'}},
+{en:'quiz',ph:"kwiz",pos:'n.',posLabel:'名词',ch:'小型考试、测验',infl:{plural:'quizzes'}},
+{en:'reading',ph:"'ri:diŋ",pos:'n.',posLabel:'名词',ch:'读、阅读、读书',infl:{plural:'readings'}},
+{en:'school',ph:"sku:l",pos:'n.',posLabel:'名词',ch:'学校、学院、学派',infl:{plural:'schools'}},
+{en:'science',ph:"'saiəns",pos:'n.',posLabel:'名词',ch:'科学、科学研究',infl:{plural:'sciences'}},
+{en:'semester',ph:"si'mestə",pos:'n.',posLabel:'名词',ch:'半年、学期、半学年',infl:{plural:'semesters'}},
+{en:'speech',ph:"spi:tʃ",pos:'n.',posLabel:'名词',ch:'言语、演说、演讲',infl:{plural:'speeches'}},
+{en:'student',ph:"'stju:dənt",pos:'n.',posLabel:'名词',ch:'学生、研究生、学者',infl:{plural:'students'}},
+{en:'study',ph:"'stʌdi",pos:'n.',posLabel:'名词',ch:'学习、研究、学科',infl:{plural:'studies'}},
+{en:'subject',ph:"'sʌbdʒikt",pos:'n.',posLabel:'名词',ch:'题目、学科、主语',infl:{plural:'subjects'}},
+{en:'teacher',ph:"'ti:tʃə",pos:'n.',posLabel:'名词',ch:'教师、老师、先生',infl:{plural:'teachers'}},
+{en:'teaching',ph:"'ti:tʃiŋ",pos:'n.',posLabel:'名词',ch:'教学、教义、讲授',infl:{plural:'—'}},
+{en:'term',ph:"tə:m",pos:'n.',posLabel:'名词',ch:'期、学期、条件',infl:{plural:'terms'}},
+{en:'textbook',ph:"'tekstbuk",pos:'n.',posLabel:'名词',ch:'课本、教科书',infl:{plural:'textbooks'}},
+{en:'university',ph:".ju:ni'və:siti",pos:'n.',posLabel:'名词',ch:'大学、综合性大学',infl:{plural:'universities'}},
+{en:'vocabulary',ph:"və'kæbjuləri",pos:'n.',posLabel:'名词',ch:'词汇表、词汇、语汇',infl:{plural:'vocabularies'}},
+{en:'writing',ph:"'raitiŋ",pos:'n.',posLabel:'名词',ch:'书写、写、著作',infl:{plural:'writings'}}
+]
+}}
+};
+
+VOCAB_DATA[11] = {
+'工作与职业': { units: {
+'Unit 1': [
+{en:'accountant',ph:"ə'kauntənt",pos:'n.',posLabel:'名词',ch:'会计师',infl:{plural:'accountants'}},
+{en:'actor',ph:"'æktə",pos:'n.',posLabel:'名词',ch:'男演员、演剧的人',infl:{plural:'actors'}},
+{en:'actress',ph:"'æktris",pos:'n.',posLabel:'名词',ch:'女演员',infl:{plural:'actresses'}},
+{en:'agent',ph:"'eidʒənt",pos:'n.',posLabel:'名词',ch:'代理人、代理商、特工人员',infl:{plural:'agents'}},
+{en:'announcer',ph:"ə'naunsə",pos:'n.',posLabel:'名词',ch:'宣告者、播音员、广播员',infl:{plural:'announcers'}},
+{en:'architect',ph:"'ɑ:kitekt",pos:'n.',posLabel:'名词',ch:'建筑师',infl:{plural:'architects'}},
+{en:'artist',ph:"'ɑ:tist",pos:'n.',posLabel:'名词',ch:'艺术家、美术家、艺人',infl:{plural:'artists'}},
+{en:'assistant',ph:"ə'sistənt",pos:'n.',posLabel:'名词',ch:'助手、助理、助教',infl:{plural:'assistants'}},
+{en:'athlete',ph:"'æθli:t",pos:'n.',posLabel:'名词',ch:'运动员、田径运动员',infl:{plural:'athletes'}},
+{en:'author',ph:"'ɔ:θə",pos:'n.',posLabel:'名词',ch:'作者、作家、创造者',infl:{plural:'authors'}},
+{en:'boss',ph:"bɔs",pos:'n.',posLabel:'名词',ch:'老板、上司',infl:{plural:'bosses'}},
+{en:'businessman',ph:"'biznismæn",pos:'n.',posLabel:'名词',ch:'商人',infl:{plural:'businessmen',irregular:true}},
+{en:'captain',ph:"'kæptin",pos:'n.',posLabel:'名词',ch:'队长、船长、首领',infl:{plural:'captains'}},
+{en:'career',ph:"kə'riə",pos:'n.',posLabel:'名词',ch:'生涯、职业、事业',infl:{plural:'careers'}},
+{en:'chairman',ph:"'tʃɛəmən",pos:'n.',posLabel:'名词',ch:'主席、议长、会长',infl:{plural:'chairmen',irregular:true}},
+{en:'chef',ph:"ʃef",pos:'n.',posLabel:'名词',ch:'厨师长、主厨',infl:{plural:'chefs'}},
+{en:'chemist',ph:"'kemist",pos:'n.',posLabel:'名词',ch:'化学家、药剂师',infl:{plural:'chemists'}},
+{en:'chief',ph:"tʃi:f",pos:'n.',posLabel:'名词',ch:'首领',infl:{plural:'chiefs'}},
+{en:'clerk',ph:"klɑ:k",pos:'n.',posLabel:'名词',ch:'店员、办事员、职员',infl:{plural:'clerks'}},
+{en:'coach',ph:"kəutʃ",pos:'n.',posLabel:'名词',ch:'教练、长途公共汽车',infl:{plural:'coaches'}},
+{en:'colonel',ph:"'kə:nl",pos:'n.',posLabel:'名词',ch:'陆军上校、中校',infl:{plural:'colonels'}},
+{en:'commander',ph:"kə'mɑ:ndə",pos:'n.',posLabel:'名词',ch:'司令官、指挥员',infl:{plural:'commanders'}},
+{en:'conductor',ph:"kən'dʌktə",pos:'n.',posLabel:'名词',ch:'售票员、指挥、导体',infl:{plural:'conductors'}},
+{en:'consultant',ph:"kən'sʌltənt",pos:'n.',posLabel:'名词',ch:'顾问',infl:{plural:'consultants'}},
+{en:'cook',ph:"kuk",pos:'n.',posLabel:'名词',ch:'厨师',infl:{plural:'cooks'}},
+{en:'customer',ph:"'kʌstəmə",pos:'n.',posLabel:'名词',ch:'顾客、主顾、家伙',infl:{plural:'customers'}},
+{en:'dentist',ph:"'dentist",pos:'n.',posLabel:'名词',ch:'牙医',infl:{plural:'dentists'}}
+],
+'Unit 2': [
+{en:'designer',ph:"di'zainə",pos:'n.',posLabel:'名词',ch:'设计师',infl:{plural:'designers'}},
+{en:'detective',ph:"di'tektiv",pos:'n.',posLabel:'名词',ch:'侦探',infl:{plural:'detectives'}},
+{en:'director',ph:"di'rektə",pos:'n.',posLabel:'名词',ch:'指导者、董事、经理、导演',infl:{plural:'directors'}},
+{en:'doctor',ph:"'dɔktə",pos:'n.',posLabel:'名词',ch:'医生、医师、博士',infl:{plural:'doctors'}},
+{en:'driver',ph:"'draivə",pos:'n.',posLabel:'名词',ch:'驾驶员、司机',infl:{plural:'drivers'}},
+{en:'editor',ph:"'editə",pos:'n.',posLabel:'名词',ch:'编辑、编者、校订者',infl:{plural:'editors'}},
+{en:'employee',ph:".emplɔi'i:",pos:'n.',posLabel:'名词',ch:'受雇者、雇员、雇工',infl:{plural:'employees'}},
+{en:'employer',ph:"im'plɔiə",pos:'n.',posLabel:'名词',ch:'雇佣者、雇主',infl:{plural:'employers'}},
+{en:'employment',ph:"im'plɔimənt",pos:'n.',posLabel:'名词',ch:'工业、雇用、使用',infl:{plural:'—'}},
+{en:'engineer',ph:".endʒi'niə",pos:'n.',posLabel:'名词',ch:'工程师、技师、机械师',infl:{plural:'engineers'}},
+{en:'farmer',ph:"'fɑ:mə",pos:'n.',posLabel:'名词',ch:'农民、农夫、农场主',infl:{plural:'farmers'}},
+{en:'fisherman',ph:"'fiʃəmən",pos:'n.',posLabel:'名词',ch:'渔民、渔夫、打鱼人',infl:{plural:'fishermen',irregular:true}},
+{en:'guard',ph:"gɑ:d",pos:'n.',posLabel:'名词',ch:'卫兵、守卫者、警戒',infl:{plural:'guards'}},
+{en:'guide',ph:"gaid",pos:'n.',posLabel:'名词',ch:'导游、领路者、指南',infl:{plural:'guides'}},
+{en:'headmaster',ph:"'hed'mɑ:stə",pos:'n.',posLabel:'名词',ch:'校长',infl:{plural:'headmasters'}},
+{en:'hire',ph:"'haiə",pos:'n.',posLabel:'名词',ch:'租金、工钱',infl:{plural:'—'}},
+{en:'inventor',ph:"in'ventə",pos:'n.',posLabel:'名词',ch:'发明者、发明家、创造者',infl:{plural:'inventors'}},
+{en:'job',ph:"dʒɔb",pos:'n.',posLabel:'名词',ch:'职业、工作、零活',infl:{plural:'jobs'}},
+{en:'journalist',ph:"'dʒə:nəlist",pos:'n.',posLabel:'名词',ch:'记者、新闻工作者',infl:{plural:'journalists'}},
+{en:'judge',ph:"dʒʌdʒ",pos:'n.',posLabel:'名词',ch:'法官、裁判员',infl:{plural:'judges'}},
+{en:'lawyer',ph:"'lɔ:jə",pos:'n.',posLabel:'名词',ch:'律师、法学家',infl:{plural:'lawyers'}},
+{en:'librarian',ph:"lai'brɛəriən",pos:'n.',posLabel:'名词',ch:'图书馆馆长',infl:{plural:'librarians'}},
+{en:'manager',ph:"'mænidʒə",pos:'n.',posLabel:'名词',ch:'经理、管理人',infl:{plural:'managers'}},
+{en:'manufacturer',ph:".mænju'fæktʃərə",pos:'n.',posLabel:'名词',ch:'制造商、制造厂',infl:{plural:'manufacturers'}},
+{en:'mayor',ph:"'mɛə",pos:'n.',posLabel:'名词',ch:'市长',infl:{plural:'mayors'}},
+{en:'merchant',ph:"'mə:tʃənt",pos:'n.',posLabel:'名词',ch:'商人、零售商、店主',infl:{plural:'merchants'}},
+{en:'miner',ph:"'mainə",pos:'n.',posLabel:'名词',ch:'矿工',infl:{plural:'miners'}}
+],
+'Unit 3': [
+{en:'minister',ph:"'ministə",pos:'n.',posLabel:'名词',ch:'部长、大臣、公使',infl:{plural:'ministers'}},
+{en:'nurse',ph:"nə:s",pos:'n.',posLabel:'名词',ch:'护士、保姆',infl:{plural:'nurses'}},
+{en:'occupation',ph:".ɔkju'peiʃən",pos:'n.',posLabel:'名词',ch:'占领、占据、职业',infl:{plural:'occupations'}},
+{en:'officer',ph:"'ɔ:fisə",pos:'n.',posLabel:'名词',ch:'官员、干事、军官',infl:{plural:'officers'}},
+{en:'painter',ph:"'peintə",pos:'n.',posLabel:'名词',ch:'画家、油漆工',infl:{plural:'painters'}},
+{en:'photographer',ph:"fə'tɔgrəfə",pos:'n.',posLabel:'名词',ch:'摄影师',infl:{plural:'photographers'}},
+{en:'pilot',ph:"'pailət",pos:'n.',posLabel:'名词',ch:'飞行员、领航员',infl:{plural:'pilots'}},
+{en:'policeman',ph:"pə'li:smən",pos:'n.',posLabel:'名词',ch:'警察',infl:{plural:'policemen',irregular:true}},
+{en:'porter',ph:"'pɔ:tə",pos:'n.',posLabel:'名词',ch:'搬运工人、门房',infl:{plural:'porters'}},
+{en:'president',ph:"'prezidənt",pos:'n.',posLabel:'名词',ch:'总统、总裁、校长',infl:{plural:'presidents'}},
+{en:'priest',ph:"pri:st",pos:'n.',posLabel:'名词',ch:'教士、牧师、神父',infl:{plural:'priests'}},
+{en:'professor',ph:"prə'fesə",pos:'n.',posLabel:'名词',ch:'教授',infl:{plural:'professors'}},
+{en:'receptionist',ph:"ri'sepʃənist",pos:'n.',posLabel:'名词',ch:'接待员',infl:{plural:'receptionists'}},
+{en:'reporter',ph:"ri'pɔ:tə",pos:'n.',posLabel:'名词',ch:'记者、通讯员',infl:{plural:'reporters'}},
+{en:'sailor',ph:"'seilə",pos:'n.',posLabel:'名词',ch:'水手、海员、水兵',infl:{plural:'sailors'}},
+{en:'salesman',ph:"'seilzmən",pos:'n.',posLabel:'名词',ch:'售货员、推销员',infl:{plural:'salesmen',irregular:true}},
+{en:'scientist',ph:"'saiəntist",pos:'n.',posLabel:'名词',ch:'科学家',infl:{plural:'scientists'}},
+{en:'secretary',ph:"'sekrətri",pos:'n.',posLabel:'名词',ch:'秘书、书记、大臣',infl:{plural:'secretaries'}},
+{en:'servant',ph:"'sə:vənt",pos:'n.',posLabel:'名词',ch:'仆人、佣人、雇工',infl:{plural:'servants'}},
+{en:'soldier',ph:"'səuldʒə",pos:'n.',posLabel:'名词',ch:'士兵、军人',infl:{plural:'soldiers'}},
+{en:'surgeon',ph:"'sə:dʒən",pos:'n.',posLabel:'名词',ch:'外科医师、军医',infl:{plural:'surgeons'}},
+{en:'teacher',ph:"'ti:tʃə",pos:'n.',posLabel:'名词',ch:'教师、老师、先生',infl:{plural:'teachers'}},
+{en:'technician',ph:"tek'niʃən",pos:'n.',posLabel:'名词',ch:'技术员、技师',infl:{plural:'technicians'}},
+{en:'translator',ph:"træns'leitə",pos:'n.',posLabel:'名词',ch:'翻译员',infl:{plural:'translators'}},
+{en:'tutor',ph:"'tju:tə",pos:'n.',posLabel:'名词',ch:'家庭教师、导师',infl:{plural:'tutors'}},
+{en:'typist',ph:"'taipist",pos:'n.',posLabel:'名词',ch:'打字员',infl:{plural:'typists'}},
+{en:'waiter',ph:"'weitə",pos:'n.',posLabel:'名词',ch:'侍者、服务员',infl:{plural:'waiters'}},
+{en:'waitress',ph:"'weitris",pos:'n.',posLabel:'名词',ch:'女服务员',infl:{plural:'waitresses'}},
+{en:'worker',ph:"'wə:kə",pos:'n.',posLabel:'名词',ch:'工人、工作者、人员',infl:{plural:'workers'}},
+{en:'writer',ph:"'raitə",pos:'n.',posLabel:'名词',ch:'作者、作家、文学家',infl:{plural:'writers'}}
+]
+}}
+};
+
+VOCAB_DATA[12] = {
+'商业与经济': { units: {
+'Unit 1': [
+{en:'account',ph:"ə'kaunt",pos:'n.',posLabel:'名词',ch:'记述、解释、帐目、报告',infl:{plural:'accounts'}},
+{en:'bank',ph:"bæŋk",pos:'n.',posLabel:'名词',ch:'银行、库、岩、堤',infl:{plural:'banks'}},
+{en:'bargain',ph:"'bɑ:gən",pos:'n.',posLabel:'名词',ch:'交易、买卖、物美价廉的东西',infl:{plural:'bargains'}},
+{en:'bill',ph:"bil",pos:'n.',posLabel:'名词',ch:'账单、钞票、招贴',infl:{plural:'bills'}},
+{en:'business',ph:"'biznis",pos:'n.',posLabel:'名词',ch:'商业、生意、事务',infl:{plural:'businesses'}},
+{en:'capital',ph:"'kæpitl",pos:'n.',posLabel:'名词',ch:'资本、资金、首都',infl:{plural:'capitals'}},
+{en:'cash',ph:"kæʃ",pos:'n.',posLabel:'名词',ch:'现金、现款',infl:{plural:'—'}},
+{en:'charge',ph:"tʃɑ:dʒ",pos:'n.',posLabel:'名词',ch:'电荷、指控、费用',infl:{plural:'charges'}},
+{en:'cheque',ph:"tʃek",pos:'n.',posLabel:'名词',ch:'支票',infl:{plural:'cheques'}},
+{en:'coin',ph:"kɔin",pos:'n.',posLabel:'名词',ch:'硬币、金钱、货币',infl:{plural:'coins'}},
+{en:'commerce',ph:"'kɔmə:s",pos:'n.',posLabel:'名词',ch:'商业、贸易、社交',infl:{plural:'—'}},
+{en:'company',ph:"'kʌmpəni",pos:'n.',posLabel:'名词',ch:'公司、商号、同伴',infl:{plural:'companies'}},
+{en:'competition',ph:".kɔmpi'tiʃən",pos:'n.',posLabel:'名词',ch:'竞争、比赛',infl:{plural:'competitions'}},
+{en:'consumer',ph:"kən'sju:mə",pos:'n.',posLabel:'名词',ch:'消费者、用户',infl:{plural:'consumers'}},
+{en:'cost',ph:"kɔst",pos:'n.',posLabel:'名词',ch:'价格、代价、成本',infl:{plural:'costs'}},
+{en:'credit',ph:"'kredit",pos:'n.',posLabel:'名词',ch:'信用贷款、信用、荣誉',infl:{plural:'credits'}},
+{en:'currency',ph:"'kʌrənsi",pos:'n.',posLabel:'名词',ch:'货币、通货',infl:{plural:'currencies'}},
+{en:'customer',ph:"'kʌstəmə",pos:'n.',posLabel:'名词',ch:'顾客、主顾、家伙',infl:{plural:'customers'}},
+{en:'deal',ph:"di:l",pos:'n.',posLabel:'名词',ch:'买卖、待遇、交易',infl:{plural:'deals'}},
+{en:'debt',ph:"det",pos:'n.',posLabel:'名词',ch:'债、债务、欠债',infl:{plural:'debts'}},
+{en:'demand',ph:"di'mɑ:nd",pos:'n.',posLabel:'名词',ch:'要求、需求',infl:{plural:'demands'}},
+{en:'deposit',ph:"di'pɔzit",pos:'n.',posLabel:'名词',ch:'存款、定金、堆积物',infl:{plural:'deposits'}},
+{en:'discount',ph:"'diskaunt",pos:'n.',posLabel:'名词',ch:'折扣、贴现率',infl:{plural:'discounts'}},
+{en:'dollar',ph:"'dɔlə",pos:'n.',posLabel:'名词',ch:'美元',infl:{plural:'dollars'}}
+],
+'Unit 2': [
+{en:'economy',ph:"i'kɔnəmi",pos:'n.',posLabel:'名词',ch:'经济、节约、节省',infl:{plural:'economies'}},
+{en:'exchange',ph:"iks'tʃeindʒ",pos:'n.',posLabel:'名词',ch:'交换、交换物、汇兑',infl:{plural:'exchanges'}},
+{en:'expense',ph:"iks'pens",pos:'n.',posLabel:'名词',ch:'花费、消费、费用',infl:{plural:'expenses'}},
+{en:'export',ph:"'ekspɔ:t",pos:'n.',posLabel:'名词',ch:'出口、输出品',infl:{plural:'exports'}},
+{en:'factory',ph:"'fæktəri",pos:'n.',posLabel:'名词',ch:'工厂、制造厂',infl:{plural:'factories'}},
+{en:'fair',ph:"fɛə",pos:'n.',posLabel:'名词',ch:'展览会、市集、定期集市',infl:{plural:'fairs'}},
+{en:'fee',ph:"fi:",pos:'n.',posLabel:'名词',ch:'费、酬金、赏金',infl:{plural:'fees'}},
+{en:'finance',ph:"fai'næns",pos:'n.',posLabel:'名词',ch:'财政、金融、财源',infl:{plural:'finances'}},
+{en:'firm',ph:"fə:m",pos:'n.',posLabel:'名词',ch:'商行、商号、公司',infl:{plural:'firms'}},
+{en:'fund',ph:"fʌnd",pos:'n.',posLabel:'名词',ch:'资金、基金、存款',infl:{plural:'funds'}},
+{en:'goods',ph:"gudz",pos:'n.',posLabel:'名词',ch:'货物、商品',infl:{plural:'—'}},
+{en:'import',ph:"'impɔ:t",pos:'n.',posLabel:'名词',ch:'输入、进口',infl:{plural:'imports'}},
+{en:'income',ph:"'in.kʌm",pos:'n.',posLabel:'名词',ch:'收入、所得、收益',infl:{plural:'incomes'}},
+{en:'industry',ph:"'indəstri",pos:'n.',posLabel:'名词',ch:'工业、产业、勤劳',infl:{plural:'industries'}},
+{en:'insurance',ph:"in'ʃuərəns",pos:'n.',posLabel:'名词',ch:'保险、保险费',infl:{plural:'insurances'}},
+{en:'interest',ph:"'intərist",pos:'n.',posLabel:'名词',ch:'兴趣、利益、利息',infl:{plural:'interests'}},
+{en:'investment',ph:"in'vestmənt",pos:'n.',posLabel:'名词',ch:'投资、投资额、投入',infl:{plural:'investments'}},
+{en:'loan',ph:"ləun",pos:'n.',posLabel:'名词',ch:'贷款、暂借、借出',infl:{plural:'loans'}},
+{en:'market',ph:"'mɑ:kit",pos:'n.',posLabel:'名词',ch:'市场、集市、销路',infl:{plural:'markets'}},
+{en:'merchant',ph:"'mə:tʃənt",pos:'n.',posLabel:'名词',ch:'商人、零售商、店主',infl:{plural:'merchants'}},
+{en:'money',ph:"'mʌni",pos:'n.',posLabel:'名词',ch:'货币、金钱、财富',infl:{plural:'—'}},
+{en:'payment',ph:"'peimənt",pos:'n.',posLabel:'名词',ch:'付款、支付、报酬',infl:{plural:'payments'}},
+{en:'penny',ph:"'peni",pos:'n.',posLabel:'名词',ch:'便士、一分',infl:{plural:'pennies'}},
+{en:'pound',ph:"paund",pos:'n.',posLabel:'名词',ch:'磅、英磅',infl:{plural:'pounds'}}
+],
+'Unit 3': [
+{en:'price',ph:"prais",pos:'n.',posLabel:'名词',ch:'价格、价钱、代价',infl:{plural:'prices'}},
+{en:'profit',ph:"'prɔfit",pos:'n.',posLabel:'名词',ch:'益处、利润',infl:{plural:'profits'}},
+{en:'property',ph:"'prɔpəti",pos:'n.',posLabel:'名词',ch:'财产、资产、性质',infl:{plural:'properties'}},
+{en:'purchase',ph:"'pə:tʃəs",pos:'n.',posLabel:'名词',ch:'买、购买、购买的物品',infl:{plural:'purchases'}},
+{en:'rate',ph:"reit",pos:'n.',posLabel:'名词',ch:'比率、速度、价格',infl:{plural:'rates'}},
+{en:'receipt',ph:"ri'si:t",pos:'n.',posLabel:'名词',ch:'收到、收条、收据',infl:{plural:'receipts'}},
+{en:'rent',ph:"rent",pos:'n.',posLabel:'名词',ch:'租金、租',infl:{plural:'rents'}},
+{en:'retail',ph:"'ri:teil",pos:'n.',posLabel:'名词',ch:'零售',infl:{plural:'—'}},
+{en:'revenue',ph:"'revinju:",pos:'n.',posLabel:'名词',ch:'收益、收入、税收',infl:{plural:'revenues'}},
+{en:'salary',ph:"'sæləri",pos:'n.',posLabel:'名词',ch:'薪金、薪水',infl:{plural:'salaries'}},
+{en:'sale',ph:"seil",pos:'n.',posLabel:'名词',ch:'卖、削价出售、拍卖',infl:{plural:'sales'}},
+{en:'saving',ph:"'seiviŋ",pos:'n.',posLabel:'名词',ch:'搭救、挽救、节约',infl:{plural:'savings'}},
+{en:'shilling',ph:"'ʃiliŋ",pos:'n.',posLabel:'名词',ch:'先令',infl:{plural:'shillings'}},
+{en:'shop',ph:"ʃɔp",pos:'n.',posLabel:'名词',ch:'商店、店铺、车间',infl:{plural:'shops'}},
+{en:'stock',ph:"stɔk",pos:'n.',posLabel:'名词',ch:'原料、库存品、存货',infl:{plural:'stocks'}},
+{en:'store',ph:"stɔ:",pos:'n.',posLabel:'名词',ch:'贮藏、贮存品、商店',infl:{plural:'stores'}},
+{en:'supply',ph:"sə'plai",pos:'n.',posLabel:'名词',ch:'补给、供给、供应',infl:{plural:'supplies'}},
+{en:'tax',ph:"tæks",pos:'n.',posLabel:'名词',ch:'税、税款、负担',infl:{plural:'taxes'}},
+{en:'trade',ph:"treid",pos:'n.',posLabel:'名词',ch:'贸易、交易、买卖',infl:{plural:'trades'}},
+{en:'value',ph:"'vælju:",pos:'n.',posLabel:'名词',ch:'价值、重要性、价格',infl:{plural:'values'}},
+{en:'wage',ph:"weidʒ",pos:'n.',posLabel:'名词',ch:'工资、报酬',infl:{plural:'wages'}},
+{en:'wealth',ph:"welθ",pos:'n.',posLabel:'名词',ch:'财富、财产、丰富',infl:{plural:'—'}}
+]
+}}
+};
+
+
+VOCAB_DATA[13] = {
+'科技与信息': { units: {
+'Unit 1': [
+{en:'advertisement',ph:"əd'və:tismənt",pos:'n.',posLabel:'名词',ch:'广告、公告、登广告',infl:{plural:'advertisements'}},
+{en:'broadcast',ph:"'brɔ:dkɑ:st",pos:'n.',posLabel:'名词',ch:'广播、广播节目、播音',infl:{plural:'broadcasts'}},
+{en:'camera',ph:"'kæmərə",pos:'n.',posLabel:'名词',ch:'照相机、摄影机',infl:{plural:'cameras'}},
+{en:'cell',ph:"sel",pos:'n.',posLabel:'名词',ch:'细胞、小房间、电池',infl:{plural:'cells'}},
+{en:'channel',ph:"'tʃænl",pos:'n.',posLabel:'名词',ch:'海峡、渠道、通道',infl:{plural:'channels'}},
+{en:'computer',ph:"kəm'pju:tə",pos:'n.',posLabel:'名词',ch:'计算机、电脑',infl:{plural:'computers'}},
+{en:'data',ph:"'deitə",pos:'n.',posLabel:'名词',ch:'数据、资料',infl:{plural:'—'}},
+{en:'digital',ph:"'didʒitəl",pos:'n.',posLabel:'名词',ch:'数字、数码',infl:{plural:'—'}},
+{en:'electron',ph:"i'lektrɔn",pos:'n.',posLabel:'名词',ch:'电子',infl:{plural:'electrons'}},
+{en:'electronic',ph:"ilek'trɔnik",pos:'n.',posLabel:'名词',ch:'电子的',infl:{plural:'—'}},
+{en:'email',ph:"'i:meil",pos:'n.',posLabel:'名词',ch:'电子邮件',infl:{plural:'emails'}},
+{en:'engine',ph:"'endʒin",pos:'n.',posLabel:'名词',ch:'发动机、引擎、机车',infl:{plural:'engines'}},
+{en:'equipment',ph:"i'kwipmənt",pos:'n.',posLabel:'名词',ch:'装备、设备、配备',infl:{plural:'—'}},
+{en:'film',ph:"film",pos:'n.',posLabel:'名词',ch:'影片、胶卷、薄层',infl:{plural:'films'}},
+{en:'hardware',ph:"'hɑ:dwɛə",pos:'n.',posLabel:'名词',ch:'五金器具、硬件',infl:{plural:'—'}},
+{en:'information',ph:".infə'meiʃən",pos:'n.',posLabel:'名词',ch:'消息、信息、通知',infl:{plural:'—'}},
+{en:'instrument',ph:"'instrumənt",pos:'n.',posLabel:'名词',ch:'仪器、工具、乐器',infl:{plural:'instruments'}},
+{en:'Internet',ph:"'intənet",pos:'n.',posLabel:'名词',ch:'互联网、因特网',infl:{plural:'—'}},
+{en:'invention',ph:"in'venʃən",pos:'n.',posLabel:'名词',ch:'发明、发明物、虚构',infl:{plural:'inventions'}},
+{en:'keyboard',ph:"'ki:bɔ:d",pos:'n.',posLabel:'名词',ch:'键盘',infl:{plural:'keyboards'}},
+{en:'laser',ph:"'leizə",pos:'n.',posLabel:'名词',ch:'激光、镭射',infl:{plural:'lasers'}},
+{en:'machine',ph:"mə'ʃi:n",pos:'n.',posLabel:'名词',ch:'机器、机械、机械装置',infl:{plural:'machines'}},
+{en:'media',ph:"'mi:diə",pos:'n.',posLabel:'名词',ch:'媒体、媒介',infl:{plural:'—'}},
+{en:'message',ph:"'mesidʒ",pos:'n.',posLabel:'名词',ch:'信息、消息、启示',infl:{plural:'messages'}},
+{en:'microphone',ph:"'maikrəfəun",pos:'n.',posLabel:'名词',ch:'话筒、麦克风、扩音器',infl:{plural:'microphones'}}
+],
+'Unit 2': [
+{en:'microscope',ph:"'maikrəskəup",pos:'n.',posLabel:'名词',ch:'显微镜',infl:{plural:'microscopes'}},
+{en:'monitor',ph:"'mɔnitə",pos:'n.',posLabel:'名词',ch:'班长、监视器',infl:{plural:'monitors'}},
+{en:'network',ph:"'netwə:k",pos:'n.',posLabel:'名词',ch:'网状物、网络、系统',infl:{plural:'networks'}},
+{en:'phone',ph:"fəun",pos:'n.',posLabel:'名词',ch:'电话、电话机',infl:{plural:'phones'}},
+{en:'photograph',ph:"'fəutəgrɑ:f",pos:'n.',posLabel:'名词',ch:'照片、相片',infl:{plural:'photographs'}},
+{en:'printer',ph:"'printə",pos:'n.',posLabel:'名词',ch:'打印机、印刷工',infl:{plural:'printers'}},
+{en:'radio',ph:"'reidiəu",pos:'n.',posLabel:'名词',ch:'无线电、收音机',infl:{plural:'radios'}},
+{en:'receiver',ph:"ri'si:və",pos:'n.',posLabel:'名词',ch:'收受者、收件人、接收器',infl:{plural:'receivers'}},
+{en:'recorder',ph:"ri'kɔ:də",pos:'n.',posLabel:'名词',ch:'记录者、录音机',infl:{plural:'recorders'}},
+{en:'screen',ph:"skri:n",pos:'n.',posLabel:'名词',ch:'屏、屏幕、银幕',infl:{plural:'screens'}},
+{en:'signal',ph:"'signəl",pos:'n.',posLabel:'名词',ch:'信号、导火线、动机',infl:{plural:'signals'}},
+{en:'software',ph:"'sɔftwɛə",pos:'n.',posLabel:'名词',ch:'软件',infl:{plural:'—'}},
+{en:'switch',ph:"switʃ",pos:'n.',posLabel:'名词',ch:'开关、转换、鞭子',infl:{plural:'switches'}},
+{en:'symbol',ph:"'simbəl",pos:'n.',posLabel:'名词',ch:'象征、符号、记号',infl:{plural:'symbols'}},
+{en:'system',ph:"'sistəm",pos:'n.',posLabel:'名词',ch:'系统、体系、制度',infl:{plural:'systems'}},
+{en:'technical',ph:"'teknikəl",pos:'n.',posLabel:'名词',ch:'技术、技巧',infl:{plural:'—'}},
+{en:'technique',ph:"tek'ni:k",pos:'n.',posLabel:'名词',ch:'技术、技巧、技能',infl:{plural:'techniques'}},
+{en:'technology',ph:"tek'nɔlədʒi",pos:'n.',posLabel:'名词',ch:'工艺学、工艺、技术',infl:{plural:'technologies'}},
+{en:'telephone',ph:"'telifəun",pos:'n.',posLabel:'名词',ch:'电话',infl:{plural:'telephones'}},
+{en:'television',ph:"'teliviʒən",pos:'n.',posLabel:'名词',ch:'电视、电视机',infl:{plural:'televisions'}},
+{en:'tool',ph:"tu:l",pos:'n.',posLabel:'名词',ch:'工具、器具、用具',infl:{plural:'tools'}},
+{en:'transistor',ph:"træn'zistə",pos:'n.',posLabel:'名词',ch:'晶体管、晶体管收音机',infl:{plural:'transistors'}},
+{en:'video',ph:"'vidiəu",pos:'n.',posLabel:'名词',ch:'电视、视频、录像',infl:{plural:'videos'}},
+{en:'website',ph:"'websait",pos:'n.',posLabel:'名词',ch:'网站',infl:{plural:'websites'}},
+{en:'wire',ph:"'waiə",pos:'n.',posLabel:'名词',ch:'金属线、电缆、电线',infl:{plural:'wires'}},
+{en:'wireless',ph:"'waiəlis",pos:'n.',posLabel:'名词',ch:'无线电、收音机',infl:{plural:'—'}}
+]
+}}
+};
+
+VOCAB_DATA[14] = {
+'艺术与文化': { units: {
+'Unit 1': [
+{en:'art',ph:"ɑ:t",pos:'n.',posLabel:'名词',ch:'艺术、美术、技术',infl:{plural:'arts'}},
+{en:'artist',ph:"'ɑ:tist",pos:'n.',posLabel:'名词',ch:'艺术家、美术家、艺人',infl:{plural:'artists'}},
+{en:'ballad',ph:"'bæləd",pos:'n.',posLabel:'名词',ch:'民谣、叙事歌',infl:{plural:'ballads'}},
+{en:'cartoon',ph:"kɑ:'tu:n",pos:'n.',posLabel:'名词',ch:'卡通、漫画',infl:{plural:'cartoons'}},
+{en:'ceremony',ph:"'seriməni",pos:'n.',posLabel:'名词',ch:'典礼、仪式、礼节',infl:{plural:'ceremonies'}},
+{en:'chapter',ph:"'tʃæptə",pos:'n.',posLabel:'名词',ch:'章、回、篇',infl:{plural:'chapters'}},
+{en:'choir',ph:"'kwaiə",pos:'n.',posLabel:'名词',ch:'唱诗班、合唱团',infl:{plural:'choirs'}},
+{en:'cinema',ph:"'sinimə",pos:'n.',posLabel:'名词',ch:'电影院、电影',infl:{plural:'cinemas'}},
+{en:'classical',ph:"'klæsikəl",pos:'n.',posLabel:'名词',ch:'古典音乐',infl:{plural:'—'}},
+{en:'comedy',ph:"'kɔmidi",pos:'n.',posLabel:'名词',ch:'喜剧、喜剧性事件',infl:{plural:'comedies'}},
+{en:'concert',ph:"'kɔnsət",pos:'n.',posLabel:'名词',ch:'音乐会、演奏会',infl:{plural:'concerts'}},
+{en:'culture',ph:"'kʌltʃə",pos:'n.',posLabel:'名词',ch:'文化、文明、教养',infl:{plural:'cultures'}},
+{en:'dance',ph:"dɑ:ns",pos:'n.',posLabel:'名词',ch:'舞、跳舞、舞蹈',infl:{plural:'dances'}},
+{en:'drama',ph:"'drɑ:mə",pos:'n.',posLabel:'名词',ch:'一出戏剧、剧本',infl:{plural:'dramas'}},
+{en:'drawing',ph:"'drɔ:iŋ",pos:'n.',posLabel:'名词',ch:'图画、素描、绘图',infl:{plural:'drawings'}},
+{en:'drum',ph:"drʌm",pos:'n.',posLabel:'名词',ch:'鼓、鼓声、鼓状物',infl:{plural:'drums'}},
+{en:'entertainment',ph:".entə'teinmənt",pos:'n.',posLabel:'名词',ch:'娱乐、招待、娱乐活动',infl:{plural:'entertainments'}},
+{en:'exhibition',ph:".eksi'biʃən",pos:'n.',posLabel:'名词',ch:'展览、陈列、展示',infl:{plural:'exhibitions'}},
+{en:'fable',ph:"'feibl",pos:'n.',posLabel:'名词',ch:'寓言',infl:{plural:'fables'}},
+{en:'fashion',ph:"'fæʃən",pos:'n.',posLabel:'名词',ch:'样子、方式、风尚',infl:{plural:'fashions'}},
+{en:'festival',ph:"'festəvəl",pos:'n.',posLabel:'名词',ch:'节日、音乐节',infl:{plural:'festivals'}},
+{en:'fiction',ph:"'fikʃən",pos:'n.',posLabel:'名词',ch:'小说、虚构、杜撰',infl:{plural:'fictions'}},
+{en:'film',ph:"film",pos:'n.',posLabel:'名词',ch:'影片、胶卷、薄层',infl:{plural:'films'}},
+{en:'gallery',ph:"'gæləri",pos:'n.',posLabel:'名词',ch:'长廊、游廊、画廊',infl:{plural:'galleries'}},
+{en:'guitar',ph:"gi'tɑ:",pos:'n.',posLabel:'名词',ch:'吉他',infl:{plural:'guitars'}},
+{en:'hero',ph:"'hiərəu",pos:'n.',posLabel:'名词',ch:'英雄、男主角',infl:{plural:'heroes'}},
+{en:'heroine',ph:"'herəuin",pos:'n.',posLabel:'名词',ch:'女英雄、女主角',infl:{plural:'heroines'}},
+{en:'instrument',ph:"'instrumənt",pos:'n.',posLabel:'名词',ch:'仪器、工具、乐器',infl:{plural:'instruments'}}
+],
+'Unit 2': [
+{en:'jazz',ph:"dʒæz",pos:'n.',posLabel:'名词',ch:'爵士音乐',infl:{plural:'—'}},
+{en:'legend',ph:"'ledʒənd",pos:'n.',posLabel:'名词',ch:'传说、传奇、传奇人物',infl:{plural:'legends'}},
+{en:'literature',ph:"'litərətʃə",pos:'n.',posLabel:'名词',ch:'文学、文献',infl:{plural:'—'}},
+{en:'magazine',ph:".mægə'zi:n",pos:'n.',posLabel:'名词',ch:'杂志、期刊',infl:{plural:'magazines'}},
+{en:'melody',ph:"'melədi",pos:'n.',posLabel:'名词',ch:'旋律、曲调',infl:{plural:'melodies'}},
+{en:'monument',ph:"'mɔnjumənt",pos:'n.',posLabel:'名词',ch:'纪念碑、纪念馆、历史遗迹',infl:{plural:'monuments'}},
+{en:'movie',ph:"'mu:vi",pos:'n.',posLabel:'名词',ch:'电影、电影院',infl:{plural:'movies'}},
+{en:'museum',ph:"mju:'ziəm",pos:'n.',posLabel:'名词',ch:'博物馆、展览馆',infl:{plural:'museums'}},
+{en:'music',ph:"'mju:zik",pos:'n.',posLabel:'名词',ch:'音乐、乐曲、乐谱',infl:{plural:'—'}},
+{en:'musician',ph:"mju:'ziʃən",pos:'n.',posLabel:'名词',ch:'音乐家、作曲家',infl:{plural:'musicians'}},
+{en:'novel',ph:"'nɔvəl",pos:'n.',posLabel:'名词',ch:'小说',infl:{plural:'novels'}},
+{en:'opera',ph:"'ɔpərə",pos:'n.',posLabel:'名词',ch:'歌剧',infl:{plural:'operas'}},
+{en:'orchestra',ph:"'ɔ:kistrə",pos:'n.',posLabel:'名词',ch:'管弦乐队',infl:{plural:'orchestras'}},
+{en:'painting',ph:"'peintiŋ",pos:'n.',posLabel:'名词',ch:'绘画、油画、着色',infl:{plural:'paintings'}},
+{en:'photograph',ph:"'fəutəgrɑ:f",pos:'n.',posLabel:'名词',ch:'照片、相片',infl:{plural:'photographs'}},
+{en:'piano',ph:"pi'ænəu",pos:'n.',posLabel:'名词',ch:'钢琴',infl:{plural:'pianos'}},
+{en:'poem',ph:"'pəuim",pos:'n.',posLabel:'名词',ch:'诗、韵文、诗体文',infl:{plural:'poems'}},
+{en:'poet',ph:"'pəuit",pos:'n.',posLabel:'名词',ch:'诗人',infl:{plural:'poets'}},
+{en:'poetry',ph:"'pəuitri",pos:'n.',posLabel:'名词',ch:'诗、诗歌、诗作',infl:{plural:'—'}},
+{en:'sculpture',ph:"'skʌlptʃə",pos:'n.',posLabel:'名词',ch:'雕塑、雕刻',infl:{plural:'sculptures'}},
+{en:'song',ph:"sɔŋ",pos:'n.',posLabel:'名词',ch:'歌唱、歌曲、歌词',infl:{plural:'songs'}},
+{en:'story',ph:"'stɔ:ri",pos:'n.',posLabel:'名词',ch:'故事、小说、传说',infl:{plural:'stories'}},
+{en:'style',ph:"stail",pos:'n.',posLabel:'名词',ch:'风格、文体、式样',infl:{plural:'styles'}},
+{en:'theatre',ph:"'θiətə",pos:'n.',posLabel:'名词',ch:'戏院、戏剧、教室',infl:{plural:'theatres'}},
+{en:'violin',ph:".vaiə'lin",pos:'n.',posLabel:'名词',ch:'小提琴',infl:{plural:'violins'}},
+{en:'writing',ph:"'raitiŋ",pos:'n.',posLabel:'名词',ch:'书写、写、著作',infl:{plural:'writings'}}
+]
+}}
+};
+
+VOCAB_DATA[15] = {
+'运动与娱乐': { units: {
+'Unit 1': [
+{en:'athlete',ph:"'æθli:t",pos:'n.',posLabel:'名词',ch:'运动员、田径运动员',infl:{plural:'athletes'}},
+{en:'ball',ph:"bɔ:l",pos:'n.',posLabel:'名词',ch:'球、球状物、舞会',infl:{plural:'balls'}},
+{en:'baseball',ph:"'beisbɔ:l",pos:'n.',posLabel:'名词',ch:'棒球、棒球运动',infl:{plural:'baseballs'}},
+{en:'basketball',ph:"'bɑ:skitbɔ:l",pos:'n.',posLabel:'名词',ch:'篮球、篮球运动',infl:{plural:'basketballs'}},
+{en:'champion',ph:"'tʃæmpjən",pos:'n.',posLabel:'名词',ch:'冠军、得胜者、拥护者',infl:{plural:'champions'}},
+{en:'chess',ph:"tʃes",pos:'n.',posLabel:'名词',ch:'棋、国际象棋',infl:{plural:'—'}},
+{en:'club',ph:"klʌb",pos:'n.',posLabel:'名词',ch:'俱乐部、夜总会',infl:{plural:'clubs'}},
+{en:'coach',ph:"kəutʃ",pos:'n.',posLabel:'名词',ch:'教练、长途公共汽车',infl:{plural:'coaches'}},
+{en:'competition',ph:".kɔmpi'tiʃən",pos:'n.',posLabel:'名词',ch:'竞争、比赛',infl:{plural:'competitions'}},
+{en:'cricket',ph:"'krikit",pos:'n.',posLabel:'名词',ch:'板球、蟋蟀',infl:{plural:'—'}},
+{en:'diving',ph:"'daiviŋ",pos:'n.',posLabel:'名词',ch:'跳水、潜水',infl:{plural:'—'}},
+{en:'football',ph:"'futbɔ:l",pos:'n.',posLabel:'名词',ch:'足球比赛、足球',infl:{plural:'footballs'}},
+{en:'game',ph:"geim",pos:'n.',posLabel:'名词',ch:'游戏、比赛、猎物',infl:{plural:'games'}},
+{en:'golf',ph:"gɔlf",pos:'n.',posLabel:'名词',ch:'高尔夫球',infl:{plural:'—'}},
+{en:'gymnasium',ph:"dʒim'neiziəm",pos:'n.',posLabel:'名词',ch:'体育馆、健身房',infl:{plural:'gymnasiums'}},
+{en:'hobby',ph:"'hɔbi",pos:'n.',posLabel:'名词',ch:'业余爱好、癖好',infl:{plural:'hobbies'}},
+{en:'holiday',ph:"'hɔlədi",pos:'n.',posLabel:'名词',ch:'假日、节日、假期',infl:{plural:'holidays'}},
+{en:'hunt',ph:"hʌnt",pos:'n.',posLabel:'名词',ch:'打猎、狩猎、搜寻',infl:{plural:'hunts'}},
+{en:'jazz',ph:"dʒæz",pos:'n.',posLabel:'名词',ch:'爵士音乐',infl:{plural:'—'}},
+{en:'jogging',ph:"'dʒɔgiŋ",pos:'n.',posLabel:'名词',ch:'慢跑',infl:{plural:'—'}},
+{en:'match',ph:"mætʃ",pos:'n.',posLabel:'名词',ch:'比赛、竞赛、对手',infl:{plural:'matches'}},
+{en:'Olympic',ph:"əu'limpik",pos:'n.',posLabel:'名词',ch:'奥林匹克运动会',infl:{plural:'Olympics'}}
+],
+'Unit 2': [
+{en:'picnic',ph:"'piknik",pos:'n.',posLabel:'名词',ch:'郊游、野餐',infl:{plural:'picnics'}},
+{en:'play',ph:"plei",pos:'n.',posLabel:'名词',ch:'游戏、游玩、剧本',infl:{plural:'plays'}},
+{en:'player',ph:"'pleiə",pos:'n.',posLabel:'名词',ch:'游戏的人、比赛者',infl:{plural:'players'}},
+{en:'playground',ph:"'pleigraund",pos:'n.',posLabel:'名词',ch:'操场、运动场',infl:{plural:'playgrounds'}},
+{en:'practice',ph:"'præktis",pos:'n.',posLabel:'名词',ch:'实践、练习、业务',infl:{plural:'practices'}},
+{en:'prize',ph:"praiz",pos:'n.',posLabel:'名词',ch:'奖赏、奖金、奖品',infl:{plural:'prizes'}},
+{en:'race',ph:"reis",pos:'n.',posLabel:'名词',ch:'比赛、竞赛、竞争',infl:{plural:'races'}},
+{en:'recreation',ph:".rekri'eiʃən",pos:'n.',posLabel:'名词',ch:'娱乐、消遣',infl:{plural:'recreations'}},
+{en:'referee',ph:".refə'ri:",pos:'n.',posLabel:'名词',ch:'裁判员',infl:{plural:'referees'}},
+{en:'rugby',ph:"'rʌgbi",pos:'n.',posLabel:'名词',ch:'橄榄球',infl:{plural:'—'}},
+{en:'sailing',ph:"'seiliŋ",pos:'n.',posLabel:'名词',ch:'航行、帆船运动',infl:{plural:'—'}},
+{en:'skate',ph:"skeit",pos:'n.',posLabel:'名词',ch:'冰鞋、滑冰',infl:{plural:'skates'}},
+{en:'ski',ph:"ski:",pos:'n.',posLabel:'名词',ch:'滑橇、滑雪、滑雪板',infl:{plural:'skis'}},
+{en:'sport',ph:"spɔ:t",pos:'n.',posLabel:'名词',ch:'运动、体育、运动会',infl:{plural:'sports'}},
+{en:'sportsman',ph:"'spɔ:tsmən",pos:'n.',posLabel:'名词',ch:'运动员',infl:{plural:'sportsmen',irregular:true}},
+{en:'stadium',ph:"'steidiəm",pos:'n.',posLabel:'名词',ch:'露天大型运动场、竞技场',infl:{plural:'stadiums'}},
+{en:'swim',ph:"swim",pos:'n.',posLabel:'名词',ch:'游泳',infl:{plural:'swims'}},
+{en:'team',ph:"ti:m",pos:'n.',posLabel:'名词',ch:'队、组',infl:{plural:'teams'}},
+{en:'tennis',ph:"'tenis",pos:'n.',posLabel:'名词',ch:'网球、网球运动',infl:{plural:'—'}},
+{en:'tournament',ph:"'tuənəmənt",pos:'n.',posLabel:'名词',ch:'锦标赛、联赛',infl:{plural:'tournaments'}},
+{en:'victory',ph:"'viktəri",pos:'n.',posLabel:'名词',ch:'胜利、战胜、成功',infl:{plural:'victories'}},
+{en:'volleyball',ph:"'vɔlibɔ:l",pos:'n.',posLabel:'名词',ch:'排球、排球运动',infl:{plural:'volleyballs'}},
+{en:'winner',ph:"'winə",pos:'n.',posLabel:'名词',ch:'获胜者、优胜者',infl:{plural:'winners'}}
+]
+}}
+};
+
+VOCAB_DATA[16] = {
+'情感与心理': { units: {
+'Unit 1': [
+{en:'affection',ph:"ə'fekʃən",pos:'n.',posLabel:'名词',ch:'慈爱、爱、爱慕',infl:{plural:'affections'}},
+{en:'anger',ph:"'æŋgə",pos:'n.',posLabel:'名词',ch:'怒、愤怒',infl:{plural:'—'}},
+{en:'anxiety',ph:"æŋ'zaiəti",pos:'n.',posLabel:'名词',ch:'焦虑、忧虑、渴望',infl:{plural:'anxieties'}},
+{en:'attitude',ph:"'ætitju:d",pos:'n.',posLabel:'名词',ch:'态度、看法、姿势',infl:{plural:'attitudes'}},
+{en:'belief',ph:"bi'li:f",pos:'n.',posLabel:'名词',ch:'信任、相信、信念',infl:{plural:'beliefs'}},
+{en:'courage',ph:"'kʌridʒ",pos:'n.',posLabel:'名词',ch:'勇气、胆量、胆识',infl:{plural:'—'}},
+{en:'delight',ph:"di'lait",pos:'n.',posLabel:'名词',ch:'快乐',infl:{plural:'delights'}},
+{en:'despair',ph:"di'spɛə",pos:'n.',posLabel:'名词',ch:'绝望、失望',infl:{plural:'—'}},
+{en:'emotion',ph:"i'məuʃən",pos:'n.',posLabel:'名词',ch:'情感、感情、情绪',infl:{plural:'emotions'}},
+{en:'envy',ph:"'envi",pos:'n.',posLabel:'名词',ch:'妒忌、嫉妒、羡慕',infl:{plural:'envies'}},
+{en:'fear',ph:"fiə",pos:'n.',posLabel:'名词',ch:'害怕、担心、敬畏',infl:{plural:'fears'}},
+{en:'feeling',ph:"'fi:liŋ",pos:'n.',posLabel:'名词',ch:'感情、感觉、知觉',infl:{plural:'feelings'}},
+{en:'grief',ph:"gri:f",pos:'n.',posLabel:'名词',ch:'悲伤、悲痛',infl:{plural:'griefs'}},
+{en:'hate',ph:"heit",pos:'n.',posLabel:'名词',ch:'憎恨、厌恶',infl:{plural:'—'}},
+{en:'hatred',ph:"'heitrid",pos:'n.',posLabel:'名词',ch:'憎恶、憎恨、仇恨',infl:{plural:'—'}},
+{en:'honour',ph:"'ɔnə",pos:'n.',posLabel:'名词',ch:'光荣、尊敬、敬意',infl:{plural:'honours'}},
+{en:'hope',ph:"həup",pos:'n.',posLabel:'名词',ch:'希望',infl:{plural:'hopes'}},
+{en:'horror',ph:"'hɔrə",pos:'n.',posLabel:'名词',ch:'恐怖、战栗、憎恶',infl:{plural:'horrors'}},
+{en:'humour',ph:"'hju:mə",pos:'n.',posLabel:'名词',ch:'幽默、诙谐、幽默感',infl:{plural:'—'}},
+{en:'joy',ph:"dʒɔi",pos:'n.',posLabel:'名词',ch:'欢乐、喜悦、乐趣',infl:{plural:'joys'}}
+],
+'Unit 2': [
+{en:'love',ph:"lʌv",pos:'n.',posLabel:'名词',ch:'爱、恋爱、爱情',infl:{plural:'loves'}},
+{en:'mercy',ph:"'mə:si",pos:'n.',posLabel:'名词',ch:'仁慈、慈悲、恩惠',infl:{plural:'—'}},
+{en:'mood',ph:"mu:d",pos:'n.',posLabel:'名词',ch:'心情、情绪、语气',infl:{plural:'moods'}},
+{en:'passion',ph:"'pæʃən",pos:'n.',posLabel:'名词',ch:'激情、热情、酷爱',infl:{plural:'passions'}},
+{en:'patience',ph:"'peiʃəns",pos:'n.',posLabel:'名词',ch:'忍耐、耐心、耐性',infl:{plural:'—'}},
+{en:'pity',ph:"'piti",pos:'n.',posLabel:'名词',ch:'怜悯、遗憾',infl:{plural:'—'}},
+{en:'pleasure',ph:"'pleʒə",pos:'n.',posLabel:'名词',ch:'愉快、快乐、乐事',infl:{plural:'pleasures'}},
+{en:'pride',ph:"praid",pos:'n.',posLabel:'名词',ch:'骄傲、自豪、自尊',infl:{plural:'—'}},
+{en:'regret',ph:"ri'gret",pos:'n.',posLabel:'名词',ch:'懊悔、遗憾、后悔',infl:{plural:'regrets'}},
+{en:'respect',ph:"ri'spekt",pos:'n.',posLabel:'名词',ch:'尊敬、敬重、关系',infl:{plural:'respects'}},
+{en:'satisfaction',ph:".sætis'fækʃən",pos:'n.',posLabel:'名词',ch:'满意、快事、乐事',infl:{plural:'satisfactions'}},
+{en:'sensation',ph:"sen'seiʃən",pos:'n.',posLabel:'名词',ch:'感觉、知觉、轰动',infl:{plural:'sensations'}},
+{en:'shame',ph:"ʃeim",pos:'n.',posLabel:'名词',ch:'羞耻、羞愧、羞辱',infl:{plural:'—'}},
+{en:'sorrow',ph:"'sɔrəu",pos:'n.',posLabel:'名词',ch:'悲痛、悲哀、悲伤',infl:{plural:'sorrows'}},
+{en:'spirit',ph:"'spirit",pos:'n.',posLabel:'名词',ch:'精神、气魄、情绪',infl:{plural:'spirits'}},
+{en:'sympathy',ph:"'simpəθi",pos:'n.',posLabel:'名词',ch:'同情、同情心、一致',infl:{plural:'sympathies'}},
+{en:'temper',ph:"'tempə",pos:'n.',posLabel:'名词',ch:'调剂、韧度、回火度',infl:{plural:'tempers'}},
+{en:'terror',ph:"'terə",pos:'n.',posLabel:'名词',ch:'恐怖、惊骇',infl:{plural:'terrors'}},
+{en:'trust',ph:"trʌst",pos:'n.',posLabel:'名词',ch:'信任、信托',infl:{plural:'trusts'}},
+{en:'worry',ph:"'wʌri",pos:'n.',posLabel:'名词',ch:'烦恼、担心、忧虑',infl:{plural:'worries'}},
+{en:'zeal',ph:"zi:l",pos:'n.',posLabel:'名词',ch:'热心、热情、热忱',infl:{plural:'—'}}
+]
+}}
+};
+
+
+VOCAB_DATA[17] = {
+'社会与政治': { units: {
+'Unit 1': [
+{en:'army',ph:"'ɑ:mi",pos:'n.',posLabel:'名词',ch:'军队、陆军、大群',infl:{plural:'armies'}},
+{en:'authority',ph:"ə'θɔriti",pos:'n.',posLabel:'名词',ch:'当局、官方、权力、权威',infl:{plural:'authorities'}},
+{en:'battle',ph:"'bætl",pos:'n.',posLabel:'名词',ch:'战役、斗争、争论',infl:{plural:'battles'}},
+{en:'campaign',ph:"kæm'pein",pos:'n.',posLabel:'名词',ch:'战役、运动、活动',infl:{plural:'campaigns'}},
+{en:'candidate',ph:"'kændidit",pos:'n.',posLabel:'名词',ch:'候选人、投考者',infl:{plural:'candidates'}},
+{en:'citizen',ph:"'sitizn",pos:'n.',posLabel:'名词',ch:'公民、市民、居民',infl:{plural:'citizens'}},
+{en:'civilization',ph:".sivilai'zeiʃən",pos:'n.',posLabel:'名词',ch:'文明、文化、开化',infl:{plural:'civilizations'}},
+{en:'colony',ph:"'kɔləni",pos:'n.',posLabel:'名词',ch:'侨民、殖民地',infl:{plural:'colonies'}},
+{en:'communism',ph:"'kɔmjunizəm",pos:'n.',posLabel:'名词',ch:'共产主义',infl:{plural:'—'}},
+{en:'community',ph:"kə'mju:niti",pos:'n.',posLabel:'名词',ch:'社区、团体、社会',infl:{plural:'communities'}},
+{en:'congress',ph:"'kɔŋgres",pos:'n.',posLabel:'名词',ch:'大会、国会、议会',infl:{plural:'congresses'}},
+{en:'council',ph:"'kaunsil",pos:'n.',posLabel:'名词',ch:'理事会、委员会',infl:{plural:'councils'}},
+{en:'country',ph:"'kʌntri",pos:'n.',posLabel:'名词',ch:'国家、国土、农村',infl:{plural:'countries'}},
+{en:'court',ph:"kɔ:t",pos:'n.',posLabel:'名词',ch:'法院、法庭、庭院',infl:{plural:'courts'}},
+{en:'crime',ph:"kraim",pos:'n.',posLabel:'名词',ch:'罪、罪行、犯罪',infl:{plural:'crimes'}},
+{en:'criminal',ph:"'kriminəl",pos:'n.',posLabel:'名词',ch:'犯人、罪犯',infl:{plural:'criminals'}},
+{en:'crisis',ph:"'kraisis",pos:'n.',posLabel:'名词',ch:'危机、存亡之际',infl:{plural:'crises',irregular:true}},
+{en:'culture',ph:"'kʌltʃə",pos:'n.',posLabel:'名词',ch:'文化、文明、教养',infl:{plural:'cultures'}},
+{en:'custom',ph:"'kʌstəm",pos:'n.',posLabel:'名词',ch:'习惯、风俗、海关',infl:{plural:'customs'}},
+{en:'defence',ph:"di'fens",pos:'n.',posLabel:'名词',ch:'防御、防务、辩护',infl:{plural:'defences'}},
+{en:'democracy',ph:"di'mɔkrəsi",pos:'n.',posLabel:'名词',ch:'民主、民主制、民主国家',infl:{plural:'democracies'}},
+{en:'department',ph:"di'pɑ:tmənt",pos:'n.',posLabel:'名词',ch:'部、司、局、处、系',infl:{plural:'departments'}},
+{en:'election',ph:"i'lekʃən",pos:'n.',posLabel:'名词',ch:'选举、选择权、当选',infl:{plural:'elections'}},
+{en:'emperor',ph:"'empərə",pos:'n.',posLabel:'名词',ch:'皇帝',infl:{plural:'emperors'}},
+{en:'empire',ph:"'empaiə",pos:'n.',posLabel:'名词',ch:'帝国',infl:{plural:'empires'}},
+{en:'government',ph:"'gʌvənmənt",pos:'n.',posLabel:'名词',ch:'政府、政体、统治',infl:{plural:'governments'}},
+{en:'governor',ph:"'gʌvənə",pos:'n.',posLabel:'名词',ch:'州长、主管人员',infl:{plural:'governors'}},
+{en:'history',ph:"'histəri",pos:'n.',posLabel:'名词',ch:'历史、个人经历',infl:{plural:'histories'}},
+{en:'law',ph:"lɔ:",pos:'n.',posLabel:'名词',ch:'法律、法令、起诉',infl:{plural:'laws'}},
+{en:'liberty',ph:"'libəti",pos:'n.',posLabel:'名词',ch:'自由、释放、许可',infl:{plural:'liberties'}}
+],
+'Unit 2': [
+{en:'military',ph:"'militəri",pos:'n.',posLabel:'名词',ch:'军队',infl:{plural:'—'}},
+{en:'nation',ph:"'neiʃən",pos:'n.',posLabel:'名词',ch:'民族、国家',infl:{plural:'nations'}},
+{en:'navy',ph:"'neivi",pos:'n.',posLabel:'名词',ch:'海军、船队、深蓝色',infl:{plural:'navies'}},
+{en:'parliament',ph:"'pɑ:ləmənt",pos:'n.',posLabel:'名词',ch:'议会、国会',infl:{plural:'parliaments'}},
+{en:'peace',ph:"pi:s",pos:'n.',posLabel:'名词',ch:'和平、和睦、平静',infl:{plural:'—'}},
+{en:'police',ph:"pə'li:s",pos:'n.',posLabel:'名词',ch:'警察、警察当局',infl:{plural:'—'}},
+{en:'policy',ph:"'pɔlisi",pos:'n.',posLabel:'名词',ch:'政策、方针、保险单',infl:{plural:'policies'}},
+{en:'politics',ph:"'pɔlitiks",pos:'n.',posLabel:'名词',ch:'政治、政治学',infl:{plural:'—'}},
+{en:'president',ph:"'prezidənt",pos:'n.',posLabel:'名词',ch:'总统、总裁、校长',infl:{plural:'presidents'}},
+{en:'prince',ph:"prins",pos:'n.',posLabel:'名词',ch:'王子、亲王、佼佼者',infl:{plural:'princes'}},
+{en:'princess',ph:"'prin'ses",pos:'n.',posLabel:'名词',ch:'公主、王妃、贵妇',infl:{plural:'princesses'}},
+{en:'prison',ph:"'prizn",pos:'n.',posLabel:'名词',ch:'监狱、监禁',infl:{plural:'prisons'}},
+{en:'race',ph:"reis",pos:'n.',posLabel:'名词',ch:'比赛、竞赛、竞争',infl:{plural:'races'}},
+{en:'religion',ph:"ri'lidʒən",pos:'n.',posLabel:'名词',ch:'宗教、宗教信仰',infl:{plural:'religions'}},
+{en:'republic',ph:"ri'pʌblik",pos:'n.',posLabel:'名词',ch:'共和国、共和政体',infl:{plural:'republics'}},
+{en:'revolution',ph:".revə'lu:ʃən",pos:'n.',posLabel:'名词',ch:'革命、旋转、绕转',infl:{plural:'revolutions'}},
+{en:'right',ph:"rait",pos:'n.',posLabel:'名词',ch:'权利、右、正义',infl:{plural:'rights'}},
+{en:'senate',ph:"'senit",pos:'n.',posLabel:'名词',ch:'参议院、上院',infl:{plural:'senates'}},
+{en:'society',ph:"sə'saiəti",pos:'n.',posLabel:'名词',ch:'社会、团体、社交界',infl:{plural:'societies'}},
+{en:'soldier',ph:"'səuldʒə",pos:'n.',posLabel:'名词',ch:'士兵、军人',infl:{plural:'soldiers'}},
+{en:'state',ph:"steit",pos:'n.',posLabel:'名词',ch:'状态、国家、州',infl:{plural:'states'}},
+{en:'statesman',ph:"'steitsmən",pos:'n.',posLabel:'名词',ch:'政治家、国务活动家',infl:{plural:'statesmen',irregular:true}},
+{en:'tax',ph:"tæks",pos:'n.',posLabel:'名词',ch:'税、税款、负担',infl:{plural:'taxes'}},
+{en:'treaty',ph:"'tri:ti",pos:'n.',posLabel:'名词',ch:'条约、协议、协定',infl:{plural:'treaties'}},
+{en:'tribe',ph:"traib",pos:'n.',posLabel:'名词',ch:'部落、宗族、种族',infl:{plural:'tribes'}},
+{en:'union',ph:"'ju:njən",pos:'n.',posLabel:'名词',ch:'联合、团结、协会',infl:{plural:'unions'}},
+{en:'war',ph:"wɔ:",pos:'n.',posLabel:'名词',ch:'战争、冲突、斗争',infl:{plural:'wars'}},
+{en:'welfare',ph:"'welfɛə",pos:'n.',posLabel:'名词',ch:'幸福、福利、福利事业',infl:{plural:'—'}},
+{en:'kingdom',ph:"'kiŋdəm",pos:'n.',posLabel:'名词',ch:'王国、领域、界',infl:{plural:'kingdoms'}},
+{en:'mayor',ph:"'mɛə",pos:'n.',posLabel:'名词',ch:'市长',infl:{plural:'mayors'}}
+]
+}}
+};
+
+VOCAB_DATA[18] = {
+'抽象概念': { units: {
+'Unit 1': [
+{en:'ability',ph:"ə'biliti",pos:'n.',posLabel:'名词',ch:'能力、能耐、本领',infl:{plural:'abilities'}},
+{en:'absence',ph:"'æbsəns",pos:'n.',posLabel:'名词',ch:'缺席、不在场、缺乏',infl:{plural:'absences'}},
+{en:'acceptance',ph:"ək'septəns",pos:'n.',posLabel:'名词',ch:'接受、同意、认可、验收',infl:{plural:'acceptances'}},
+{en:'access',ph:"'ækses",pos:'n.',posLabel:'名词',ch:'进入、接近、使用之权、通道',infl:{plural:'accesses'}},
+{en:'accident',ph:"'æksidənt",pos:'n.',posLabel:'名词',ch:'意外的、事故',infl:{plural:'accidents'}},
+{en:'accord',ph:"ə'kɔ:d",pos:'n.',posLabel:'名词',ch:'一致、调和、协议',infl:{plural:'accords'}},
+{en:'account',ph:"ə'kaunt",pos:'n.',posLabel:'名词',ch:'记述、解释、帐目、报告',infl:{plural:'accounts'}},
+{en:'accuracy',ph:"'ækjurəsi",pos:'n.',posLabel:'名词',ch:'准确、准确度',infl:{plural:'—'}},
+{en:'action',ph:"'ækʃən",pos:'n.',posLabel:'名词',ch:'起诉、行动、作用、功能',infl:{plural:'actions'}},
+{en:'activity',ph:"æk'tiviti",pos:'n.',posLabel:'名词',ch:'活动、活跃、活力',infl:{plural:'activities'}},
+{en:'addition',ph:"ə'diʃən",pos:'n.',posLabel:'名词',ch:'加、加法、附加物',infl:{plural:'additions'}},
+{en:'advantage',ph:"əd'vɑ:ntidʒ",pos:'n.',posLabel:'名词',ch:'优点、优势、有利条件',infl:{plural:'advantages'}},
+{en:'adventure',ph:"əd'ventʃə",pos:'n.',posLabel:'名词',ch:'冒险、奇遇、惊险活动',infl:{plural:'adventures'}},
+{en:'advice',ph:"əd'vais",pos:'n.',posLabel:'名词',ch:'劝告、忠告、意见、建议',infl:{plural:'—'}},
+{en:'affair',ph:"ə'fɛə",pos:'n.',posLabel:'名词',ch:'事情、事件、事务',infl:{plural:'affairs'}},
+{en:'agreement',ph:"ə'gri:mənt",pos:'n.',posLabel:'名词',ch:'协定、协议、同意',infl:{plural:'agreements'}},
+{en:'aim',ph:"eim",pos:'n.',posLabel:'名词',ch:'目标、对准、枪法',infl:{plural:'aims'}},
+{en:'alarm',ph:"ə'lɑ:m",pos:'n.',posLabel:'名词',ch:'惊恐、惊慌、警报',infl:{plural:'alarms'}},
+{en:'amount',ph:"ə'maunt",pos:'n.',posLabel:'名词',ch:'总数、数量、总额',infl:{plural:'amounts'}},
+{en:'appearance',ph:"ə'piərəns",pos:'n.',posLabel:'名词',ch:'出现、出场、来到、外观',infl:{plural:'appearances'}},
+{en:'application',ph:".æpli'keiʃən",pos:'n.',posLabel:'名词',ch:'应用、请求、申请',infl:{plural:'applications'}},
+{en:'arrangement',ph:"ə'reindʒmənt",pos:'n.',posLabel:'名词',ch:'整理、排列、安排、商议',infl:{plural:'arrangements'}},
+{en:'aspect',ph:"'æspekt",pos:'n.',posLabel:'名词',ch:'方面、样子、外表、外貌',infl:{plural:'aspects'}},
+{en:'attempt',ph:"ə'tempt",pos:'n.',posLabel:'名词',ch:'企图',infl:{plural:'attempts'}},
+{en:'attention',ph:"ə'tenʃən",pos:'n.',posLabel:'名词',ch:'注意、留心、关心、立正',infl:{plural:'—'}},
+{en:'attitude',ph:"'ætitju:d",pos:'n.',posLabel:'名词',ch:'态度、看法、姿势',infl:{plural:'attitudes'}},
+{en:'attribute',ph:"'ætribju:t",pos:'n.',posLabel:'名词',ch:'属性、特征、标志',infl:{plural:'attributes'}},
+{en:'basis',ph:"'beisis",pos:'n.',posLabel:'名词',ch:'基础、根据、主要成分',infl:{plural:'bases',irregular:true}}
+],
+'Unit 2': [
+{en:'belief',ph:"bi'li:f",pos:'n.',posLabel:'名词',ch:'信任、相信、信念',infl:{plural:'beliefs'}},
+{en:'benefit',ph:"'benifit",pos:'n.',posLabel:'名词',ch:'利益、恩惠、津贴',infl:{plural:'benefits'}},
+{en:'case',ph:"keis",pos:'n.',posLabel:'名词',ch:'情况、事实、实情',infl:{plural:'cases'}},
+{en:'cause',ph:"kɔ:z",pos:'n.',posLabel:'名词',ch:'原因、理由、事业',infl:{plural:'causes'}},
+{en:'chance',ph:"tʃɑ:ns",pos:'n.',posLabel:'名词',ch:'机会、意外、运气',infl:{plural:'chances'}},
+{en:'change',ph:"tʃeindʒ",pos:'n.',posLabel:'名词',ch:'改变、变化、零钱',infl:{plural:'changes'}},
+{en:'character',ph:"'kæriktə",pos:'n.',posLabel:'名词',ch:'性格、个性、品质',infl:{plural:'characters'}},
+{en:'choice',ph:"tʃɔis",pos:'n.',posLabel:'名词',ch:'选择、挑选、抉择',infl:{plural:'choices'}},
+{en:'claim',ph:"kleim",pos:'n.',posLabel:'名词',ch:'要求、要求权、主张',infl:{plural:'claims'}},
+{en:'comfort',ph:"'kʌmfət",pos:'n.',posLabel:'名词',ch:'舒适、安慰',infl:{plural:'comforts'}},
+{en:'command',ph:"kə'mɑ:nd",pos:'n.',posLabel:'名词',ch:'命令、指挥、控制',infl:{plural:'commands'}},
+{en:'comment',ph:"'kɔment",pos:'n.',posLabel:'名词',ch:'评论、意见、注释',infl:{plural:'comments'}},
+{en:'common',ph:"'kɔmən",pos:'n.',posLabel:'名词',ch:'平民、普通、公地',infl:{plural:'—'}},
+{en:'comparison',ph:"kəm'pærisn",pos:'n.',posLabel:'名词',ch:'比较、对照、比似',infl:{plural:'comparisons'}},
+{en:'concept',ph:"'kɔnsept",pos:'n.',posLabel:'名词',ch:'概念、观念、设想',infl:{plural:'concepts'}},
+{en:'concern',ph:"kən'sə:n",pos:'n.',posLabel:'名词',ch:'关心、忧虑、关系',infl:{plural:'concerns'}},
+{en:'conclusion',ph:"kən'klu:ʒən",pos:'n.',posLabel:'名词',ch:'结论、推论、结尾',infl:{plural:'conclusions'}},
+{en:'condition',ph:"kən'diʃən",pos:'n.',posLabel:'名词',ch:'状况、状态、环境',infl:{plural:'conditions'}},
+{en:'confidence',ph:"'kɔnfidəns",pos:'n.',posLabel:'名词',ch:'信任、信赖、信心',infl:{plural:'—'}},
+{en:'conflict',ph:"'kɔnflikt",pos:'n.',posLabel:'名词',ch:'争论、冲突、斗争',infl:{plural:'conflicts'}},
+{en:'connection',ph:"kə'nekʃən",pos:'n.',posLabel:'名词',ch:'连接、联系、关系',infl:{plural:'connections'}},
+{en:'consequence',ph:"'kɔnsikwəns",pos:'n.',posLabel:'名词',ch:'结果、后果',infl:{plural:'consequences'}},
+{en:'consideration',ph:"kənsidə'reiʃən",pos:'n.',posLabel:'名词',ch:'考虑、思考、体贴',infl:{plural:'considerations'}},
+{en:'contact',ph:"'kɔntækt",pos:'n.',posLabel:'名词',ch:'接触、联系、联系人',infl:{plural:'contacts'}},
+{en:'content',ph:"'kɔntent",pos:'n.',posLabel:'名词',ch:'内容、目录、容量',infl:{plural:'contents'}},
+{en:'contrast',ph:"'kɔntræst",pos:'n.',posLabel:'名词',ch:'对比、对照、悬殊',infl:{plural:'contrasts'}},
+{en:'control',ph:"kən'trəul",pos:'n.',posLabel:'名词',ch:'克制、控制、管制',infl:{plural:'controls'}},
+{en:'convenience',ph:"kən'vi:njəns",pos:'n.',posLabel:'名词',ch:'便利、方便、便利设施',infl:{plural:'conveniences'}}
+],
+'Unit 3': [
+{en:'conversation',ph:".kɔnvə'seiʃən",pos:'n.',posLabel:'名词',ch:'会话、谈话、非正式会谈',infl:{plural:'conversations'}},
+{en:'courage',ph:"'kʌridʒ",pos:'n.',posLabel:'名词',ch:'勇气、胆量、胆识',infl:{plural:'—'}},
+{en:'course',ph:"kɔ:s",pos:'n.',posLabel:'名词',ch:'课程、讲座、过程',infl:{plural:'courses'}},
+{en:'danger',ph:"'deindʒə",pos:'n.',posLabel:'名词',ch:'危险、危险事物',infl:{plural:'dangers'}},
+{en:'decision',ph:"di'siʒən",pos:'n.',posLabel:'名词',ch:'决定、决心、果断',infl:{plural:'decisions'}},
+{en:'degree',ph:"di'gri:",pos:'n.',posLabel:'名词',ch:'程度、度、度数',infl:{plural:'degrees'}},
+{en:'demand',ph:"di'mɑ:nd",pos:'n.',posLabel:'名词',ch:'要求、需求',infl:{plural:'demands'}},
+{en:'description',ph:"di'skripʃən",pos:'n.',posLabel:'名词',ch:'描写、描述、说明书',infl:{plural:'descriptions'}},
+{en:'design',ph:"di'zain",pos:'n.',posLabel:'名词',ch:'设计、图样',infl:{plural:'designs'}},
+{en:'desire',ph:"di'zaiə",pos:'n.',posLabel:'名词',ch:'愿望、欲望、情欲',infl:{plural:'desires'}},
+{en:'detail',ph:"'di:teil",pos:'n.',posLabel:'名词',ch:'细节、详情、部分',infl:{plural:'details'}},
+{en:'difference',ph:"'difərəns",pos:'n.',posLabel:'名词',ch:'差别、差、分歧',infl:{plural:'differences'}},
+{en:'difficulty',ph:"'difikəlti",pos:'n.',posLabel:'名词',ch:'困难、争议、反对',infl:{plural:'difficulties'}},
+{en:'direction',ph:"di'rekʃən",pos:'n.',posLabel:'名词',ch:'方向、方位、指导',infl:{plural:'directions'}},
+{en:'discovery',ph:"dis'kʌvəri",pos:'n.',posLabel:'名词',ch:'发现、被发现的事物',infl:{plural:'discoveries'}},
+{en:'discussion',ph:"di'skʌʃən",pos:'n.',posLabel:'名词',ch:'讨论、谈论、辩论',infl:{plural:'discussions'}},
+{en:'distance',ph:"'distəns",pos:'n.',posLabel:'名词',ch:'距离、间距、远处',infl:{plural:'distances'}},
+{en:'doubt',ph:"daut",pos:'n.',posLabel:'名词',ch:'怀疑、疑虑、不信任',infl:{plural:'doubts'}},
+{en:'effect',ph:"i'fekt",pos:'n.',posLabel:'名词',ch:'结果、效果、效力',infl:{plural:'effects'}},
+{en:'effort',ph:"'efət",pos:'n.',posLabel:'名词',ch:'努力、努力的成果',infl:{plural:'efforts'}},
+{en:'error',ph:"'erə",pos:'n.',posLabel:'名词',ch:'错误、谬误、差错',infl:{plural:'errors'}},
+{en:'example',ph:"ig'zɑ:mpl",pos:'n.',posLabel:'名词',ch:'例子、实例、模范',infl:{plural:'examples'}},
+{en:'exception',ph:"ik'sepʃən",pos:'n.',posLabel:'名词',ch:'例外、除外',infl:{plural:'exceptions'}},
+{en:'experience',ph:"iks'piəriəns",pos:'n.',posLabel:'名词',ch:'经验、感受、经历',infl:{plural:'experiences'}},
+{en:'expression',ph:"iks'preʃən",pos:'n.',posLabel:'名词',ch:'词句、措辞、表达',infl:{plural:'expressions'}},
+{en:'fact',ph:"fækt",pos:'n.',posLabel:'名词',ch:'事实、实际、实情',infl:{plural:'facts'}},
+{en:'failure',ph:"'feiljə",pos:'n.',posLabel:'名词',ch:'失败、失败的人或事',infl:{plural:'failures'}},
+{en:'faith',ph:"feiθ",pos:'n.',posLabel:'名词',ch:'信任、信心、信仰',infl:{plural:'faiths'}}
+],
+'Unit 4': [
+{en:'fashion',ph:"'fæʃən",pos:'n.',posLabel:'名词',ch:'样子、方式、风尚',infl:{plural:'fashions'}},
+{en:'fault',ph:"fɔ:lt",pos:'n.',posLabel:'名词',ch:'缺点、过失、故障',infl:{plural:'faults'}},
+{en:'favour',ph:"'feivə",pos:'n.',posLabel:'名词',ch:'好感、赞同、恩惠',infl:{plural:'favours'}},
+{en:'fear',ph:"fiə",pos:'n.',posLabel:'名词',ch:'害怕、担心、敬畏',infl:{plural:'fears'}},
+{en:'feeling',ph:"'fi:liŋ",pos:'n.',posLabel:'名词',ch:'感情、感觉、知觉',infl:{plural:'feelings'}},
+{en:'form',ph:"fɔ:m",pos:'n.',posLabel:'名词',ch:'形式、形状、表格',infl:{plural:'forms'}},
+{en:'fortune',ph:"'fɔ:tʃən",pos:'n.',posLabel:'名词',ch:'命运、运气、财产',infl:{plural:'fortunes'}},
+{en:'freedom',ph:"'fri:dəm",pos:'n.',posLabel:'名词',ch:'自由、自主',infl:{plural:'freedoms'}},
+{en:'function',ph:"'fʌŋkʃən",pos:'n.',posLabel:'名词',ch:'功能、职务、函数',infl:{plural:'functions'}},
+{en:'future',ph:"'fju:tʃə",pos:'n.',posLabel:'名词',ch:'将来、未来、前途',infl:{plural:'futures'}},
+{en:'habit',ph:"'hæbit",pos:'n.',posLabel:'名词',ch:'习惯、习性',infl:{plural:'habits'}},
+{en:'harmony',ph:"'hɑ:məni",pos:'n.',posLabel:'名词',ch:'调合、协调、和谐',infl:{plural:'harmonies'}},
+{en:'honour',ph:"'ɔnə",pos:'n.',posLabel:'名词',ch:'光荣、尊敬、敬意',infl:{plural:'honours'}},
+{en:'hope',ph:"həup",pos:'n.',posLabel:'名词',ch:'希望',infl:{plural:'hopes'}},
+{en:'idea',ph:"ai'diə",pos:'n.',posLabel:'名词',ch:'想法、思想、意见',infl:{plural:'ideas'}},
+{en:'impact',ph:"'impækt",pos:'n.',posLabel:'名词',ch:'影响、作用、冲击',infl:{plural:'impacts'}},
+{en:'importance',ph:"im'pɔ:təns",pos:'n.',posLabel:'名词',ch:'重要、重要性',infl:{plural:'—'}},
+{en:'impression',ph:"im'preʃən",pos:'n.',posLabel:'名词',ch:'印、印象、印记',infl:{plural:'impressions'}},
+{en:'improvement',ph:"im'pru:vmənt",pos:'n.',posLabel:'名词',ch:'改进、改善、改进处',infl:{plural:'improvements'}},
+{en:'incident',ph:"'insidənt",pos:'n.',posLabel:'名词',ch:'发生的事、事件',infl:{plural:'incidents'}},
+{en:'increase',ph:"'inkri:s",pos:'n.',posLabel:'名词',ch:'增加、增强、提高',infl:{plural:'increases'}},
+{en:'influence',ph:"'influəns",pos:'n.',posLabel:'名词',ch:'影响、影响力、势力',infl:{plural:'influences'}},
+{en:'information',ph:".infə'meiʃən",pos:'n.',posLabel:'名词',ch:'消息、信息、通知',infl:{plural:'—'}},
+{en:'instance',ph:"'instəns",pos:'n.',posLabel:'名词',ch:'例子、实例、事例',infl:{plural:'instances'}},
+{en:'instruction',ph:"in'strʌkʃən",pos:'n.',posLabel:'名词',ch:'命令、指令、教学',infl:{plural:'instructions'}},
+{en:'intention',ph:"in'tenʃən",pos:'n.',posLabel:'名词',ch:'意图、意向、目的',infl:{plural:'intentions'}},
+{en:'interest',ph:"'intərist",pos:'n.',posLabel:'名词',ch:'兴趣、利益、利息',infl:{plural:'interests'}},
+{en:'issue',ph:"'iʃju:",pos:'n.',posLabel:'名词',ch:'问题、争论点、发行',infl:{plural:'issues'}}
+],
+'Unit 5': [
+{en:'judgement',ph:"'dʒʌdʒmənt",pos:'n.',posLabel:'名词',ch:'意见、审判、判断',infl:{plural:'judgements'}},
+{en:'justice',ph:"'dʒʌstis",pos:'n.',posLabel:'名词',ch:'正义、公正、司法',infl:{plural:'—'}},
+{en:'knowledge',ph:"'nɔlidʒ",pos:'n.',posLabel:'名词',ch:'知识、学识、知道',infl:{plural:'—'}},
+{en:'lack',ph:"læk",pos:'n.',posLabel:'名词',ch:'缺乏、不足、无',infl:{plural:'—'}},
+{en:'liberty',ph:"'libəti",pos:'n.',posLabel:'名词',ch:'自由、释放、许可',infl:{plural:'liberties'}},
+{en:'limit',ph:"'limit",pos:'n.',posLabel:'名词',ch:'限度、限制、范围',infl:{plural:'limits'}},
+{en:'logic',ph:"'lɔdʒik",pos:'n.',posLabel:'名词',ch:'逻辑、推理、逻辑性',infl:{plural:'—'}},
+{en:'loss',ph:"lɔs",pos:'n.',posLabel:'名词',ch:'遗失、损失、失败',infl:{plural:'losses'}},
+{en:'luck',ph:"lʌk",pos:'n.',posLabel:'名词',ch:'运气、好运、幸运',infl:{plural:'—'}},
+{en:'manner',ph:"'mænə",pos:'n.',posLabel:'名词',ch:'方式、态度、礼貌',infl:{plural:'manners'}},
+{en:'matter',ph:"'mætə",pos:'n.',posLabel:'名词',ch:'事情、物质、原因',infl:{plural:'matters'}},
+{en:'meaning',ph:"'mi:niŋ",pos:'n.',posLabel:'名词',ch:'意义、意思、含义',infl:{plural:'meanings'}},
+{en:'measure',ph:"'meʒə",pos:'n.',posLabel:'名词',ch:'分量、措施、办法',infl:{plural:'measures'}},
+{en:'mercy',ph:"'mə:si",pos:'n.',posLabel:'名词',ch:'仁慈、慈悲、恩惠',infl:{plural:'—'}},
+{en:'method',ph:"'meθəd",pos:'n.',posLabel:'名词',ch:'方法、办法、教学法',infl:{plural:'methods'}},
+{en:'mind',ph:"maind",pos:'n.',posLabel:'名词',ch:'头脑、理智、记忆',infl:{plural:'minds'}},
+{en:'mood',ph:"mu:d",pos:'n.',posLabel:'名词',ch:'心情、情绪、语气',infl:{plural:'moods'}},
+{en:'mystery',ph:"'mistəri",pos:'n.',posLabel:'名词',ch:'神秘、秘密、神秘的人或事物',infl:{plural:'mysteries'}},
+{en:'nature',ph:"'neitʃə",pos:'n.',posLabel:'名词',ch:'大自然、自然界、自然状态',infl:{plural:'—'}},
+{en:'necessity',ph:"ni'sesiti",pos:'n.',posLabel:'名词',ch:'必要性、必然性、需要',infl:{plural:'necessities'}},
+{en:'need',ph:"ni:d",pos:'n.',posLabel:'名词',ch:'需要、必须、缺乏',infl:{plural:'needs'}},
+{en:'news',ph:"nju:z",pos:'n.',posLabel:'名词',ch:'新闻、消息',infl:{plural:'—'}},
+{en:'note',ph:"nəut",pos:'n.',posLabel:'名词',ch:'笔记、便条、注释',infl:{plural:'notes'}},
+{en:'notice',ph:"'nəutis",pos:'n.',posLabel:'名词',ch:'通知、注意、布告',infl:{plural:'notices'}},
+{en:'object',ph:"'ɔbdʒikt",pos:'n.',posLabel:'名词',ch:'物、物体、目的',infl:{plural:'objects'}},
+{en:'occasion',ph:"ə'keiʒən",pos:'n.',posLabel:'名词',ch:'场合、时刻、时机',infl:{plural:'occasions'}},
+{en:'opinion',ph:"ə'pinjən",pos:'n.',posLabel:'名词',ch:'意见、看法、主张',infl:{plural:'opinions'}},
+{en:'opportunity',ph:".ɔpə'tju:niti",pos:'n.',posLabel:'名词',ch:'机会、时机、良机',infl:{plural:'opportunities'}}
+],
+'Unit 6': [
+{en:'order',ph:"'ɔ:də",pos:'n.',posLabel:'名词',ch:'次序、整齐、勋章',infl:{plural:'orders'}},
+{en:'outcome',ph:"'autkʌm",pos:'n.',posLabel:'名词',ch:'结果、后果、成果',infl:{plural:'outcomes'}},
+{en:'outlook',ph:"'autluk",pos:'n.',posLabel:'名词',ch:'观点、看法、展望',infl:{plural:'outlooks'}},
+{en:'patience',ph:"'peiʃəns",pos:'n.',posLabel:'名词',ch:'忍耐、耐心、耐性',infl:{plural:'—'}},
+{en:'pattern',ph:"'pætən",pos:'n.',posLabel:'名词',ch:'模式、图案、样式',infl:{plural:'patterns'}},
+{en:'peace',ph:"pi:s",pos:'n.',posLabel:'名词',ch:'和平、和睦、平静',infl:{plural:'—'}},
+{en:'permission',ph:"pə'miʃən",pos:'n.',posLabel:'名词',ch:'允许、许可、同意',infl:{plural:'—'}},
+{en:'pity',ph:"'piti",pos:'n.',posLabel:'名词',ch:'怜悯、遗憾',infl:{plural:'—'}},
+{en:'plan',ph:"plæn",pos:'n.',posLabel:'名词',ch:'计划、策略、方法',infl:{plural:'plans'}},
+{en:'pleasure',ph:"'pleʒə",pos:'n.',posLabel:'名词',ch:'愉快、快乐、乐事',infl:{plural:'pleasures'}},
+{en:'point',ph:"pɔint",pos:'n.',posLabel:'名词',ch:'点、要点、细目',infl:{plural:'points'}},
+{en:'position',ph:"pə'ziʃən",pos:'n.',posLabel:'名词',ch:'位置、职位、姿势',infl:{plural:'positions'}},
+{en:'possibility',ph:".pɔsə'biliti",pos:'n.',posLabel:'名词',ch:'可能、可能的事、可能性',infl:{plural:'possibilities'}},
+{en:'power',ph:"'pauə",pos:'n.',posLabel:'名词',ch:'能力、力、权、权力',infl:{plural:'powers'}},
+{en:'practice',ph:"'præktis",pos:'n.',posLabel:'名词',ch:'实践、练习、业务',infl:{plural:'practices'}},
+{en:'presence',ph:"'prezns",pos:'n.',posLabel:'名词',ch:'出席、到场、在',infl:{plural:'—'}},
+{en:'pressure',ph:"'preʃə",pos:'n.',posLabel:'名词',ch:'压力、压强、压迫',infl:{plural:'pressures'}},
+{en:'pride',ph:"praid",pos:'n.',posLabel:'名词',ch:'骄傲、自豪、自尊',infl:{plural:'—'}},
+{en:'principle',ph:"'prinsəpl",pos:'n.',posLabel:'名词',ch:'原则、原理、主义',infl:{plural:'principles'}},
+{en:'problem',ph:"'prɔbləm",pos:'n.',posLabel:'名词',ch:'问题、习题',infl:{plural:'problems'}},
+{en:'process',ph:"'prɑ:ses",pos:'n.',posLabel:'名词',ch:'过程、工序',infl:{plural:'processes'}},
+{en:'progress',ph:"'prəugres",pos:'n.',posLabel:'名词',ch:'前进、进展、进步',infl:{plural:'—'}},
+{en:'proof',ph:"pru:f",pos:'n.',posLabel:'名词',ch:'证据、证明、校样',infl:{plural:'proofs'}},
+{en:'property',ph:"'prɔpəti",pos:'n.',posLabel:'名词',ch:'财产、资产、性质',infl:{plural:'properties'}},
+{en:'proposal',ph:"prə'pəuzəl",pos:'n.',posLabel:'名词',ch:'提议、建议、求婚',infl:{plural:'proposals'}},
+{en:'prospect',ph:"'prɔspekt",pos:'n.',posLabel:'名词',ch:'展望、前景、前程',infl:{plural:'prospects'}},
+{en:'purpose',ph:"'pə:pəs",pos:'n.',posLabel:'名词',ch:'目的、意图、效果',infl:{plural:'purposes'}},
+{en:'quality',ph:"'kwɔliti",pos:'n.',posLabel:'名词',ch:'质量、品质、特质',infl:{plural:'qualities'}}
+],
+'Unit 7': [
+{en:'quantity',ph:"'kwɔntiti",pos:'n.',posLabel:'名词',ch:'量、数量、分量',infl:{plural:'quantities'}},
+{en:'question',ph:"'kwestʃən",pos:'n.',posLabel:'名词',ch:'发问、问题、疑问',infl:{plural:'questions'}},
+{en:'range',ph:"reindʒ",pos:'n.',posLabel:'名词',ch:'排、行、山脉',infl:{plural:'ranges'}},
+{en:'rate',ph:"reit",pos:'n.',posLabel:'名词',ch:'比率、速度、价格',infl:{plural:'rates'}},
+{en:'reason',ph:"'ri:zn",pos:'n.',posLabel:'名词',ch:'理由、原因、理智',infl:{plural:'reasons'}},
+{en:'regard',ph:"ri'gɑ:d",pos:'n.',posLabel:'名词',ch:'尊敬、尊重',infl:{plural:'regards'}},
+{en:'relation',ph:"ri'leiʃən",pos:'n.',posLabel:'名词',ch:'关系、联系、家属',infl:{plural:'relations'}},
+{en:'relationship',ph:"ri'leiʃənʃip",pos:'n.',posLabel:'名词',ch:'关系、联系',infl:{plural:'relationships'}},
+{en:'respect',ph:"ri'spekt",pos:'n.',posLabel:'名词',ch:'尊敬、敬重、关系',infl:{plural:'respects'}},
+{en:'response',ph:"ri'spɔns",pos:'n.',posLabel:'名词',ch:'作答、回答、响应',infl:{plural:'responses'}},
+{en:'result',ph:"ri'zʌlt",pos:'n.',posLabel:'名词',ch:'成果、结果、成绩',infl:{plural:'results'}},
+{en:'right',ph:"rait",pos:'n.',posLabel:'名词',ch:'权利、右、正义',infl:{plural:'rights'}},
+{en:'risk',ph:"risk",pos:'n.',posLabel:'名词',ch:'风险、危险、冒险',infl:{plural:'risks'}},
+{en:'role',ph:"rəul",pos:'n.',posLabel:'名词',ch:'角色、作用、任务',infl:{plural:'roles'}},
+{en:'rule',ph:"ru:l",pos:'n.',posLabel:'名词',ch:'统治、规定、规则',infl:{plural:'rules'}},
+{en:'safety',ph:"'seifti",pos:'n.',posLabel:'名词',ch:'安全、保险、安全打',infl:{plural:'—'}},
+{en:'sake',ph:"seik",pos:'n.',posLabel:'名词',ch:'缘故、理由、利益',infl:{plural:'—'}},
+{en:'satisfaction',ph:".sætis'fækʃən",pos:'n.',posLabel:'名词',ch:'满意、快事、乐事',infl:{plural:'satisfactions'}},
+{en:'sense',ph:"sens",pos:'n.',posLabel:'名词',ch:'感官、感觉、见识',infl:{plural:'senses'}},
+{en:'service',ph:"'sə:vis",pos:'n.',posLabel:'名词',ch:'服务、行政部门、公务部门',infl:{plural:'services'}},
+{en:'shame',ph:"ʃeim",pos:'n.',posLabel:'名词',ch:'羞耻、羞愧、羞辱',infl:{plural:'—'}},
+{en:'shape',ph:"ʃeip",pos:'n.',posLabel:'名词',ch:'形状、情况、形式',infl:{plural:'shapes'}},
+{en:'share',ph:"ʃɛə",pos:'n.',posLabel:'名词',ch:'份、份额、股份',infl:{plural:'shares'}},
+{en:'sign',ph:"sain",pos:'n.',posLabel:'名词',ch:'符号、招牌、正负号',infl:{plural:'signs'}},
+{en:'silence',ph:"'sailəns",pos:'n.',posLabel:'名词',ch:'沉默、寂静',infl:{plural:'—'}},
+{en:'situation',ph:".sitju'eiʃən",pos:'n.',posLabel:'名词',ch:'位置、处境、形势',infl:{plural:'situations'}},
+{en:'skill',ph:"'skil",pos:'n.',posLabel:'名词',ch:'技能、技巧、熟练',infl:{plural:'skills'}},
+{en:'society',ph:"sə'saiəti",pos:'n.',posLabel:'名词',ch:'社会、团体、社交界',infl:{plural:'societies'}}
+],
+'Unit 8': [
+{en:'solution',ph:"sə'lu:ʃən",pos:'n.',posLabel:'名词',ch:'解决、解答、解决办法',infl:{plural:'solutions'}},
+{en:'sorrow',ph:"'sɔrəu",pos:'n.',posLabel:'名词',ch:'悲痛、悲哀、悲伤',infl:{plural:'sorrows'}},
+{en:'spirit',ph:"'spirit",pos:'n.',posLabel:'名词',ch:'精神、气魄、情绪',infl:{plural:'spirits'}},
+{en:'standard',ph:"'stændəd",pos:'n.',posLabel:'名词',ch:'标准、规格',infl:{plural:'standards'}},
+{en:'state',ph:"steit",pos:'n.',posLabel:'名词',ch:'状态、国家、州',infl:{plural:'states'}},
+{en:'step',ph:"step",pos:'n.',posLabel:'名词',ch:'步、步骤、步伐',infl:{plural:'steps'}},
+{en:'stress',ph:"stres",pos:'n.',posLabel:'名词',ch:'压力、紧张、重音',infl:{plural:'stresses'}},
+{en:'style',ph:"stail",pos:'n.',posLabel:'名词',ch:'风格、文体、式样',infl:{plural:'styles'}},
+{en:'subject',ph:"'sʌbdʒikt",pos:'n.',posLabel:'名词',ch:'题目、学科、主语',infl:{plural:'subjects'}},
+{en:'success',ph:"sək'ses",pos:'n.',posLabel:'名词',ch:'成功、成就、胜利',infl:{plural:'successes'}},
+{en:'supply',ph:"sə'plai",pos:'n.',posLabel:'名词',ch:'补给、供给、供应',infl:{plural:'supplies'}},
+{en:'support',ph:"sə'pɔ:t",pos:'n.',posLabel:'名词',ch:'支持、援助、供养',infl:{plural:'supports'}},
+{en:'surprise',ph:"sə'praiz",pos:'n.',posLabel:'名词',ch:'惊奇、诧异、惊讶',infl:{plural:'surprises'}},
+{en:'symbol',ph:"'simbəl",pos:'n.',posLabel:'名词',ch:'象征、符号、记号',infl:{plural:'symbols'}},
+{en:'system',ph:"'sistəm",pos:'n.',posLabel:'名词',ch:'系统、体系、制度',infl:{plural:'systems'}},
+{en:'talent',ph:"'tælənt",pos:'n.',posLabel:'名词',ch:'天才、才能、人才',infl:{plural:'talents'}},
+{en:'taste',ph:"teist",pos:'n.',posLabel:'名词',ch:'味觉、味道、品味',infl:{plural:'tastes'}},
+{en:'thought',ph:"θɔ:t",pos:'n.',posLabel:'名词',ch:'思想、思维、想法',infl:{plural:'thoughts'}},
+{en:'time',ph:"taim",pos:'n.',posLabel:'名词',ch:'时间、时机、次数',infl:{plural:'times'}},
+{en:'tradition',ph:"trə'diʃən",pos:'n.',posLabel:'名词',ch:'传统、惯例',infl:{plural:'traditions'}},
+{en:'trouble',ph:"'trʌbl",pos:'n.',posLabel:'名词',ch:'烦恼、困难、烦恼',infl:{plural:'troubles'}},
+{en:'trust',ph:"trʌst",pos:'n.',posLabel:'名词',ch:'信任、信托',infl:{plural:'trusts'}},
+{en:'truth',ph:"tru:θ",pos:'n.',posLabel:'名词',ch:'真理、真实、真实性',infl:{plural:'truths'}},
+{en:'understanding',ph:".ʌndə'stændiŋ",pos:'n.',posLabel:'名词',ch:'理解、理解力、协定',infl:{plural:'—'}},
+{en:'unity',ph:"'ju:niti",pos:'n.',posLabel:'名词',ch:'单一、统一、团结',infl:{plural:'—'}},
+{en:'use',ph:"ju:s",pos:'n.',posLabel:'名词',ch:'用、运用、用法',infl:{plural:'uses'}},
+{en:'value',ph:"'vælju:",pos:'n.',posLabel:'名词',ch:'价值、重要性、价格',infl:{plural:'values'}},
+{en:'victory',ph:"'viktəri",pos:'n.',posLabel:'名词',ch:'胜利、战胜、成功',infl:{plural:'victories'}}
+],
+'Unit 9': [
+{en:'view',ph:"vju:",pos:'n.',posLabel:'名词',ch:'看、视力、风景',infl:{plural:'views'}},
+{en:'virtue',ph:"'və:tju:",pos:'n.',posLabel:'名词',ch:'善、美德、优点',infl:{plural:'virtues'}},
+{en:'voice',ph:"vɔis",pos:'n.',posLabel:'名词',ch:'说话声、声音、嗓音',infl:{plural:'voices'}},
+{en:'way',ph:"wei",pos:'n.',posLabel:'名词',ch:'路、路线、道路',infl:{plural:'ways'}},
+{en:'wealth',ph:"welθ",pos:'n.',posLabel:'名词',ch:'财富、财产、丰富',infl:{plural:'—'}},
+{en:'welfare',ph:"'welfɛə",pos:'n.',posLabel:'名词',ch:'幸福、福利、福利事业',infl:{plural:'—'}},
+{en:'will',ph:"wil",pos:'n.',posLabel:'名词',ch:'意志、决心、愿望',infl:{plural:'wills'}},
+{en:'wisdom',ph:"'wizdəm",pos:'n.',posLabel:'名词',ch:'智慧、才智、明智',infl:{plural:'—'}},
+{en:'wish',ph:"wiʃ",pos:'n.',posLabel:'名词',ch:'希望、渴望、愿望',infl:{plural:'wishes'}},
+{en:'wonder',ph:"'wʌndə",pos:'n.',posLabel:'名词',ch:'惊异、惊奇、奇迹',infl:{plural:'wonders'}},
+{en:'worry',ph:"'wʌri",pos:'n.',posLabel:'名词',ch:'烦恼、担心、忧虑',infl:{plural:'worries'}},
+{en:'zeal',ph:"zi:l",pos:'n.',posLabel:'名词',ch:'热心、热情、热忱',infl:{plural:'—'}},
+{en:'custom',ph:"'kʌstəm",pos:'n.',posLabel:'名词',ch:'习惯、风俗、海关',infl:{plural:'customs'}},
+{en:'education',ph:".edjukeiʃn",pos:'n.',posLabel:'名词',ch:'教育、培养、训导',infl:{plural:'educations'}},
+{en:'experience',ph:"iks'piəriəns",pos:'n.',posLabel:'名词',ch:'经验、感受、经历',infl:{plural:'experiences'}},
+{en:'freedom',ph:"'fri:dəm",pos:'n.',posLabel:'名词',ch:'自由、自主',infl:{plural:'freedoms'}},
+{en:'growth',ph:"grəuθ",pos:'n.',posLabel:'名词',ch:'增长、增长量、生长',infl:{plural:'—'}},
+{en:'honour',ph:"'ɔnə",pos:'n.',posLabel:'名词',ch:'光荣、尊敬、敬意',infl:{plural:'honours'}},
+{en:'influence',ph:"'influəns",pos:'n.',posLabel:'名词',ch:'影响、影响力、势力',infl:{plural:'influences'}},
+{en:'knowledge',ph:"'nɔlidʒ",pos:'n.',posLabel:'名词',ch:'知识、学识、知道',infl:{plural:'—'}},
+{en:'memory',ph:"'meməri",pos:'n.',posLabel:'名词',ch:'记忆、回忆、存储',infl:{plural:'memories'}},
+{en:'method',ph:"'meθəd",pos:'n.',posLabel:'名词',ch:'方法、办法、教学法',infl:{plural:'methods'}},
+{en:'origin',ph:"'ɔridʒin",pos:'n.',posLabel:'名词',ch:'起源、由来、出身',infl:{plural:'origins'}},
+{en:'power',ph:"'pauə",pos:'n.',posLabel:'名词',ch:'能力、力、权、权力',infl:{plural:'powers'}},
+{en:'reason',ph:"'ri:zn",pos:'n.',posLabel:'名词',ch:'理由、原因、理智',infl:{plural:'reasons'}},
+{en:'science',ph:"'saiəns",pos:'n.',posLabel:'名词',ch:'科学、科学研究',infl:{plural:'sciences'}}
+]
+}}
+};
+
+VOCAB_DATA[19] = {
+'工具与材料': { units: {
+'Unit 1': [
+{en:'apparatus',ph:".æpə'reitəs",pos:'n.',posLabel:'名词',ch:'装置、器具、器械、仪器',infl:{plural:'apparatuses'}},
+{en:'appliance',ph:"ə'plaiəns",pos:'n.',posLabel:'名词',ch:'用具、器具、器械、装置',infl:{plural:'appliances'}},
+{en:'axe',ph:"æks",pos:'n.',posLabel:'名词',ch:'斧头',infl:{plural:'axes'}},
+{en:'battery',ph:"'bætəri",pos:'n.',posLabel:'名词',ch:'电池、一套、一组',infl:{plural:'batteries'}},
+{en:'blade',ph:"bleid",pos:'n.',posLabel:'名词',ch:'刀刃、刀片、叶片',infl:{plural:'blades'}},
+{en:'board',ph:"bɔ:d",pos:'n.',posLabel:'名词',ch:'板、木板、甲板、董事会',infl:{plural:'boards'}},
+{en:'bolt',ph:"bəult",pos:'n.',posLabel:'名词',ch:'螺栓、螺钉、插销',infl:{plural:'bolts'}},
+{en:'brick',ph:"brik",pos:'n.',posLabel:'名词',ch:'砖、砖块、砖状物',infl:{plural:'bricks'}},
+{en:'brush',ph:"brʌʃ",pos:'n.',posLabel:'名词',ch:'刷子、毛刷、画笔',infl:{plural:'brushes'}},
+{en:'bucket',ph:"'bʌkit",pos:'n.',posLabel:'名词',ch:'水桶、吊桶、铲斗',infl:{plural:'buckets'}},
+{en:'bulb',ph:"bʌlb",pos:'n.',posLabel:'名词',ch:'电灯泡、球状物',infl:{plural:'bulbs'}},
+{en:'button',ph:"'bʌtn",pos:'n.',posLabel:'名词',ch:'扣子、按钮',infl:{plural:'buttons'}},
+{en:'cable',ph:"'keibl",pos:'n.',posLabel:'名词',ch:'缆、索、电缆',infl:{plural:'cables'}},
+{en:'cement',ph:"si'ment",pos:'n.',posLabel:'名词',ch:'水泥、胶泥',infl:{plural:'—'}},
+{en:'chain',ph:"tʃein",pos:'n.',posLabel:'名词',ch:'链、链条、项圈',infl:{plural:'chains'}},
+{en:'clay',ph:"klei",pos:'n.',posLabel:'名词',ch:'粘土、泥土、肉体',infl:{plural:'—'}},
+{en:'cloth',ph:"klɔθ",pos:'n.',posLabel:'名词',ch:'布、衣料、桌布',infl:{plural:'cloths'}},
+{en:'coal',ph:"kəul",pos:'n.',posLabel:'名词',ch:'煤、煤块、木炭',infl:{plural:'—'}},
+{en:'copper',ph:"'kɔpə",pos:'n.',posLabel:'名词',ch:'铜、铜币、铜制器',infl:{plural:'—'}},
+{en:'cord',ph:"kɔ:d",pos:'n.',posLabel:'名词',ch:'细绳、粗线、索',infl:{plural:'cords'}},
+{en:'cotton',ph:"'kɔtn",pos:'n.',posLabel:'名词',ch:'棉、棉花、棉线',infl:{plural:'—'}},
+{en:'crystal',ph:"'kristl",pos:'n.',posLabel:'名词',ch:'水晶、结晶体',infl:{plural:'crystals'}}
+],
+'Unit 2': [
+{en:'device',ph:"di'vais",pos:'n.',posLabel:'名词',ch:'器械、装置、设备',infl:{plural:'devices'}},
+{en:'diamond',ph:"'daiəmənd",pos:'n.',posLabel:'名词',ch:'金钢石、钻石、菱形',infl:{plural:'diamonds'}},
+{en:'drill',ph:"dril",pos:'n.',posLabel:'名词',ch:'钻头、钻孔机',infl:{plural:'drills'}},
+{en:'drum',ph:"drʌm",pos:'n.',posLabel:'名词',ch:'鼓、鼓声、鼓状物',infl:{plural:'drums'}},
+{en:'dye',ph:"dai",pos:'n.',posLabel:'名词',ch:'染料、染色',infl:{plural:'dyes'}},
+{en:'elastic',ph:"i'læstik",pos:'n.',posLabel:'名词',ch:'橡皮圈、有松紧的东西',infl:{plural:'—'}},
+{en:'equipment',ph:"i'kwipmənt",pos:'n.',posLabel:'名词',ch:'装备、设备、配备',infl:{plural:'—'}},
+{en:'fabric',ph:"'fæbrik",pos:'n.',posLabel:'名词',ch:'织物、布料、结构',infl:{plural:'fabrics'}},
+{en:'fibre',ph:"'faibə",pos:'n.',posLabel:'名词',ch:'纤维、纤维质',infl:{plural:'fibres'}},
+{en:'file',ph:"fail",pos:'n.',posLabel:'名词',ch:'档案、公文箱、锉刀',infl:{plural:'files'}},
+{en:'filter',ph:"'filtə",pos:'n.',posLabel:'名词',ch:'滤纸、筛选、滤波器',infl:{plural:'filters'}},
+{en:'fuel',ph:"'fjuəl",pos:'n.',posLabel:'名词',ch:'燃料、木炭',infl:{plural:'fuels'}},
+{en:'furniture',ph:"'fə:nitʃə",pos:'n.',posLabel:'名词',ch:'家具、装置、设备',infl:{plural:'—'}},
+{en:'gas',ph:"gæs",pos:'n.',posLabel:'名词',ch:'煤气、气体、汽油',infl:{plural:'gases'}},
+{en:'gear',ph:"giə",pos:'n.',posLabel:'名词',ch:'齿轮、传动装置',infl:{plural:'gears'}},
+{en:'glass',ph:"glɑ:s",pos:'n.',posLabel:'名词',ch:'玻璃、玻璃杯',infl:{plural:'glasses'}},
+{en:'glue',ph:"glu:",pos:'n.',posLabel:'名词',ch:'胶、胶水、粘性之物',infl:{plural:'—'}},
+{en:'gold',ph:"gəuld",pos:'n.',posLabel:'名词',ch:'金、金子、金币',infl:{plural:'—'}},
+{en:'hammer',ph:"'hæmə",pos:'n.',posLabel:'名词',ch:'锤、榔头',infl:{plural:'hammers'}},
+{en:'hardware',ph:"'hɑ:dwɛə",pos:'n.',posLabel:'名词',ch:'五金器具、硬件',infl:{plural:'—'}},
+{en:'hook',ph:"huk",pos:'n.',posLabel:'名词',ch:'钩、挂钩、钩子',infl:{plural:'hooks'}},
+{en:'instrument',ph:"'instrumənt",pos:'n.',posLabel:'名词',ch:'仪器、工具、乐器',infl:{plural:'instruments'}}
+],
+'Unit 3': [
+{en:'iron',ph:"'aiən",pos:'n.',posLabel:'名词',ch:'铁、烙铁、熨斗',infl:{plural:'irons'}},
+{en:'knife',ph:"naif",pos:'n.',posLabel:'名词',ch:'小刀、刀、餐刀',infl:{plural:'knives',irregular:true}},
+{en:'ladder',ph:"'lædə",pos:'n.',posLabel:'名词',ch:'梯子、阶梯、梯状物',infl:{plural:'ladders'}},
+{en:'leather',ph:"'leðə",pos:'n.',posLabel:'名词',ch:'皮革、皮革制品',infl:{plural:'—'}},
+{en:'machine',ph:"mə'ʃi:n",pos:'n.',posLabel:'名词',ch:'机器、机械、机械装置',infl:{plural:'machines'}},
+{en:'magnet',ph:"'mægnit",pos:'n.',posLabel:'名词',ch:'磁铁、磁石、磁体',infl:{plural:'magnets'}},
+{en:'metal',ph:"'metl",pos:'n.',posLabel:'名词',ch:'金属、质料、金属制品',infl:{plural:'metals'}},
+{en:'nail',ph:"neil",pos:'n.',posLabel:'名词',ch:'钉子、指甲',infl:{plural:'nails'}},
+{en:'needle',ph:"'ni:dl",pos:'n.',posLabel:'名词',ch:'针、缝补、编织针',infl:{plural:'needles'}},
+{en:'oil',ph:"ɔil",pos:'n.',posLabel:'名词',ch:'油、石油、油画颜料',infl:{plural:'oils'}},
+{en:'paper',ph:"'peipə",pos:'n.',posLabel:'名词',ch:'纸、报纸、论文',infl:{plural:'papers'}},
+{en:'plastic',ph:"'plæstik",pos:'n.',posLabel:'名词',ch:'塑料',infl:{plural:'plastics'}},
+{en:'plug',ph:"plʌg",pos:'n.',posLabel:'名词',ch:'塞子、插头',infl:{plural:'plugs'}},
+{en:'rope',ph:"rəup",pos:'n.',posLabel:'名词',ch:'绳、索',infl:{plural:'ropes'}},
+{en:'rubber',ph:"'rʌbə",pos:'n.',posLabel:'名词',ch:'橡皮、橡胶',infl:{plural:'rubbers'}},
+{en:'sand',ph:"sænd",pos:'n.',posLabel:'名词',ch:'沙、沙子、沙滩',infl:{plural:'—'}},
+{en:'silver',ph:"'silvə",pos:'n.',posLabel:'名词',ch:'银、银子、银器',infl:{plural:'—'}},
+{en:'steel',ph:"sti:l",pos:'n.',posLabel:'名词',ch:'钢、钢铁、钢制品',infl:{plural:'—'}},
+{en:'string',ph:"striŋ",pos:'n.',posLabel:'名词',ch:'线、细绳、一串',infl:{plural:'strings'}},
+{en:'tool',ph:"tu:l",pos:'n.',posLabel:'名词',ch:'工具、器具、用具',infl:{plural:'tools'}},
+{en:'wire',ph:"'waiə",pos:'n.',posLabel:'名词',ch:'金属线、电缆、电线',infl:{plural:'wires'}},
+{en:'wood',ph:"wud",pos:'n.',posLabel:'名词',ch:'树林、森林、木头',infl:{plural:'woods'}},
+{en:'wool',ph:"wul",pos:'n.',posLabel:'名词',ch:'羊毛、毛线、绒线',infl:{plural:'—'}}
+]
+}}
+};
+
+VOCAB_DATA[20] = {
+'其他': { units: {
+'Unit 1': [
+{en:'absence',ph:"'æbsəns",pos:'n.',posLabel:'名词',ch:'缺席、不在场、缺乏',infl:{plural:'absences'}},
+{en:'acceptance',ph:"ək'septəns",pos:'n.',posLabel:'名词',ch:'接受、同意、认可、验收',infl:{plural:'acceptances'}},
+{en:'accessory',ph:"æk'sesəri",pos:'n.',posLabel:'名词',ch:'同谋、从犯、附件',infl:{plural:'accessories'}},
+{en:'accord',ph:"ə'kɔ:d",pos:'n.',posLabel:'名词',ch:'一致、调和、协议',infl:{plural:'accords'}},
+{en:'accuracy',ph:"'ækjurəsi",pos:'n.',posLabel:'名词',ch:'准确、准确度',infl:{plural:'—'}},
+{en:'acquaintance',ph:"ə'kweintəns",pos:'n.',posLabel:'名词',ch:'认识、了解、熟人',infl:{plural:'acquaintances'}},
+{en:'acre',ph:"'eikə",pos:'n.',posLabel:'名词',ch:'英亩',infl:{plural:'acres'}},
+{en:'ad',ph:"æd",pos:'n.',posLabel:'名词',ch:'广告',infl:{plural:'ads'}},
+{en:'adjective',ph:"'ædʒiktiv",pos:'n.',posLabel:'名词',ch:'形容词',infl:{plural:'adjectives'}},
+{en:'adverb',ph:"'ædvə:b",pos:'n.',posLabel:'名词',ch:'副词',infl:{plural:'adverbs'}},
+{en:'alphabet',ph:"'ælfəbet",pos:'n.',posLabel:'名词',ch:'字母表、字母系统',infl:{plural:'alphabets'}},
+{en:'altitude',ph:"'æltitju:d",pos:'n.',posLabel:'名词',ch:'高、高度、海拔',infl:{plural:'altitudes'}},
+{en:'aluminium',ph:".ælju'miniəm",pos:'n.',posLabel:'名词',ch:'铝',infl:{plural:'—'}},
+{en:'ampere',ph:"'æmpeə",pos:'n.',posLabel:'名词',ch:'安培',infl:{plural:'amperes'}},
+{en:'anchor',ph:"'æŋkə",pos:'n.',posLabel:'名词',ch:'铁锚',infl:{plural:'anchors'}},
+{en:'angle',ph:"'æŋgl",pos:'n.',posLabel:'名词',ch:'角、角度、角落',infl:{plural:'angles'}},
+{en:'Arabian',ph:"ə'reibiən",pos:'n.',posLabel:'名词',ch:'阿拉伯人',infl:{plural:'Arabians'}},
+{en:'arithmetic',ph:"ə'riθmətik",pos:'n.',posLabel:'名词',ch:'算术、四则运算',infl:{plural:'—'}},
+{en:'ash',ph:"æʃ",pos:'n.',posLabel:'名词',ch:'灰、灰烬、灰末、骨灰',infl:{plural:'—'}},
+{en:'astronaut',ph:"'æstrənɔ:t",pos:'n.',posLabel:'名词',ch:'宇宙航行员、宇航员',infl:{plural:'astronauts'}},
+{en:'attribute',ph:"'ætribju:t",pos:'n.',posLabel:'名词',ch:'属性、特征、标志',infl:{plural:'attributes'}},
+{en:'auxiliary',ph:"ɔ:g'ziljəri",pos:'n.',posLabel:'名词',ch:'帮助者、辅助物、助动词',infl:{plural:'auxiliaries'}},
+{en:'aviation',ph:".eivi'eiʃn",pos:'n.',posLabel:'名词',ch:'航空、航空学、飞机制造业',infl:{plural:'—'}},
+{en:'ax',ph:"æks",pos:'n.',posLabel:'名词',ch:'斧子',infl:{plural:'axes'}},
+{en:'axis',ph:"'æksis",pos:'n.',posLabel:'名词',ch:'轴、轴线、中心线、中枢',infl:{plural:'axes',irregular:true}},
+{en:'bacteria',ph:"bæk'tiəriə",pos:'n.',posLabel:'名词',ch:'细菌',infl:{plural:'bacteria'}},
+{en:'basis',ph:"'beisis",pos:'n.',posLabel:'名词',ch:'基础、根据、主要成分',infl:{plural:'bases',irregular:true}},
+{en:'beam',ph:"bi:m",pos:'n.',posLabel:'名词',ch:'梁、横梁、束、柱',infl:{plural:'beams'}},
+{en:'bough',ph:"bau",pos:'n.',posLabel:'名词',ch:'大树枝',infl:{plural:'boughs'}},
+{en:'breadth',ph:"bredθ",pos:'n.',posLabel:'名词',ch:'宽度、幅度、幅面',infl:{plural:'—'}},
+{en:'breeze',ph:"bri:z",pos:'n.',posLabel:'名词',ch:'微风、和风、轻而易举的事',infl:{plural:'breezes'}},
+{en:'bulk',ph:"bʌlk",pos:'n.',posLabel:'名词',ch:'物体、容积、大批',infl:{plural:'—'}},
+{en:'burden',ph:"'bə:dn",pos:'n.',posLabel:'名词',ch:'担子、负担、重担',infl:{plural:'burdens'}},
+{en:'bureau',ph:"'bjuərəu",pos:'n.',posLabel:'名词',ch:'局、司、处、社',infl:{plural:'bureaus'}},
+{en:'calculator',ph:"'kælkju.leitə",pos:'n.',posLabel:'名词',ch:'计算器、计算者',infl:{plural:'calculators'}},
+{en:'calendar',ph:"'kælində",pos:'n.',posLabel:'名词',ch:'日历、月历、日程表',infl:{plural:'calendars'}},
+{en:'cannon',ph:"'kænən",pos:'n.',posLabel:'名词',ch:'大炮、火炮、榴弹炮',infl:{plural:'cannons'}},
+{en:'canoe',ph:"kə'nu:",pos:'n.',posLabel:'名词',ch:'独木舟、皮艇、划子',infl:{plural:'canoes'}},
+{en:'canvas',ph:"'kænvəs",pos:'n.',posLabel:'名词',ch:'粗帆布、油画布',infl:{plural:'canvases'}},
+{en:'cassette',ph:"kə'set",pos:'n.',posLabel:'名词',ch:'盒式录音带',infl:{plural:'cassettes'}}
+]
+}}
+};
+
+
+/* ================================================================
+   以下为 JS 逻辑
+   ================================================================ */
+const homeButtons = document.getElementById('homeButtons');
+const PART_NAMES = ['人物与身份', '身体与健康', '家庭与关系', '食物与饮食', '动物与植物', '自然与地理', '时间与日期', '地点与建筑', '交通与出行', '教育与学习', '工作与职业', '商业与经济', '科技与信息', '艺术与文化', '运动与娱乐', '情感与心理', '社会与政治', '抽象概念', '工具与材料', '其他'];
+
+function countWords(part){
+  let n = 0;
+  const data = VOCAB_DATA[part];
+  if (!data) return 0;
+  Object.values(data).forEach(theme => {
+    Object.values(theme.units).forEach(arr => { n += arr.length; });
+  });
+  return n;
+}
+
+[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].forEach(part => {
+  const btn = document.createElement('button');
+  btn.className = 'home-btn';
+  btn.innerHTML = `${PART_NAMES[part-1]} <span class="badge">${countWords(part)} 词</span>`;
+  btn.addEventListener('click', () => openPart(part));
+  homeButtons.appendChild(btn);
+});
+
+const PART_STATE = {};
+
+function buildPartPage(part){
+  const data = VOCAB_DATA[part];
+  if (!data) {
+    const inner = document.getElementById('partInner' + part);
+    inner.innerHTML = '<button class="back-btn" data-back="' + part + '">← 返回主页</button><p style="text-align:center;padding:2rem;color:#799e7a;">数据整理中，敬请期待</p>';
+    inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+    return;
+  }
+  const themeList = Object.keys(data);
+  const unitMap = {};
+  const allVocab = [];
+
+  themeList.forEach(theme => {
+    const unitNames = Object.keys(data[theme].units);
+    unitMap[theme] = unitNames;
+    unitNames.forEach(unitName => {
+      data[theme].units[unitName].forEach(w => {
+        allVocab.push({ ...w, theme, unit:unitName });
+      });
+    });
+  });
+
+  const state = {
+    part, themeList, unitMap, allVocab,
+    currentTheme: themeList[0],
+    currentUnit: unitMap[themeList[0]][0],
+    currentIndex: 0,
+    difficultSet: new Set(),
+    currentWords: []
+  };
+  state.currentWords = allVocab.filter(w => w.theme === state.currentTheme && w.unit === state.currentUnit);
+  PART_STATE[part] = state;
+
+  const inner = document.getElementById('partInner' + part);
+  inner.innerHTML = `
+    <button class="back-btn" data-back="${part}">← 返回主页</button>
+    <div class="header">
+      <h1>Reborner 基础核心词汇</h1>
+      <div class="sub1">名词 · ${PART_NAMES[part-1]}</div>
+      <div class="sub2">名词全量版</div>
+      <div class="sub3">📂 ${themeList.length} 大主题 · ${Object.values(unitMap).reduce((a,b)=>a+b.length,0)} 个单元 · 共 ${allVocab.length} 个词条</div>
+    </div>
+    <div class="chapter-scroll"><div class="chap-flex"><button class="chap-btn active">${PART_NAMES[part-1]}</button></div></div>
+    <div class="subchapter-scroll"><div class="sub-flex" id="subFlex${part}"></div></div>
+    <div class="unit-scroll"><div class="unit-flex" id="unitFlex${part}"></div></div>
+    <div class="flip-container">
+      <div class="flipper" id="flipper${part}">
+        <div class="front"><div class="en-word" id="mainEn${part}">—</div></div>
+        <div class="back">
+          <div class="en-word" id="backEn${part}">—</div>
+          <div class="ph-word" id="phInfo${part}"></div>
+          <div class="pos" id="posInfo${part}"></div>
+          <div class="inflection-box" id="inflBox${part}"></div>
+          <div class="ch-word" id="mainCh${part}"></div>
+          <div class="other-group" id="otherGroup${part}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" data-act="prev" data-p="${part}">← 前</button>
+      <button class="nav-btn" data-act="next" data-p="${part}">后 →</button>
+      <button class="nav-btn" data-act="speak" data-p="${part}">🔊 发音</button>
+    </div>
+    <div class="thumb-header">
+      <span>📌 当前单元词汇 · 勾选难词</span>
+      <div class="actions">
+        <button class="select-all-btn" data-act="all" data-p="${part}">✅ 全选</button>
+        <button class="select-all-btn" data-act="none" data-p="${part}">⬜ 取消</button>
+        <button data-act="export" data-p="${part}">📎 导出难词</button>
+      </div>
+    </div>
+    <div class="thumb-grid-container"><div class="thumb-grid" id="thumbGrid${part}"></div></div>
+    <div class="tip">✓ 点击卡片翻转 · 勾选方格标记难词 · 三级分类层层筛选</div>
+  `;
+
+  inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+  inner.querySelectorAll('[data-act]').forEach(b => {
+    b.addEventListener('click', () => handleAction(b.dataset.act, part));
+  });
+  document.getElementById('flipper' + part).addEventListener('click', function(){
+    this.classList.toggle('flipped');
+  });
+
+  renderThemes(part);
+  renderUnits(part);
+  renderCard(part);
+  renderThumbs(part);
+}
+
+function renderThemes(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('subFlex' + part);
+  box.innerHTML = '';
+  s.themeList.forEach(theme => {
+    const btn = document.createElement('button');
+    btn.className = 'sub-btn' + (theme === s.currentTheme ? ' active-sub' : '');
+    const cnt = s.allVocab.filter(w => w.theme === theme).length;
+    btn.innerHTML = `${theme}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentTheme = theme;
+      s.currentUnit = s.unitMap[theme][0];
+      renderThemes(part); renderUnits(part);
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === s.currentUnit);
+      s.currentIndex = 0;
+      renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderUnits(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('unitFlex' + part);
+  box.innerHTML = '';
+  s.unitMap[s.currentTheme].forEach(unitName => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-btn' + (unitName === s.currentUnit ? ' active-unit' : '');
+    const cnt = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName).length;
+    btn.innerHTML = `${unitName}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentUnit = unitName;
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName);
+      s.currentIndex = 0;
+      renderUnits(part); renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderCard(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const mainEn = document.getElementById('mainEn' + part);
+  const backEn = document.getElementById('backEn' + part);
+  const phInfo = document.getElementById('phInfo' + part);
+  const posInfo = document.getElementById('posInfo' + part);
+  const inflBox = document.getElementById('inflBox' + part);
+  const mainCh = document.getElementById('mainCh' + part);
+  const otherGroup = document.getElementById('otherGroup' + part);
+  const flipper = document.getElementById('flipper' + part);
+  flipper.classList.remove('flipped');
+
+  if (!s.currentWords.length) {
+    mainEn.textContent = '无'; backEn.textContent = '';
+    phInfo.textContent = ''; posInfo.textContent = ''; inflBox.innerHTML = ''; mainCh.textContent = ''; otherGroup.textContent = '';
+    return;
+  }
+  const w = s.currentWords[s.currentIndex];
+  mainEn.textContent = w.en; backEn.textContent = w.en;
+  phInfo.textContent = w.ph ? '/' + w.ph + '/' : '';
+  posInfo.textContent = w.posLabel || w.pos || '';
+  mainCh.textContent = w.ch;
+  otherGroup.textContent = '';
+
+  let inflHtml = '';
+  if (w.infl) {
+    const rows = [];
+    if (w.infl.plural) {
+      const isUncountable = w.infl.plural === '—';
+      rows.push(['复数', isUncountable ? '不可数' : w.infl.plural, w.infl.irregular]);
+    }
+    rows.forEach(([label, val, irregular]) => {
+      inflHtml += `<div class="inflection-row ${irregular?'irregular':''}"><span class="inflection-label">${label}:</span><span>${val}</span></div>`;
+    });
+  }
+  inflBox.innerHTML = inflHtml;
+  speak(w.en);
+}
+
+function renderThumbs(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('thumbGrid' + part);
+  box.innerHTML = '';
+  s.currentWords.forEach((w, idx) => {
+    const key = w.en + '|' + w.ch;
+    const card = document.createElement('div');
+    card.className = 'thumb-item';
+    card.innerHTML = `<input type="checkbox" class="diff-check" data-key="${key.replace(/"/g,'&quot;')}" ${s.difficultSet.has(key)?'checked':''}><label>${w.en}</label>`;
+    card.addEventListener('click', e => {
+      if (e.target.tagName !== 'INPUT') { s.currentIndex = idx; renderCard(part); }
+    });
+    const chk = card.querySelector('.diff-check');
+    chk.addEventListener('change', e => {
+      e.stopPropagation();
+      const k = e.target.dataset.key;
+      if (e.target.checked) s.difficultSet.add(k); else s.difficultSet.delete(k);
+    });
+    box.appendChild(card);
+  });
+}
+
+function handleAction(act, part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  if (act === 'prev') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex - 1 + s.currentWords.length) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'next') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex + 1) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'speak') {
+    if (s.currentWords[s.currentIndex]) speak(s.currentWords[s.currentIndex].en);
+  } else if (act === 'all') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = true; s.difficultSet.add(c.dataset.key);
+    });
+  } else if (act === 'none') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = false; s.difficultSet.delete(c.dataset.key);
+    });
+  } else if (act === 'export') {
+    exportCsv(part);
+  }
+}
+
+function exportCsv(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const selected = s.allVocab.filter(v => s.difficultSet.has(v.en + '|' + v.ch));
+  if (!selected.length) { alert('没有勾选难词'); return; }
+  const seen = new Set();
+  let csv = '英文,音标,词性,中文含义,变形,主题,单元\n';
+  selected.forEach(w => {
+    const key = w.en;
+    if (seen.has(key)) return;
+    seen.add(key);
+    let inflStr = '';
+    if (w.infl) {
+      const parts = [];
+      if (w.infl.plural) {
+        const isUncountable = w.infl.plural === '—';
+        parts.push('复数:' + (isUncountable ? '不可数' : w.infl.plural));
+      }
+      inflStr = parts.join('; ');
+    }
+    csv += `"${w.en}","${w.ph||''}","${w.posLabel||w.pos||''}","${w.ch}","${inflStr}","${w.theme}","${w.unit}"\n`;
+  });
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `basic_noun_difficult_${PART_NAMES[part-1]}.csv`;
+  link.click();
+}
+
+function openPart(part){
+  if (!PART_STATE[part]) buildPartPage(part);
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  home.classList.add('slide-left');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      page.classList.add('slide-in');
+      page.scrollTop = 0;
+    });
+  });
+}
+function closePart(part){
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  page.classList.remove('slide-in');
+  home.classList.remove('slide-left');
+}
+
+function speak(text){
+  if (window.parent && window.parent !== window) {
+    try {
+      window.parent.postMessage({ type: 'speak', text: text }, '*');
+      return;
+    } catch(e) {}
+  }
+  if ('speechSynthesis' in window) {
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+}
+</script>
+<a class="go-home" href="./">← 返回入口</a>
+</body>
+</html>

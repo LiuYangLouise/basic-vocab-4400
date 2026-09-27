@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Reborner 基础核心词汇 · 其他</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; }
+html,body { height:100%; overflow:hidden; }
+body { background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); }
+#homePage { position:fixed; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:2rem 1rem; overflow-y:auto; -webkit-overflow-scrolling:touch; transition:transform .5s cubic-bezier(.65,0,.35,1); }
+#homePage.slide-left { transform:translateX(-30%); }
+.home-header { text-align:center; margin-bottom:1.8rem; flex-shrink:0; }
+.home-header h1 { font-size:1.8rem; font-weight:380; color:#2d543b; line-height:1.3; margin-bottom:.3rem; }
+.home-header .sub1 { font-size:1.15rem; color:#4f7b5a; font-weight:340; }
+.home-header .sub2 { font-size:.95rem; color:#618967; font-weight:300; margin-top:.2rem; }
+.home-buttons { display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; width:100%; max-width:420px; padding-bottom:2.5rem; }
+.home-btn { background:#fcfff8; border:1px solid #d2e2c7; border-radius:30px; padding:.9rem .6rem; font-size:.95rem; font-weight:460; color:#2b5538; cursor:pointer; box-shadow:0 4px 12px rgba(150,180,140,.16); transition:all .2s ease; text-align:center; line-height:1.4; }
+.home-btn:hover { background:#eef9e6; border-color:#9abb90; transform:translateY(-2px); }
+.home-btn:active { transform:translateY(0); }
+.home-btn .badge { display:block; font-size:.68rem; background:#c3ddb6; border-radius:20px; padding:.1rem .45rem; margin:.25rem auto 0; color:#23522e; font-weight:400; width:fit-content; }
+.part-page { position:fixed; inset:0; z-index:100; background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); transform:translateX(100%); transition:transform .5s cubic-bezier(.65,0,.35,1); overflow-y:auto; -webkit-overflow-scrolling:touch; padding:1.5rem 1rem 2rem 1rem; }
+.part-page.slide-in { transform:translateX(0); }
+.part-inner { max-width:620px; width:100%; margin:0 auto; }
+.back-btn { position:sticky; top:0; z-index:50; display:inline-flex; align-items:center; gap:.35rem; background:rgba(252,255,248,.92); backdrop-filter:blur(8px); border:1px solid #cde0c3; border-radius:40px; padding:.5rem 1.1rem; font-size:.95rem; color:#295e36; cursor:pointer; margin-bottom:.8rem; box-shadow:0 2px 8px rgba(150,180,140,.18); }
+.back-btn:active { transform:scale(.96); }
+.header { margin-bottom:1.5rem; text-align:center; }
+.header h1 { font-size:2.1rem; font-weight:380; color:#2d543b; line-height:1.3; letter-spacing:-.2px; margin-bottom:.2rem; }
+.header .sub1 { font-size:1.5rem; color:#4f7b5a; font-weight:340; line-height:1.4; }
+.header .sub2 { font-size:1.2rem; color:#618967; font-weight:300; line-height:1.4; }
+.header .sub3 { font-size:.9rem; color:#7a9f7e; font-weight:300; margin-top:.2rem; }
+.chapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:.2rem 0 .4rem 0; scrollbar-width:none; }
+.chapter-scroll::-webkit-scrollbar { display:none; }
+.chap-flex { display:inline-flex; gap:.7rem; padding:0 .2rem; }
+.chap-btn { background:#f3fcee; border:1px solid #d2e2c7; border-radius:40px; padding:.6rem 1.8rem; font-size:1.2rem; font-weight:430; color:#2b5538; white-space:nowrap; box-shadow:0 2px 6px rgba(150,180,140,.08); cursor:pointer; }
+.chap-btn.active { background:#cde5c2; border-color:#8bb282; color:#1b4125; font-weight:500; }
+.subchapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .4rem 0; scrollbar-width:none; }
+.subchapter-scroll::-webkit-scrollbar { display:none; }
+.sub-flex { display:inline-flex; gap:.6rem; padding:0 .2rem; }
+.sub-btn { background:#ecf7e4; border:1px solid #cde0c0; border-radius:30px; padding:.4rem 1.3rem; font-size:.96rem; font-weight:400; color:#336941; white-space:nowrap; box-shadow:0 1px 4px rgba(120,150,100,.1); cursor:pointer; }
+.sub-btn.active-sub { background:#d4ebc5; border-color:#9abb90; color:#1e4529; font-weight:460; }
+.unit-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .8rem 0; scrollbar-width:none; }
+.unit-scroll::-webkit-scrollbar { display:none; }
+.unit-flex { display:inline-flex; gap:.5rem; padding:0 .2rem; }
+.unit-btn { background:#f5fcf0; border:1px solid #dae8cf; border-radius:20px; padding:.3rem 1.1rem; font-size:.85rem; font-weight:380; color:#3d734a; white-space:nowrap; box-shadow:0 1px 3px rgba(120,150,100,.06); cursor:pointer; }
+.unit-btn.active-unit { background:#d0e8c2; border-color:#9ec092; color:#1a4024; font-weight:460; }
+.word-count-badge { font-size:.7rem; background:#c3ddb6; border-radius:20px; padding:.1rem .5rem; margin-left:.4rem; color:#23522e; }
+.flip-container { perspective:1000px; width:100%; margin:.8rem 0 1.2rem 0; }
+.flipper { position:relative; width:100%; height:auto; transition:transform .4s ease; transform-style:preserve-3d; }
+.flipper.flipped { transform:rotateY(180deg); }
+.front,.back { backface-visibility:hidden; -webkit-backface-visibility:hidden; position:relative; top:0; left:0; width:100%; border-radius:42px; padding:2.2rem 1.2rem; background:#fcfff8; border:1px solid #e3f0da; box-shadow:0 10px 20px rgba(130,160,120,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:220px; }
+.back { position:absolute; transform:rotateY(180deg); min-height:220px; }
+.en-word { font-size:2.8rem; font-weight:370; color:#1c4a2a; line-height:1.3; word-break:break-word; text-align:center; width:100%; }
+.ph-word { font-size:1rem; color:#7a9f7e; font-weight:340; margin-top:.3rem; text-align:center; width:100%; }
+.pos { font-size:1.1rem; color:#719b79; font-weight:380; text-align:center; width:100%; margin-top:.2rem; }
+.ch-word { font-size:1.6rem; font-weight:340; color:#316a42; margin-top:.6rem; text-align:center; width:100%; }
+.nav-row { display:flex; align-items:center; justify-content:center; gap:.8rem; margin:1.2rem 0 1.8rem 0; flex-wrap:wrap; }
+.nav-btn { background:#f1fde9; border:1px solid #cde0c3; border-radius:60px; padding:.6rem 1.5rem; font-size:1.1rem; color:#295e36; box-shadow:0 2px 6px rgba(0,0,0,.02); cursor:pointer; }
+.thumb-header { display:flex; justify-content:space-between; align-items:center; margin:1rem 0 .8rem; flex-wrap:wrap; gap:.5rem; }
+.thumb-header span { font-size:1.1rem; color:#3d6d4b; font-weight:330; }
+.thumb-header .actions { display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; }
+.thumb-header .actions button { background:#dbeace; border:1px solid #adc9a2; border-radius:40px; padding:.3rem 1.1rem; font-size:.9rem; color:#23562f; cursor:pointer; white-space:nowrap; }
+.thumb-grid-container { max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch; border-radius:20px; padding:.2rem .2rem .5rem .2rem; }
+.thumb-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; padding:.2rem; }
+.thumb-item { background:#f9fff3; border:1px solid #dbefd0; border-radius:24px; padding:.6rem .2rem .6rem .5rem; display:flex; align-items:center; gap:.2rem; box-shadow:0 2px 6px rgba(160,180,140,.1); min-width:0; }
+.thumb-item input[type="checkbox"] { width:1.1rem; height:1.1rem; accent-color:#86b07c; border-radius:4px; flex-shrink:0; }
+.thumb-item label { font-size:.85rem; color:#2e623d; font-weight:420; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; cursor:pointer; }
+.tip { color:#799e7a; font-size:.9rem; margin-top:.8rem; text-align:center; }
+@media (max-width:480px) {
+  .thumb-grid { grid-template-columns:repeat(3,1fr); }
+  .en-word { font-size:2.2rem; }
+  .ch-word { font-size:1.4rem; }
+  .front,.back { padding:1.6rem 1rem; min-height:180px; }
+  .header h1 { font-size:1.6rem; }
+  .home-header h1 { font-size:1.5rem; }
+  .chap-btn { font-size:1rem; padding:.4rem 1.2rem; }
+  .sub-btn { font-size:.85rem; padding:.3rem 1rem; }
+  .unit-btn { font-size:.75rem; padding:.2rem .8rem; }
+}
+
+/* ==== 返回入口悬浮按钮 ==== */
+.go-home {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 99999;
+  background: rgba(252,255,248,0.95);
+  border: 1px solid #cde0c3;
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #2d543b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(100,140,90,0.22);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s;
+}
+.go-home:hover { background: #eef9e6; transform: translateY(-1px); }
+.go-home:active { transform: scale(.96); }
+
+</style>
+</head>
+<body>
+
+<div id="homePage">
+  <div class="home-header">
+    <h1>Reborner 基础核心词汇</h1>
+    <div class="sub1">其他 · 全量版</div>
+    <div class="sub2">天天进步，每日新生</div>
+  </div>
+  <div class="home-buttons" id="homeButtons"></div>
+</div>
+
+<div class="part-page" id="partPage1"><div class="part-inner" id="partInner1"></div></div>
+<div class="part-page" id="partPage2"><div class="part-inner" id="partInner2"></div></div>
+<div class="part-page" id="partPage3"><div class="part-inner" id="partInner3"></div></div>
+<div class="part-page" id="partPage4"><div class="part-inner" id="partInner4"></div></div>
+
+<script>
+const VOCAB_DATA = {};
+
+VOCAB_DATA[1] = {
+'感叹词': { units: {
+'Unit 1': [
+{en:'ah',ph:"ɑ:",pos:'int.',posLabel:'感叹词',ch:'啊、呀',infl:{}},
+{en:'oh',ph:"əu",pos:'int.',posLabel:'感叹词',ch:'嗬、哦、唉呀',infl:{}},
+{en:'wow',ph:"wau",pos:'int.',posLabel:'感叹词',ch:'哇',infl:{}},
+{en:'hey',ph:"hei",pos:'int.',posLabel:'感叹词',ch:'嗨、嘿',infl:{}},
+{en:'hi',ph:"hai",pos:'int.',posLabel:'感叹词',ch:'嗨、喂',infl:{}},
+{en:'hello',ph:"hə'ləu",pos:'int.',posLabel:'感叹词',ch:'喂、哈罗',infl:{}},
+{en:'goodbye',ph:".gud'bai",pos:'int.',posLabel:'感叹词',ch:'再见、再会',infl:{}},
+{en:'bye',ph:"bai",pos:'int.',posLabel:'感叹词',ch:'再见',infl:{}},
+{en:'farewell',ph:"'fɛə'wel",pos:'int.',posLabel:'感叹词',ch:'再会、别了',infl:{}},
+{en:'yes',ph:"jes",pos:'int.',posLabel:'感叹词',ch:'是、是的',infl:{}},
+{en:'no',ph:"nəu",pos:'int.',posLabel:'感叹词',ch:'不、不是',infl:{}},
+{en:'well',ph:"wel",pos:'int.',posLabel:'感叹词',ch:'好吧、啊、嘿',infl:{}},
+{en:'dear',ph:"diə",pos:'int.',posLabel:'感叹词',ch:'啊、哎呀',infl:{}},
+{en:'alas',ph:"ə'læs",pos:'int.',posLabel:'感叹词',ch:'唉、哎呀',infl:{}},
+{en:'bravo',ph:"'brɑ:'vəu",pos:'int.',posLabel:'感叹词',ch:'好啊',infl:{}},
+{en:'hurrah',ph:"hu'rɑ:",pos:'int.',posLabel:'感叹词',ch:'好哇、万岁',infl:{}},
+{en:'hush',ph:"hʌʃ",pos:'int.',posLabel:'感叹词',ch:'嘘、别作声',infl:{}},
+{en:'nonsense',ph:"'nɔnsəns",pos:'int.',posLabel:'感叹词',ch:'胡说',infl:{}},
+{en:'congratulations',ph:"kən.grætju'leiʃənz",pos:'int.',posLabel:'感叹词',ch:'祝贺',infl:{}},
+{en:'cheers',ph:"tʃiəz",pos:'int.',posLabel:'感叹词',ch:'干杯',infl:{}},
+{en:'welcome',ph:"'welkəm",pos:'int.',posLabel:'感叹词',ch:'欢迎',infl:{}},
+{en:'please',ph:"pli:z",pos:'int.',posLabel:'感叹词',ch:'请',infl:{}},
+{en:'thanks',ph:"θæŋks",pos:'int.',posLabel:'感叹词',ch:'谢谢',infl:{}},
+{en:'sorry',ph:"'sɔri",pos:'int.',posLabel:'感叹词',ch:'对不起',infl:{}},
+{en:'pardon',ph:"'pɑ:dn",pos:'int.',posLabel:'感叹词',ch:'原谅、请再说一遍',infl:{}},
+{en:'congrats',ph:"kən'græts",pos:'int.',posLabel:'感叹词',ch:'恭喜',infl:{}},
+{en:'oops',ph:"u:ps",pos:'int.',posLabel:'感叹词',ch:'哎哟',infl:{}},
+{en:'ouch',ph:"autʃ",pos:'int.',posLabel:'感叹词',ch:'哎哟、痛呀',infl:{}},
+{en:'shh',ph:"ʃ",pos:'int.',posLabel:'感叹词',ch:'嘘',infl:{}},
+{en:'hooray',ph:"hu'rei",pos:'int.',posLabel:'感叹词',ch:'万岁、好哇',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[2] = {
+'缩略词': { units: {
+'Unit 1': [
+{en:'ad',ph:"æd",pos:'abbr.',posLabel:'缩略词',ch:'广告（advertisement）',infl:{}},
+{en:'AI',ph:"ai",pos:'abbr.',posLabel:'缩略词',ch:'人工智能',infl:{}},
+{en:'a.m',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'上午、午前',infl:{}},
+{en:'p.m',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'下午、午后',infl:{}},
+{en:'B.C.',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'公元前',infl:{}},
+{en:'A.D.',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'公元',infl:{}},
+{en:'etc.',ph:"et'setərə",pos:'abbr.',posLabel:'缩略词',ch:'等等',infl:{}},
+{en:'e.g.',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'例如',infl:{}},
+{en:'i.e.',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'即、那就是',infl:{}},
+{en:'TV',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'电视',infl:{}},
+{en:'PC',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'个人电脑',infl:{}},
+{en:'CD',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'光盘',infl:{}},
+{en:'DVD',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'数字光盘',infl:{}},
+{en:'VIP',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'贵宾',infl:{}},
+{en:'ATM',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'自动取款机',infl:{}},
+{en:'GPS',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'全球定位系统',infl:{}},
+{en:'ID',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'身份证',infl:{}},
+{en:'PhD',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'博士学位',infl:{}},
+{en:'MBA',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'工商管理硕士',infl:{}},
+{en:'CEO',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'首席执行官',infl:{}},
+{en:'WTO',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'世界贸易组织',infl:{}},
+{en:'UN',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'联合国',infl:{}},
+{en:'USA',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'美国',infl:{}},
+{en:'UK',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'英国',infl:{}},
+{en:'P.R.C.',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'中华人民共和国',infl:{}},
+{en:'CPU',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'中央处理器',infl:{}},
+{en:'DIY',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'自己动手做',infl:{}},
+{en:'EQ',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'情商',infl:{}},
+{en:'IQ',ph:"",pos:'abbr.',posLabel:'缩略词',ch:'智商',infl:{}},
+{en:'OK',ph:"əʊ'kei",pos:'abbr.',posLabel:'缩略词',ch:'好的、同意',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[3] = {
+'短语': { units: {
+'Unit 1': [
+{en:'a lot of',ph:"",pos:'phr.',posLabel:'短语',ch:'许多',infl:{}},
+{en:'a bit',ph:"",pos:'phr.',posLabel:'短语',ch:'一点',infl:{}},
+{en:'a few',ph:"",pos:'phr.',posLabel:'短语',ch:'一些',infl:{}},
+{en:'a little',ph:"",pos:'phr.',posLabel:'短语',ch:'一点',infl:{}},
+{en:'a great deal of',ph:"",pos:'phr.',posLabel:'短语',ch:'大量的',infl:{}},
+{en:'a number of',ph:"",pos:'phr.',posLabel:'短语',ch:'许多',infl:{}},
+{en:'a variety of',ph:"",pos:'phr.',posLabel:'短语',ch:'各种各样的',infl:{}},
+{en:'according to',ph:"",pos:'phr.',posLabel:'短语',ch:'根据',infl:{}},
+{en:'add up to',ph:"",pos:'phr.',posLabel:'短语',ch:'总计',infl:{}},
+{en:'after all',ph:"",pos:'phr.',posLabel:'短语',ch:'毕竟',infl:{}},
+{en:'again and again',ph:"",pos:'phr.',posLabel:'短语',ch:'再三地',infl:{}},
+{en:'all in all',ph:"",pos:'phr.',posLabel:'短语',ch:'总的来说',infl:{}},
+{en:'all of a sudden',ph:"",pos:'phr.',posLabel:'短语',ch:'突然',infl:{}},
+{en:'all the time',ph:"",pos:'phr.',posLabel:'短语',ch:'一直',infl:{}},
+{en:'apart from',ph:"",pos:'phr.',posLabel:'短语',ch:'除...之外',infl:{}},
+{en:'as a result',ph:"",pos:'phr.',posLabel:'短语',ch:'结果',infl:{}},
+{en:'as a whole',ph:"",pos:'phr.',posLabel:'短语',ch:'总体上',infl:{}},
+{en:'as far as',ph:"",pos:'phr.',posLabel:'短语',ch:'就...而言',infl:{}},
+{en:'as if',ph:"",pos:'phr.',posLabel:'短语',ch:'好像',infl:{}},
+{en:'as long as',ph:"",pos:'phr.',posLabel:'短语',ch:'只要',infl:{}},
+{en:'as soon as',ph:"",pos:'phr.',posLabel:'短语',ch:'一...就',infl:{}},
+{en:'as usual',ph:"",pos:'phr.',posLabel:'短语',ch:'像往常一样',infl:{}},
+{en:'as well',ph:"",pos:'phr.',posLabel:'短语',ch:'也',infl:{}},
+{en:'as well as',ph:"",pos:'phr.',posLabel:'短语',ch:'也、和',infl:{}},
+{en:'at first',ph:"",pos:'phr.',posLabel:'短语',ch:'起初',infl:{}},
+{en:'at last',ph:"",pos:'phr.',posLabel:'短语',ch:'最后',infl:{}},
+{en:'at least',ph:"",pos:'phr.',posLabel:'短语',ch:'至少',infl:{}},
+{en:'at most',ph:"",pos:'phr.',posLabel:'短语',ch:'至多',infl:{}},
+{en:'at once',ph:"",pos:'phr.',posLabel:'短语',ch:'立刻',infl:{}},
+{en:'at present',ph:"",pos:'phr.',posLabel:'短语',ch:'目前',infl:{}}
+],
+'Unit 2': [
+{en:'because of',ph:"",pos:'phr.',posLabel:'短语',ch:'因为',infl:{}},
+{en:'by accident',ph:"",pos:'phr.',posLabel:'短语',ch:'偶然',infl:{}},
+{en:'by chance',ph:"",pos:'phr.',posLabel:'短语',ch:'偶然',infl:{}},
+{en:'by mistake',ph:"",pos:'phr.',posLabel:'短语',ch:'错误地',infl:{}},
+{en:'by the way',ph:"",pos:'phr.',posLabel:'短语',ch:'顺便说一下',infl:{}},
+{en:'carry out',ph:"",pos:'phr.',posLabel:'短语',ch:'执行',infl:{}},
+{en:'come across',ph:"",pos:'phr.',posLabel:'短语',ch:'偶然遇到',infl:{}},
+{en:'come true',ph:"",pos:'phr.',posLabel:'短语',ch:'实现',infl:{}},
+{en:'deal with',ph:"",pos:'phr.',posLabel:'短语',ch:'处理',infl:{}},
+{en:'depend on',ph:"",pos:'phr.',posLabel:'短语',ch:'依赖',infl:{}},
+{en:'due to',ph:"",pos:'phr.',posLabel:'短语',ch:'由于',infl:{}},
+{en:'each other',ph:"",pos:'phr.',posLabel:'短语',ch:'互相',infl:{}},
+{en:'either...or',ph:"",pos:'phr.',posLabel:'短语',ch:'要么...要么',infl:{}},
+{en:'even if',ph:"",pos:'phr.',posLabel:'短语',ch:'即使',infl:{}},
+{en:'even though',ph:"",pos:'phr.',posLabel:'短语',ch:'尽管',infl:{}},
+{en:'except for',ph:"",pos:'phr.',posLabel:'短语',ch:'除...之外',infl:{}},
+{en:'figure out',ph:"",pos:'phr.',posLabel:'短语',ch:'弄清楚',infl:{}},
+{en:'fill in',ph:"",pos:'phr.',posLabel:'短语',ch:'填写',infl:{}},
+{en:'find out',ph:"",pos:'phr.',posLabel:'短语',ch:'查明',infl:{}},
+{en:'focus on',ph:"",pos:'phr.',posLabel:'短语',ch:'专注于',infl:{}},
+{en:'for example',ph:"",pos:'phr.',posLabel:'短语',ch:'例如',infl:{}},
+{en:'for instance',ph:"",pos:'phr.',posLabel:'短语',ch:'例如',infl:{}},
+{en:'for the first time',ph:"",pos:'phr.',posLabel:'短语',ch:'第一次',infl:{}},
+{en:'from now on',ph:"",pos:'phr.',posLabel:'短语',ch:'从现在起',infl:{}},
+{en:'from time to time',ph:"",pos:'phr.',posLabel:'短语',ch:'不时',infl:{}},
+{en:'get along',ph:"",pos:'phr.',posLabel:'短语',ch:'相处',infl:{}},
+{en:'get rid of',ph:"",pos:'phr.',posLabel:'短语',ch:'摆脱',infl:{}},
+{en:'give up',ph:"",pos:'phr.',posLabel:'短语',ch:'放弃',infl:{}},
+{en:'go on',ph:"",pos:'phr.',posLabel:'短语',ch:'继续',infl:{}},
+{en:'go over',ph:"",pos:'phr.',posLabel:'短语',ch:'复习',infl:{}}
+],
+'Unit 3': [
+{en:'hand in',ph:"",pos:'phr.',posLabel:'短语',ch:'上交',infl:{}},
+{en:'have to',ph:"",pos:'phr.',posLabel:'短语',ch:'不得不',infl:{}},
+{en:'hold on',ph:"",pos:'phr.',posLabel:'短语',ch:'坚持',infl:{}},
+{en:'in addition',ph:"",pos:'phr.',posLabel:'短语',ch:'另外',infl:{}},
+{en:'in advance',ph:"",pos:'phr.',posLabel:'短语',ch:'提前',infl:{}},
+{en:'in charge of',ph:"",pos:'phr.',posLabel:'短语',ch:'负责',infl:{}},
+{en:'in common',ph:"",pos:'phr.',posLabel:'短语',ch:'共同',infl:{}},
+{en:'in fact',ph:"",pos:'phr.',posLabel:'短语',ch:'事实上',infl:{}},
+{en:'in front of',ph:"",pos:'phr.',posLabel:'短语',ch:'在...前面',infl:{}},
+{en:'in general',ph:"",pos:'phr.',posLabel:'短语',ch:'总体上',infl:{}},
+{en:'in order to',ph:"",pos:'phr.',posLabel:'短语',ch:'为了',infl:{}},
+{en:'in other words',ph:"",pos:'phr.',posLabel:'短语',ch:'换句话说',infl:{}},
+{en:'in particular',ph:"",pos:'phr.',posLabel:'短语',ch:'尤其',infl:{}},
+{en:'in person',ph:"",pos:'phr.',posLabel:'短语',ch:'亲自',infl:{}},
+{en:'in place of',ph:"",pos:'phr.',posLabel:'短语',ch:'代替',infl:{}},
+{en:'in public',ph:"",pos:'phr.',posLabel:'短语',ch:'公开地',infl:{}},
+{en:'in short',ph:"",pos:'phr.',posLabel:'短语',ch:'简言之',infl:{}},
+{en:'in spite of',ph:"",pos:'phr.',posLabel:'短语',ch:'尽管',infl:{}},
+{en:'in terms of',ph:"",pos:'phr.',posLabel:'短语',ch:'就...而言',infl:{}},
+{en:'in the end',ph:"",pos:'phr.',posLabel:'短语',ch:'最后',infl:{}},
+{en:'in time',ph:"",pos:'phr.',posLabel:'短语',ch:'及时',infl:{}},
+{en:'instead of',ph:"",pos:'phr.',posLabel:'短语',ch:'代替',infl:{}},
+{en:'keep on',ph:"",pos:'phr.',posLabel:'短语',ch:'继续',infl:{}},
+{en:'knock at',ph:"",pos:'phr.',posLabel:'短语',ch:'敲',infl:{}},
+{en:'lead to',ph:"",pos:'phr.',posLabel:'短语',ch:'导致',infl:{}},
+{en:'look after',ph:"",pos:'phr.',posLabel:'短语',ch:'照顾',infl:{}},
+{en:'look for',ph:"",pos:'phr.',posLabel:'短语',ch:'寻找',infl:{}},
+{en:'look forward to',ph:"",pos:'phr.',posLabel:'短语',ch:'期待',infl:{}},
+{en:'look into',ph:"",pos:'phr.',posLabel:'短语',ch:'调查',infl:{}},
+{en:'look up',ph:"",pos:'phr.',posLabel:'短语',ch:'查阅',infl:{}}
+],
+'Unit 4': [
+{en:'make sure',ph:"",pos:'phr.',posLabel:'短语',ch:'确保',infl:{}},
+{en:'make up',ph:"",pos:'phr.',posLabel:'短语',ch:'组成',infl:{}},
+{en:'make up for',ph:"",pos:'phr.',posLabel:'短语',ch:'弥补',infl:{}},
+{en:'more and more',ph:"",pos:'phr.',posLabel:'短语',ch:'越来越多',infl:{}},
+{en:'more or less',ph:"",pos:'phr.',posLabel:'短语',ch:'或多或少',infl:{}},
+{en:'neither...nor',ph:"",pos:'phr.',posLabel:'短语',ch:'既不...也不',infl:{}},
+{en:'no longer',ph:"",pos:'phr.',posLabel:'短语',ch:'不再',infl:{}},
+{en:'not only...but also',ph:"",pos:'phr.',posLabel:'短语',ch:'不但...而且',infl:{}},
+{en:'now and then',ph:"",pos:'phr.',posLabel:'短语',ch:'不时',infl:{}},
+{en:'of course',ph:"",pos:'phr.',posLabel:'短语',ch:'当然',infl:{}},
+{en:'on behalf of',ph:"",pos:'phr.',posLabel:'短语',ch:'代表',infl:{}},
+{en:'on foot',ph:"",pos:'phr.',posLabel:'短语',ch:'步行',infl:{}},
+{en:'on purpose',ph:"",pos:'phr.',posLabel:'短语',ch:'故意',infl:{}},
+{en:'on time',ph:"",pos:'phr.',posLabel:'短语',ch:'准时',infl:{}},
+{en:'on the contrary',ph:"",pos:'phr.',posLabel:'短语',ch:'相反',infl:{}},
+{en:'on the other hand',ph:"",pos:'phr.',posLabel:'短语',ch:'另一方面',infl:{}},
+{en:'on the whole',ph:"",pos:'phr.',posLabel:'短语',ch:'总的来说',infl:{}},
+{en:'once again',ph:"",pos:'phr.',posLabel:'短语',ch:'再一次',infl:{}},
+{en:'once more',ph:"",pos:'phr.',posLabel:'短语',ch:'再一次',infl:{}},
+{en:'one another',ph:"",pos:'phr.',posLabel:'短语',ch:'互相',infl:{}},
+{en:'or so',ph:"",pos:'phr.',posLabel:'短语',ch:'大约',infl:{}},
+{en:'owing to',ph:"",pos:'phr.',posLabel:'短语',ch:'由于',infl:{}},
+{en:'pay attention to',ph:"",pos:'phr.',posLabel:'短语',ch:'注意',infl:{}},
+{en:'pick up',ph:"",pos:'phr.',posLabel:'短语',ch:'拾起',infl:{}},
+{en:'point out',ph:"",pos:'phr.',posLabel:'短语',ch:'指出',infl:{}},
+{en:'put off',ph:"",pos:'phr.',posLabel:'短语',ch:'推迟',infl:{}},
+{en:'put on',ph:"",pos:'phr.',posLabel:'短语',ch:'穿上',infl:{}},
+{en:'put up',ph:"",pos:'phr.',posLabel:'短语',ch:'建造',infl:{}},
+{en:'quite a few',ph:"",pos:'phr.',posLabel:'短语',ch:'相当多',infl:{}},
+{en:'rather than',ph:"",pos:'phr.',posLabel:'短语',ch:'而不是',infl:{}}
+],
+'Unit 5': [
+{en:'refer to',ph:"",pos:'phr.',posLabel:'短语',ch:'提及',infl:{}},
+{en:'regardless of',ph:"",pos:'phr.',posLabel:'短语',ch:'不管',infl:{}},
+{en:'result in',ph:"",pos:'phr.',posLabel:'短语',ch:'导致',infl:{}},
+{en:'result from',ph:"",pos:'phr.',posLabel:'短语',ch:'由于',infl:{}},
+{en:'right away',ph:"",pos:'phr.',posLabel:'短语',ch:'立刻',infl:{}},
+{en:'run out of',ph:"",pos:'phr.',posLabel:'短语',ch:'用完',infl:{}},
+{en:'set up',ph:"",pos:'phr.',posLabel:'短语',ch:'建立',infl:{}},
+{en:'show off',ph:"",pos:'phr.',posLabel:'短语',ch:'炫耀',infl:{}},
+{en:'show up',ph:"",pos:'phr.',posLabel:'短语',ch:'出现',infl:{}},
+{en:'so as to',ph:"",pos:'phr.',posLabel:'短语',ch:'以便',infl:{}},
+{en:'so far',ph:"",pos:'phr.',posLabel:'短语',ch:'到目前为止',infl:{}},
+{en:'so that',ph:"",pos:'phr.',posLabel:'短语',ch:'以便',infl:{}},
+{en:'sooner or later',ph:"",pos:'phr.',posLabel:'短语',ch:'迟早',infl:{}},
+{en:'stand for',ph:"",pos:'phr.',posLabel:'短语',ch:'代表',infl:{}},
+{en:'stay up',ph:"",pos:'phr.',posLabel:'短语',ch:'熬夜',infl:{}},
+{en:'take advantage of',ph:"",pos:'phr.',posLabel:'短语',ch:'利用',infl:{}},
+{en:'take care of',ph:"",pos:'phr.',posLabel:'短语',ch:'照顾',infl:{}},
+{en:'take off',ph:"",pos:'phr.',posLabel:'短语',ch:'起飞',infl:{}},
+{en:'take on',ph:"",pos:'phr.',posLabel:'短语',ch:'承担',infl:{}},
+{en:'take over',ph:"",pos:'phr.',posLabel:'短语',ch:'接管',infl:{}},
+{en:'take part in',ph:"",pos:'phr.',posLabel:'短语',ch:'参加',infl:{}},
+{en:'take place',ph:"",pos:'phr.',posLabel:'短语',ch:'发生',infl:{}},
+{en:'take up',ph:"",pos:'phr.',posLabel:'短语',ch:'占据',infl:{}},
+{en:'thanks to',ph:"",pos:'phr.',posLabel:'短语',ch:'由于',infl:{}},
+{en:'the same as',ph:"",pos:'phr.',posLabel:'短语',ch:'和...一样',infl:{}},
+{en:'think of',ph:"",pos:'phr.',posLabel:'短语',ch:'想起',infl:{}},
+{en:'throw away',ph:"",pos:'phr.',posLabel:'短语',ch:'扔掉',infl:{}},
+{en:'to be honest',ph:"",pos:'phr.',posLabel:'短语',ch:'说实话',infl:{}},
+{en:'try on',ph:"",pos:'phr.',posLabel:'短语',ch:'试穿',infl:{}},
+{en:'turn down',ph:"",pos:'phr.',posLabel:'短语',ch:'拒绝',infl:{}}
+],
+'Unit 6': [
+{en:'turn off',ph:"",pos:'phr.',posLabel:'短语',ch:'关闭',infl:{}},
+{en:'turn on',ph:"",pos:'phr.',posLabel:'短语',ch:'打开',infl:{}},
+{en:'turn out',ph:"",pos:'phr.',posLabel:'短语',ch:'结果是',infl:{}},
+{en:'turn to',ph:"",pos:'phr.',posLabel:'短语',ch:'求助于',infl:{}},
+{en:'turn up',ph:"",pos:'phr.',posLabel:'短语',ch:'出现',infl:{}},
+{en:'up to',ph:"",pos:'phr.',posLabel:'短语',ch:'多达',infl:{}},
+{en:'used to',ph:"",pos:'phr.',posLabel:'短语',ch:'过去常常',infl:{}},
+{en:'wait for',ph:"",pos:'phr.',posLabel:'短语',ch:'等待',infl:{}},
+{en:'wake up',ph:"",pos:'phr.',posLabel:'短语',ch:'醒来',infl:{}},
+{en:'work out',ph:"",pos:'phr.',posLabel:'短语',ch:'解决',infl:{}},
+{en:'worry about',ph:"",pos:'phr.',posLabel:'短语',ch:'担心',infl:{}},
+{en:'would rather',ph:"",pos:'phr.',posLabel:'短语',ch:'宁愿',infl:{}},
+{en:'write down',ph:"",pos:'phr.',posLabel:'短语',ch:'写下',infl:{}},
+{en:'ahead of',ph:"",pos:'phr.',posLabel:'短语',ch:'在...之前',infl:{}},
+{en:'all over',ph:"",pos:'phr.',posLabel:'短语',ch:'遍及',infl:{}},
+{en:'as for',ph:"",pos:'phr.',posLabel:'短语',ch:'至于',infl:{}},
+{en:'as to',ph:"",pos:'phr.',posLabel:'短语',ch:'至于',infl:{}},
+{en:'at all',ph:"",pos:'phr.',posLabel:'短语',ch:'根本',infl:{}},
+{en:'at any rate',ph:"",pos:'phr.',posLabel:'短语',ch:'无论如何',infl:{}},
+{en:'at times',ph:"",pos:'phr.',posLabel:'短语',ch:'有时',infl:{}},
+{en:'be able to',ph:"",pos:'phr.',posLabel:'短语',ch:'能够',infl:{}},
+{en:'be about to',ph:"",pos:'phr.',posLabel:'短语',ch:'即将',infl:{}},
+{en:'be aware of',ph:"",pos:'phr.',posLabel:'短语',ch:'意识到',infl:{}},
+{en:'be fond of',ph:"",pos:'phr.',posLabel:'短语',ch:'喜欢',infl:{}},
+{en:'be interested in',ph:"",pos:'phr.',posLabel:'短语',ch:'对...感兴趣',infl:{}},
+{en:'be proud of',ph:"",pos:'phr.',posLabel:'短语',ch:'为...骄傲',infl:{}},
+{en:'be responsible for',ph:"",pos:'phr.',posLabel:'短语',ch:'对...负责',infl:{}},
+{en:'be short of',ph:"",pos:'phr.',posLabel:'短语',ch:'缺乏',infl:{}},
+{en:'be used to',ph:"",pos:'phr.',posLabel:'短语',ch:'习惯于',infl:{}},
+{en:'belong to',ph:"",pos:'phr.',posLabel:'短语',ch:'属于',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[4] = {
+'专有名词': { units: {
+'Unit 1': [
+{en:'China',ph:"'tʃainə",pos:'n.',posLabel:'专有名词',ch:'中国',infl:{}},
+{en:'Chinese',ph:"'tʃai'ni:z",pos:'n.',posLabel:'专有名词',ch:'中国人、汉语',infl:{}},
+{en:'America',ph:"ə'merikə",pos:'n.',posLabel:'专有名词',ch:'美国、美洲',infl:{}},
+{en:'American',ph:"ə'merikən",pos:'n.',posLabel:'专有名词',ch:'美国人',infl:{plural:'Americans'}},
+{en:'England',ph:"'inglənd",pos:'n.',posLabel:'专有名词',ch:'英格兰、英国',infl:{}},
+{en:'English',ph:"'iŋgliʃ",pos:'n.',posLabel:'专有名词',ch:'英语',infl:{}},
+{en:'Britain',ph:"'britən",pos:'n.',posLabel:'专有名词',ch:'不列颠、英国',infl:{}},
+{en:'British',ph:"'britiʃ",pos:'n.',posLabel:'专有名词',ch:'英国人',infl:{}},
+{en:'France',ph:"frɑ:ns",pos:'n.',posLabel:'专有名词',ch:'法国',infl:{}},
+{en:'French',ph:"frentʃ",pos:'n.',posLabel:'专有名词',ch:'法国人、法语',infl:{}},
+{en:'Germany',ph:"'dʒə:məni",pos:'n.',posLabel:'专有名词',ch:'德国',infl:{}},
+{en:'German',ph:"'dʒə:mən",pos:'n.',posLabel:'专有名词',ch:'德国人、德语',infl:{}},
+{en:'Japan',ph:"dʒə'pæn",pos:'n.',posLabel:'专有名词',ch:'日本',infl:{}},
+{en:'Japanese',ph:"dʒæpə'ni:z",pos:'n.',posLabel:'专有名词',ch:'日本人、日语',infl:{}},
+{en:'Canada',ph:"'kænədə",pos:'n.',posLabel:'专有名词',ch:'加拿大',infl:{}},
+{en:'Canadian',ph:"kə'neidjən",pos:'n.',posLabel:'专有名词',ch:'加拿大人',infl:{plural:'Canadians'}},
+{en:'Australia',ph:"ɔ'streiliə",pos:'n.',posLabel:'专有名词',ch:'澳大利亚',infl:{}},
+{en:'Australian',ph:"ɔ'streiliən",pos:'n.',posLabel:'专有名词',ch:'澳大利亚人',infl:{plural:'Australians'}},
+{en:'India',ph:"'indiə",pos:'n.',posLabel:'专有名词',ch:'印度',infl:{}},
+{en:'Indian',ph:"'indjən",pos:'n.',posLabel:'专有名词',ch:'印度人',infl:{plural:'Indians'}},
+{en:'Italy',ph:"'itəli",pos:'n.',posLabel:'专有名词',ch:'意大利',infl:{}},
+{en:'Italian',ph:"i'tæljən",pos:'n.',posLabel:'专有名词',ch:'意大利人',infl:{plural:'Italians'}},
+{en:'Russia',ph:"'rʌʃə",pos:'n.',posLabel:'专有名词',ch:'俄罗斯',infl:{}},
+{en:'Russian',ph:"'rʌʃən",pos:'n.',posLabel:'专有名词',ch:'俄罗斯人、俄语',infl:{}},
+{en:'Europe',ph:"'juərəp",pos:'n.',posLabel:'专有名词',ch:'欧洲',infl:{}},
+{en:'European',ph:".juərə'pi(:)ən",pos:'n.',posLabel:'专有名词',ch:'欧洲人',infl:{plural:'Europeans'}},
+{en:'Asia',ph:"'eiʃə",pos:'n.',posLabel:'专有名词',ch:'亚洲',infl:{}},
+{en:'Asian',ph:"'eiʃən",pos:'n.',posLabel:'专有名词',ch:'亚洲人',infl:{plural:'Asians'}},
+{en:'Africa',ph:"'æfrikə",pos:'n.',posLabel:'专有名词',ch:'非洲',infl:{}},
+{en:'African',ph:"'æfrikən",pos:'n.',posLabel:'专有名词',ch:'非洲人',infl:{plural:'Africans'}}
+],
+'Unit 2': [
+{en:'Monday',ph:"'mʌndi",pos:'n.',posLabel:'专有名词',ch:'星期一',infl:{plural:'Mondays'}},
+{en:'Tuesday',ph:"'tju:zdi",pos:'n.',posLabel:'专有名词',ch:'星期二',infl:{plural:'Tuesdays'}},
+{en:'Wednesday',ph:"'wenzdei",pos:'n.',posLabel:'专有名词',ch:'星期三',infl:{plural:'Wednesdays'}},
+{en:'Thursday',ph:"'θə:zdi",pos:'n.',posLabel:'专有名词',ch:'星期四',infl:{plural:'Thursdays'}},
+{en:'Friday',ph:"'fraidi",pos:'n.',posLabel:'专有名词',ch:'星期五',infl:{plural:'Fridays'}},
+{en:'Saturday',ph:"'sætədi",pos:'n.',posLabel:'专有名词',ch:'星期六',infl:{plural:'Saturdays'}},
+{en:'Sunday',ph:"'sʌndi",pos:'n.',posLabel:'专有名词',ch:'星期日',infl:{plural:'Sundays'}},
+{en:'January',ph:"'dʒænjuəri",pos:'n.',posLabel:'专有名词',ch:'一月',infl:{}},
+{en:'February',ph:"'februəri",pos:'n.',posLabel:'专有名词',ch:'二月',infl:{}},
+{en:'March',ph:"mɑ:tʃ",pos:'n.',posLabel:'专有名词',ch:'三月',infl:{}},
+{en:'April',ph:"'eiprəl",pos:'n.',posLabel:'专有名词',ch:'四月',infl:{}},
+{en:'May',ph:"mei",pos:'n.',posLabel:'专有名词',ch:'五月',infl:{}},
+{en:'June',ph:"dʒu:n",pos:'n.',posLabel:'专有名词',ch:'六月',infl:{}},
+{en:'July',ph:"dʒu(:)'lai",pos:'n.',posLabel:'专有名词',ch:'七月',infl:{}},
+{en:'August',ph:"'ɔ:gʌst",pos:'n.',posLabel:'专有名词',ch:'八月',infl:{}},
+{en:'September',ph:"səp'tembə",pos:'n.',posLabel:'专有名词',ch:'九月',infl:{}},
+{en:'October',ph:"ɔk'təubə",pos:'n.',posLabel:'专有名词',ch:'十月',infl:{}},
+{en:'November',ph:"nəu'vembə",pos:'n.',posLabel:'专有名词',ch:'十一月',infl:{}},
+{en:'December',ph:"di'sembə",pos:'n.',posLabel:'专有名词',ch:'十二月',infl:{}},
+{en:'Christmas',ph:"'krisməs",pos:'n.',posLabel:'专有名词',ch:'圣诞节',infl:{}},
+{en:'Bible',ph:"'baibl",pos:'n.',posLabel:'专有名词',ch:'圣经',infl:{}},
+{en:'God',ph:"gɔd",pos:'n.',posLabel:'专有名词',ch:'上帝',infl:{}},
+{en:'Atlantic',ph:"ət'læntik",pos:'n.',posLabel:'专有名词',ch:'大西洋',infl:{}},
+{en:'Mediterranean',ph:".meditə'reinjən",pos:'n.',posLabel:'专有名词',ch:'地中海',infl:{}},
+{en:'Oceania',ph:".əuʃi'einiə",pos:'n.',posLabel:'专有名词',ch:'大洋洲',infl:{}},
+{en:'Soviet',ph:"'səʊviət",pos:'n.',posLabel:'专有名词',ch:'苏维埃',infl:{}},
+{en:'Marxism',ph:"'mɑ:ksizəm",pos:'n.',posLabel:'专有名词',ch:'马克思主义',infl:{}},
+{en:'Marxist',ph:"'mɑ:ksist",pos:'n.',posLabel:'专有名词',ch:'马克思主义者',infl:{plural:'Marxists'}},
+{en:'Greek',ph:"gri:k",pos:'n.',posLabel:'专有名词',ch:'希腊人、希腊语',infl:{}},
+{en:'Roman',ph:"'rəumən",pos:'n.',posLabel:'专有名词',ch:'古罗马人',infl:{plural:'Romans'}}
+]
+}}
+};
+
+/* ================================================================
+   主页按钮
+   ================================================================ */
+const homeButtons = document.getElementById('homeButtons');
+const PART_NAMES = ['感叹词', '缩略词', '短语', '专有名词'];
+
+function countWords(part){
+  let n = 0;
+  const data = VOCAB_DATA[part];
+  if (!data) return 0;
+  Object.values(data).forEach(theme => {
+    Object.values(theme.units).forEach(arr => { n += arr.length; });
+  });
+  return n;
+}
+
+[1,2,3,4].forEach(part => {
+  const btn = document.createElement('button');
+  btn.className = 'home-btn';
+  btn.innerHTML = `${PART_NAMES[part-1]} <span class="badge">${countWords(part)} 词</span>`;
+  btn.addEventListener('click', () => openPart(part));
+  homeButtons.appendChild(btn);
+});
+
+const PART_STATE = {};
+
+function buildPartPage(part){
+  const data = VOCAB_DATA[part];
+  if (!data) {
+    const inner = document.getElementById('partInner' + part);
+    inner.innerHTML = '<button class="back-btn" data-back="' + part + '">← 返回主页</button><p style="text-align:center;padding:2rem;color:#799e7a;">数据整理中</p>';
+    inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+    return;
+  }
+  const themeList = Object.keys(data);
+  const unitMap = {};
+  const allVocab = [];
+
+  themeList.forEach(theme => {
+    const unitNames = Object.keys(data[theme].units);
+    unitMap[theme] = unitNames;
+    unitNames.forEach(unitName => {
+      data[theme].units[unitName].forEach(w => {
+        allVocab.push({ ...w, theme, unit:unitName });
+      });
+    });
+  });
+
+  const state = {
+    part, themeList, unitMap, allVocab,
+    currentTheme: themeList[0],
+    currentUnit: unitMap[themeList[0]][0],
+    currentIndex: 0,
+    difficultSet: new Set(),
+    currentWords: []
+  };
+  state.currentWords = allVocab.filter(w => w.theme === state.currentTheme && w.unit === state.currentUnit);
+  PART_STATE[part] = state;
+
+  const inner = document.getElementById('partInner' + part);
+  inner.innerHTML = `
+    <button class="back-btn" data-back="${part}">← 返回主页</button>
+    <div class="header">
+      <h1>Reborner 基础核心词汇</h1>
+      <div class="sub1">其他 · ${PART_NAMES[part-1]}</div>
+      <div class="sub2">其他全量版</div>
+      <div class="sub3">📂 ${themeList.length} 大主题 · ${Object.values(unitMap).reduce((a,b)=>a+b.length,0)} 个单元 · 共 ${allVocab.length} 个词条</div>
+    </div>
+    <div class="chapter-scroll"><div class="chap-flex"><button class="chap-btn active">${PART_NAMES[part-1]}</button></div></div>
+    <div class="subchapter-scroll"><div class="sub-flex" id="subFlex${part}"></div></div>
+    <div class="unit-scroll"><div class="unit-flex" id="unitFlex${part}"></div></div>
+    <div class="flip-container">
+      <div class="flipper" id="flipper${part}">
+        <div class="front"><div class="en-word" id="mainEn${part}">—</div></div>
+        <div class="back">
+          <div class="en-word" id="backEn${part}">—</div>
+          <div class="ph-word" id="phInfo${part}"></div>
+          <div class="pos" id="posInfo${part}"></div>
+          <div class="ch-word" id="mainCh${part}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" data-act="prev" data-p="${part}">← 前</button>
+      <button class="nav-btn" data-act="next" data-p="${part}">后 →</button>
+      <button class="nav-btn" data-act="speak" data-p="${part}">🔊 发音</button>
+    </div>
+    <div class="thumb-header">
+      <span>📌 当前单元词汇 · 勾选难词</span>
+      <div class="actions">
+        <button class="select-all-btn" data-act="all" data-p="${part}">✅ 全选</button>
+        <button class="select-all-btn" data-act="none" data-p="${part}">⬜ 取消</button>
+        <button data-act="export" data-p="${part}">📎 导出难词</button>
+      </div>
+    </div>
+    <div class="thumb-grid-container"><div class="thumb-grid" id="thumbGrid${part}"></div></div>
+    <div class="tip">✓ 点击卡片翻转 · 勾选方格标记难词</div>
+  `;
+
+  inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+  inner.querySelectorAll('[data-act]').forEach(b => {
+    b.addEventListener('click', () => handleAction(b.dataset.act, part));
+  });
+  document.getElementById('flipper' + part).addEventListener('click', function(){
+    this.classList.toggle('flipped');
+  });
+
+  renderThemes(part);
+  renderUnits(part);
+  renderCard(part);
+  renderThumbs(part);
+}
+
+function renderThemes(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('subFlex' + part);
+  box.innerHTML = '';
+  s.themeList.forEach(theme => {
+    const btn = document.createElement('button');
+    btn.className = 'sub-btn' + (theme === s.currentTheme ? ' active-sub' : '');
+    const cnt = s.allVocab.filter(w => w.theme === theme).length;
+    btn.innerHTML = `${theme}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentTheme = theme;
+      s.currentUnit = s.unitMap[theme][0];
+      renderThemes(part); renderUnits(part);
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === s.currentUnit);
+      s.currentIndex = 0;
+      renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderUnits(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('unitFlex' + part);
+  box.innerHTML = '';
+  s.unitMap[s.currentTheme].forEach(unitName => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-btn' + (unitName === s.currentUnit ? ' active-unit' : '');
+    const cnt = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName).length;
+    btn.innerHTML = `${unitName}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentUnit = unitName;
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName);
+      s.currentIndex = 0;
+      renderUnits(part); renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderCard(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const mainEn = document.getElementById('mainEn' + part);
+  const backEn = document.getElementById('backEn' + part);
+  const phInfo = document.getElementById('phInfo' + part);
+  const posInfo = document.getElementById('posInfo' + part);
+  const mainCh = document.getElementById('mainCh' + part);
+  const flipper = document.getElementById('flipper' + part);
+  flipper.classList.remove('flipped');
+
+  if (!s.currentWords.length) {
+    mainEn.textContent = '无'; backEn.textContent = '';
+    phInfo.textContent = ''; posInfo.textContent = ''; mainCh.textContent = '';
+    return;
+  }
+  const w = s.currentWords[s.currentIndex];
+  mainEn.textContent = w.en; backEn.textContent = w.en;
+  phInfo.textContent = w.ph ? '/' + w.ph + '/' : '';
+  posInfo.textContent = w.posLabel || w.pos || '';
+  mainCh.textContent = w.ch;
+  speak(w.en);
+}
+
+function renderThumbs(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('thumbGrid' + part);
+  box.innerHTML = '';
+  s.currentWords.forEach((w, idx) => {
+    const key = w.en + '|' + w.ch;
+    const card = document.createElement('div');
+    card.className = 'thumb-item';
+    card.innerHTML = `<input type="checkbox" class="diff-check" data-key="${key.replace(/"/g,'&quot;')}" ${s.difficultSet.has(key)?'checked':''}><label>${w.en}</label>`;
+    card.addEventListener('click', e => {
+      if (e.target.tagName !== 'INPUT') { s.currentIndex = idx; renderCard(part); }
+    });
+    const chk = card.querySelector('.diff-check');
+    chk.addEventListener('change', e => {
+      e.stopPropagation();
+      const k = e.target.dataset.key;
+      if (e.target.checked) s.difficultSet.add(k); else s.difficultSet.delete(k);
+    });
+    box.appendChild(card);
+  });
+}
+
+function handleAction(act, part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  if (act === 'prev') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex - 1 + s.currentWords.length) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'next') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex + 1) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'speak') {
+    if (s.currentWords[s.currentIndex]) speak(s.currentWords[s.currentIndex].en);
+  } else if (act === 'all') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = true; s.difficultSet.add(c.dataset.key);
+    });
+  } else if (act === 'none') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = false; s.difficultSet.delete(c.dataset.key);
+    });
+  } else if (act === 'export') {
+    exportCsv(part);
+  }
+}
+
+function exportCsv(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const selected = s.allVocab.filter(v => s.difficultSet.has(v.en + '|' + v.ch));
+  if (!selected.length) { alert('没有勾选难词'); return; }
+  const seen = new Set();
+  let csv = '英文,音标,词性,中文含义,主题,单元\n';
+  selected.forEach(w => {
+    const key = w.en;
+    if (seen.has(key)) return;
+    seen.add(key);
+    csv += `"${w.en}","${w.ph||''}","${w.posLabel||w.pos||''}","${w.ch}","${w.theme}","${w.unit}"\n`;
+  });
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `basic_${PART_NAMES[part-1]}_difficult.csv`;
+  link.click();
+}
+
+function openPart(part){
+  if (!PART_STATE[part]) buildPartPage(part);
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  home.classList.add('slide-left');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      page.classList.add('slide-in');
+      page.scrollTop = 0;
+    });
+  });
+}
+function closePart(part){
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  page.classList.remove('slide-in');
+  home.classList.remove('slide-left');
+}
+
+function speak(text){
+  if (window.parent && window.parent !== window) {
+    try {
+      window.parent.postMessage({ type: 'speak', text: text }, '*');
+      return;
+    } catch(e) {}
+  }
+  if ('speechSynthesis' in window) {
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+}
+</script>
+
+<a class="go-home" href="./">← 返回入口</a>
+
+</body>
+</html>

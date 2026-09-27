@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Reborner 基础核心词汇 · 形容词</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; }
+html,body { height:100%; overflow:hidden; }
+body { background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); }
+
+#lockScreen {
+  position:fixed; inset:0; z-index:5000;
+  background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:2rem 1.5rem; transition:opacity .45s ease, transform .45s ease;
+}
+#lockScreen.hide { opacity:0; transform:translateY(-30px); pointer-events:none; }
+.lock-title { font-size:1.9rem; font-weight:380; color:#2d543b; text-align:center; line-height:1.35; margin-bottom:.4rem; }
+.lock-sub { font-size:1rem; color:#618967; font-weight:300; letter-spacing:3px; margin-bottom:2.2rem; }
+.lock-card { background:#fcfff8; border:1px solid #e3f0da; border-radius:36px; padding:2rem 1.5rem; width:100%; max-width:340px; box-shadow:0 12px 28px rgba(130,160,120,.18); }
+.lock-label { text-align:center; font-size:1rem; color:#3d6d4b; margin-bottom:1rem; }
+.lock-input { width:100%; padding:.9rem 1rem; font-size:1rem; background:#f6ffee; border:1px solid #cde0c3; border-radius:14px; color:#1c4a2a; text-align:center; outline:none; letter-spacing:2px; }
+.lock-input:focus { border-color:#8bb282; }
+.lock-btn { margin-top:1.1rem; width:100%; padding:.85rem; background:#cde5c2; color:#1b4125; border:none; border-radius:40px; font-size:1.05rem; font-weight:500; cursor:pointer; box-shadow:0 5px 0 #9abb90; transition:transform .1s; }
+.lock-btn:active { transform:translateY(2px); box-shadow:0 2px 0 #9abb90; }
+.lock-err { color:#c0504d; text-align:center; margin-top:.7rem; height:18px; font-size:.88rem; }
+
+#homePage {
+  position:fixed; inset:0; z-index:10;
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:flex-start;
+  padding:2rem 1rem;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  transition:transform .5s cubic-bezier(.65,0,.35,1);
+}
+#homePage.slide-left { transform:translateX(-30%); }
+.home-header { text-align:center; margin-bottom:1.8rem; flex-shrink:0; }
+.home-header h1 { font-size:1.8rem; font-weight:380; color:#2d543b; line-height:1.3; margin-bottom:.3rem; }
+.home-header .sub1 { font-size:1.15rem; color:#4f7b5a; font-weight:340; }
+.home-header .sub2 { font-size:.95rem; color:#618967; font-weight:300; margin-top:.2rem; }
+.home-buttons {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:.8rem;
+  width:100%;
+  max-width:420px;
+  padding-bottom:2.5rem;
+}
+.home-btn {
+  background:#fcfff8;
+  border:1px solid #d2e2c7;
+  border-radius:30px;
+  padding:.9rem .6rem;
+  font-size:.95rem;
+  font-weight:460;
+  color:#2b5538;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(150,180,140,.16);
+  transition:all .2s ease;
+  text-align:center;
+  line-height:1.4;
+}
+.home-btn:hover { background:#eef9e6; border-color:#9abb90; transform:translateY(-2px); }
+.home-btn:active { transform:translateY(0); }
+.home-btn .badge {
+  display:block;
+  font-size:.68rem;
+  background:#c3ddb6;
+  border-radius:20px;
+  padding:.1rem .45rem;
+  margin:.25rem auto 0;
+  color:#23522e;
+  font-weight:400;
+  width:fit-content;
+}
+
+.part-page {
+  position:fixed; inset:0; z-index:100;
+  background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%);
+  transform:translateX(100%);
+  transition:transform .5s cubic-bezier(.65,0,.35,1);
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:1.5rem 1rem 2rem 1rem;
+}
+.part-page.slide-in { transform:translateX(0); }
+.part-inner { max-width:620px; width:100%; margin:0 auto; }
+
+.back-btn {
+  position:sticky; top:0; z-index:50;
+  display:inline-flex; align-items:center; gap:.35rem;
+  background:rgba(252,255,248,.92); backdrop-filter:blur(8px);
+  border:1px solid #cde0c3; border-radius:40px;
+  padding:.5rem 1.1rem; font-size:.95rem; color:#295e36;
+  cursor:pointer; margin-bottom:.8rem; box-shadow:0 2px 8px rgba(150,180,140,.18);
+}
+.back-btn:active { transform:scale(.96); }
+
+.header { margin-bottom:1.5rem; text-align:center; }
+.header h1 { font-size:2.1rem; font-weight:380; color:#2d543b; line-height:1.3; letter-spacing:-.2px; margin-bottom:.2rem; }
+.header .sub1 { font-size:1.5rem; color:#4f7b5a; font-weight:340; line-height:1.4; }
+.header .sub2 { font-size:1.2rem; color:#618967; font-weight:300; line-height:1.4; }
+.header .sub3 { font-size:.9rem; color:#7a9f7e; font-weight:300; margin-top:.2rem; }
+
+.chapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:.2rem 0 .4rem 0; scrollbar-width:none; }
+.chapter-scroll::-webkit-scrollbar { display:none; }
+.chap-flex { display:inline-flex; gap:.7rem; padding:0 .2rem; }
+.chap-btn { background:#f3fcee; border:1px solid #d2e2c7; border-radius:40px; padding:.6rem 1.8rem; font-size:1.2rem; font-weight:430; color:#2b5538; white-space:nowrap; box-shadow:0 2px 6px rgba(150,180,140,.08); cursor:pointer; }
+.chap-btn.active { background:#cde5c2; border-color:#8bb282; color:#1b4125; font-weight:500; }
+
+.subchapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .4rem 0; scrollbar-width:none; }
+.subchapter-scroll::-webkit-scrollbar { display:none; }
+.sub-flex { display:inline-flex; gap:.6rem; padding:0 .2rem; }
+.sub-btn { background:#ecf7e4; border:1px solid #cde0c0; border-radius:30px; padding:.4rem 1.3rem; font-size:.96rem; font-weight:400; color:#336941; white-space:nowrap; box-shadow:0 1px 4px rgba(120,150,100,.1); cursor:pointer; }
+.sub-btn.active-sub { background:#d4ebc5; border-color:#9abb90; color:#1e4529; font-weight:460; }
+
+.unit-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .8rem 0; scrollbar-width:none; }
+.unit-scroll::-webkit-scrollbar { display:none; }
+.unit-flex { display:inline-flex; gap:.5rem; padding:0 .2rem; }
+.unit-btn { background:#f5fcf0; border:1px solid #dae8cf; border-radius:20px; padding:.3rem 1.1rem; font-size:.85rem; font-weight:380; color:#3d734a; white-space:nowrap; box-shadow:0 1px 3px rgba(120,150,100,.06); cursor:pointer; }
+.unit-btn.active-unit { background:#d0e8c2; border-color:#9ec092; color:#1a4024; font-weight:460; }
+.word-count-badge { font-size:.7rem; background:#c3ddb6; border-radius:20px; padding:.1rem .5rem; margin-left:.4rem; color:#23522e; }
+
+.flip-container { perspective:1000px; width:100%; margin:.8rem 0 1.2rem 0; }
+.flipper { position:relative; width:100%; height:auto; transition:transform .4s ease; transform-style:preserve-3d; }
+.flipper.flipped { transform:rotateY(180deg); }
+.front,.back { backface-visibility:hidden; -webkit-backface-visibility:hidden; position:relative; top:0; left:0; width:100%; border-radius:42px; padding:2.2rem 1.2rem; background:#fcfff8; border:1px solid #e3f0da; box-shadow:0 10px 20px rgba(130,160,120,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:220px; }
+.back { position:absolute; transform:rotateY(180deg); min-height:220px; }
+.en-word { font-size:2.8rem; font-weight:370; color:#1c4a2a; line-height:1.3; word-break:break-word; text-align:center; width:100%; }
+.ph-word { font-size:1rem; color:#7a9f7e; font-weight:340; margin-top:.3rem; text-align:center; width:100%; }
+.pos { font-size:1.1rem; color:#719b79; font-weight:380; text-align:center; width:100%; margin-top:.2rem; }
+.ch-word { font-size:1.6rem; font-weight:340; color:#316a42; margin-top:.6rem; text-align:center; width:100%; }
+.inflection-box { width:100%; margin-top:.8rem; padding:.6rem .8rem; background:#f6ffee; border-radius:14px; border:1px dashed #cde0c3; }
+.inflection-row { display:flex; justify-content:space-between; font-size:.9rem; line-height:1.6; color:#5a8a63; }
+.inflection-row.irregular { color:#d97706; font-weight:500; }
+.inflection-label { color:#8aab8e; }
+.other-group { width:100%; margin-top:.6rem; font-size:.85rem; color:#8aab8e; text-align:center; }
+
+.nav-row { display:flex; align-items:center; justify-content:center; gap:.8rem; margin:1.2rem 0 1.8rem 0; flex-wrap:wrap; }
+.nav-btn { background:#f1fde9; border:1px solid #cde0c3; border-radius:60px; padding:.6rem 1.5rem; font-size:1.1rem; color:#295e36; box-shadow:0 2px 6px rgba(0,0,0,.02); cursor:pointer; }
+
+.thumb-header { display:flex; justify-content:space-between; align-items:center; margin:1rem 0 .8rem; flex-wrap:wrap; gap:.5rem; }
+.thumb-header span { font-size:1.1rem; color:#3d6d4b; font-weight:330; }
+.thumb-header .actions { display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; }
+.thumb-header .actions button { background:#dbeace; border:1px solid #adc9a2; border-radius:40px; padding:.3rem 1.1rem; font-size:.9rem; color:#23562f; cursor:pointer; white-space:nowrap; }
+.thumb-header .actions button.select-all-btn { background:#c8e0b9; border-color:#9abb90; }
+
+.thumb-grid-container { max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch; border-radius:20px; padding:.2rem .2rem .5rem .2rem; scrollbar-width:thin; scrollbar-color:#b5d3ae #e8f3e0; }
+.thumb-grid-container::-webkit-scrollbar { width:5px; }
+.thumb-grid-container::-webkit-scrollbar-track { background:#e8f3e0; border-radius:10px; }
+.thumb-grid-container::-webkit-scrollbar-thumb { background:#b5d3ae; border-radius:10px; }
+.thumb-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; padding:.2rem; }
+.thumb-item { background:#f9fff3; border:1px solid #dbefd0; border-radius:24px; padding:.6rem .2rem .6rem .5rem; display:flex; align-items:center; gap:.2rem; box-shadow:0 2px 6px rgba(160,180,140,.1); min-width:0; }
+.thumb-item input[type="checkbox"] { width:1.1rem; height:1.1rem; accent-color:#86b07c; border-radius:4px; flex-shrink:0; }
+.thumb-item label { font-size:.85rem; color:#2e623d; font-weight:420; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; cursor:pointer; }
+.tip { color:#799e7a; font-size:.9rem; margin-top:.8rem; text-align:center; }
+
+@media (max-width:480px) {
+  .thumb-grid { grid-template-columns:repeat(3,1fr); }
+  .en-word { font-size:2.2rem; }
+  .ch-word { font-size:1.4rem; }
+  .front,.back { padding:1.6rem 1rem; min-height:180px; }
+  .header h1 { font-size:1.6rem; }
+  .home-header h1 { font-size:1.5rem; }
+  .lock-title { font-size:1.5rem; }
+  .chap-btn { font-size:1rem; padding:.4rem 1.2rem; }
+  .sub-btn { font-size:.85rem; padding:.3rem 1rem; }
+  .unit-btn { font-size:.75rem; padding:.2rem .8rem; }
+}
+
+/* ==== 返回入口悬浮按钮 ==== */
+.go-home {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 99999;
+  background: rgba(252,255,248,0.95);
+  border: 1px solid #cde0c3;
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #2d543b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(100,140,90,0.22);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s;
+}
+.go-home:hover { background: #eef9e6; transform: translateY(-1px); }
+.go-home:active { transform: scale(.96); }
+
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+  <div class="lock-title">Reborner 基础核心词汇</div>
+  <div class="lock-sub">VENI · VIDI · VICI</div>
+  <div class="lock-card">
+    <div class="lock-label">请输入访问密码</div>
+    <input type="password" id="lockInput" class="lock-input" placeholder="••••••••" autocomplete="off">
+    <div class="lock-err" id="lockErr"></div>
+    <button class="lock-btn" id="lockBtn">确认进入</button>
+  </div>
+</div>
+
+<div id="homePage">
+  <div class="home-header">
+    <h1>Reborner 基础核心词汇</h1>
+    <div class="sub1">形容词 · 全量版</div>
+    <div class="sub2">天天进步，每日新生</div>
+  </div>
+  <div class="home-buttons" id="homeButtons"></div>
+</div>
+
+<div class="part-page" id="partPage1"><div class="part-inner" id="partInner1"></div></div>
+<div class="part-page" id="partPage2"><div class="part-inner" id="partInner2"></div></div>
+<div class="part-page" id="partPage3"><div class="part-inner" id="partInner3"></div></div>
+<div class="part-page" id="partPage4"><div class="part-inner" id="partInner4"></div></div>
+<div class="part-page" id="partPage5"><div class="part-inner" id="partInner5"></div></div>
+<div class="part-page" id="partPage6"><div class="part-inner" id="partInner6"></div></div>
+<div class="part-page" id="partPage7"><div class="part-inner" id="partInner7"></div></div>
+<div class="part-page" id="partPage8"><div class="part-inner" id="partInner8"></div></div>
+<div class="part-page" id="partPage9"><div class="part-inner" id="partInner9"></div></div>
+<div class="part-page" id="partPage10"><div class="part-inner" id="partInner10"></div></div>
+<div class="part-page" id="partPage11"><div class="part-inner" id="partInner11"></div></div>
+<div class="part-page" id="partPage12"><div class="part-inner" id="partInner12"></div></div>
+
+<script>
+/* ================================================================
+   形容词全量 · 12 主题（其中“其他”含 L1 / L2）
+   ================================================================ */
+const VOCAB_DATA = {};
+
+VOCAB_DATA[1] = {
+'大小与数量': { units: {
+'大小': [
+{en:'big',ph:"big",pos:'adj.',posLabel:'形容词',ch:'大的、巨大的、重要的',infl:{comp:'bigger',sup:'biggest'}},
+{en:'small',ph:"smɔ:l",pos:'adj.',posLabel:'形容词',ch:'小的、少的、小型的',infl:{comp:'smaller',sup:'smallest'}},
+{en:'large',ph:"lɑ:dʒ",pos:'adj.',posLabel:'形容词',ch:'大的、巨大的、广泛的',infl:{comp:'larger',sup:'largest'}},
+{en:'huge',ph:"hju:dʒ",pos:'adj.',posLabel:'形容词',ch:'巨大的、庞大的',infl:{comp:'huger',sup:'hugest'}},
+{en:'tiny',ph:"'taini",pos:'adj.',posLabel:'形容词',ch:'微小的、极小的',infl:{comp:'tinier',sup:'tiniest'}},
+{en:'enormous',ph:"i'nɔ:məs",pos:'adj.',posLabel:'形容词',ch:'巨大的、庞大的',infl:{comp:'more enormous',sup:'most enormous'}},
+{en:'vast',ph:"vɑ:st",pos:'adj.',posLabel:'形容词',ch:'巨大的、大量的、广阔的',infl:{comp:'vaster',sup:'vastest'}},
+{en:'giant',ph:"'dʒaiənt",pos:'adj.',posLabel:'形容词',ch:'巨大的',infl:{comp:'more giant',sup:'most giant'}},
+{en:'massive',ph:"'mæsiv",pos:'adj.',posLabel:'形容词',ch:'巨大的、大量的',infl:{comp:'more massive',sup:'most massive'}},
+{en:'minor',ph:"'mainə",pos:'adj.',posLabel:'形容词',ch:'较小的、较次要的',infl:{comp:'more minor',sup:'most minor'}}
+],
+'长短高低': [
+{en:'long',ph:"lɔŋ",pos:'adj.',posLabel:'形容词',ch:'长的、远的、很久的',infl:{comp:'longer',sup:'longest'}},
+{en:'short',ph:"ʃɔ:t",pos:'adj.',posLabel:'形容词',ch:'短的、短期的、矮的',infl:{comp:'shorter',sup:'shortest'}},
+{en:'tall',ph:"tɔ:l",pos:'adj.',posLabel:'形容词',ch:'高的、身材高的',infl:{comp:'taller',sup:'tallest'}},
+{en:'high',ph:"hai",pos:'adj.',posLabel:'形容词',ch:'高的、高级的、高尚的',infl:{comp:'higher',sup:'highest'}},
+{en:'low',ph:"ləu",pos:'adj.',posLabel:'形容词',ch:'低的、矮的、低下的',infl:{comp:'lower',sup:'lowest'}},
+{en:'deep',ph:"di:p",pos:'adj.',posLabel:'形容词',ch:'深的、深奥的、纵深的',infl:{comp:'deeper',sup:'deepest'}},
+{en:'wide',ph:"waid",pos:'adj.',posLabel:'形容词',ch:'宽阔的、广泛的',infl:{comp:'wider',sup:'widest'}},
+{en:'narrow',ph:"'nærəu",pos:'adj.',posLabel:'形容词',ch:'狭的、狭窄的、精密的',infl:{comp:'narrower',sup:'narrowest'}},
+{en:'thick',ph:"θik",pos:'adj.',posLabel:'形容词',ch:'厚的、粗的、密的',infl:{comp:'thicker',sup:'thickest'}},
+{en:'thin',ph:"θin",pos:'adj.',posLabel:'形容词',ch:'薄的、淡的、稀的',infl:{comp:'thinner',sup:'thinnest'}}
+],
+'数量': [
+{en:'many',ph:"'meni",pos:'adj.',posLabel:'形容词',ch:'许多的',infl:{comp:'more',sup:'most',irregular:true}},
+{en:'much',ph:"mʌtʃ",pos:'adj.',posLabel:'形容词',ch:'许多的、大量的',infl:{comp:'more',sup:'most',irregular:true}},
+{en:'few',ph:"fju:",pos:'adj.',posLabel:'形容词',ch:'很少的、少数的',infl:{comp:'fewer',sup:'fewest'}},
+{en:'little',ph:"'litl",pos:'adj.',posLabel:'形容词',ch:'小的、少的、幼小的',infl:{comp:'less',sup:'least',irregular:true}},
+{en:'several',ph:"'sevərəl",pos:'adj.',posLabel:'形容词',ch:'几个、数个、各自的',infl:{comp:'more several',sup:'most several'}},
+{en:'numerous',ph:"'nju:mərəs",pos:'adj.',posLabel:'形容词',ch:'为数众多的、许多',infl:{comp:'more numerous',sup:'most numerous'}},
+{en:'abundant',ph:"ə'bʌndənt",pos:'adj.',posLabel:'形容词',ch:'丰富的、充裕的、大量的',infl:{comp:'more abundant',sup:'most abundant'}},
+{en:'plentiful',ph:"'plentifəl",pos:'adj.',posLabel:'形容词',ch:'丰富的、富裕的、多的',infl:{comp:'more plentiful',sup:'most plentiful'}},
+{en:'sufficient',ph:"sə'fiʃənt",pos:'adj.',posLabel:'形容词',ch:'足够的、充分的',infl:{comp:'more sufficient',sup:'most sufficient'}},
+{en:'adequate',ph:"'ædikwit",pos:'adj.',posLabel:'形容词',ch:'足够的、充足的、适当的',infl:{comp:'more adequate',sup:'most adequate'}},
+{en:'empty',ph:"'empti",pos:'adj.',posLabel:'形容词',ch:'空的、空洞的',infl:{comp:'emptier',sup:'emptiest'}},
+{en:'full',ph:"ful",pos:'adj.',posLabel:'形容词',ch:'满的、完全的、充满的',infl:{comp:'fuller',sup:'fullest'}}
+]
+}}
+};
+
+VOCAB_DATA[2] = {
+'好坏与评价': { units: {
+'好与坏': [
+{en:'good',ph:"gud",pos:'adj.',posLabel:'形容词',ch:'好的、优良的、上等的',infl:{comp:'better',sup:'best',irregular:true}},
+{en:'bad',ph:"bæd",pos:'adj.',posLabel:'形容词',ch:'坏的、恶的、严重的',infl:{comp:'worse',sup:'worst',irregular:true}},
+{en:'excellent',ph:"'eksələnt",pos:'adj.',posLabel:'形容词',ch:'优秀的、杰出的',infl:{comp:'more excellent',sup:'most excellent'}},
+{en:'wonderful',ph:"'wʌndəfəl",pos:'adj.',posLabel:'形容词',ch:'惊人的、极好的、精彩的',infl:{comp:'more wonderful',sup:'most wonderful'}},
+{en:'terrible',ph:"'terəbl",pos:'adj.',posLabel:'形容词',ch:'可怕的、极度的、糟糕的',infl:{comp:'more terrible',sup:'most terrible'}},
+{en:'awful',ph:"'ɔ:fl",pos:'adj.',posLabel:'形容词',ch:'令人不愉快的、可怕的',infl:{comp:'awfuller / more awful',sup:'awfullest / most awful'}},
+{en:'great',ph:"greit",pos:'adj.',posLabel:'形容词',ch:'大的、伟大的、很好的',infl:{comp:'greater',sup:'greatest'}},
+{en:'perfect',ph:"'pə:fikt",pos:'adj.',posLabel:'形容词',ch:'完美的、极好的',infl:{comp:'more perfect',sup:'most perfect'}},
+{en:'fine',ph:"fain",pos:'adj.',posLabel:'形容词',ch:'美好的、优质的、晴朗的',infl:{comp:'finer',sup:'finest'}},
+{en:'nice',ph:"nais",pos:'adj.',posLabel:'形容词',ch:'美好的、令人愉快的',infl:{comp:'nicer',sup:'nicest'}}
+],
+'对与错': [
+{en:'right',ph:"rait",pos:'adj.',posLabel:'形容词',ch:'正确的、正直的、合适的',infl:{comp:'righter',sup:'rightest'}},
+{en:'wrong',ph:"rɔŋ",pos:'adj.',posLabel:'形容词',ch:'错误的、有毛病的',infl:{comp:'wronger',sup:'wrongest'}},
+{en:'correct',ph:"kə'rekt",pos:'adj.',posLabel:'形容词',ch:'正确的',infl:{comp:'more correct',sup:'most correct'}},
+{en:'accurate',ph:"'ækjurit",pos:'adj.',posLabel:'形容词',ch:'准确的、正确无误的',infl:{comp:'more accurate',sup:'most accurate'}},
+{en:'exact',ph:"ig'zækt",pos:'adj.',posLabel:'形容词',ch:'确切的、精确的',infl:{comp:'more exact',sup:'most exact'}},
+{en:'precise',ph:"pri'sais",pos:'adj.',posLabel:'形容词',ch:'精确的、准确的、认真的',infl:{comp:'more precise',sup:'most precise'}},
+{en:'mistaken',ph:"mi'steikən",pos:'adj.',posLabel:'形容词',ch:'错误的、弄错的',infl:{comp:'more mistaken',sup:'most mistaken'}},
+{en:'false',ph:"fɔ:ls",pos:'adj.',posLabel:'形容词',ch:'不真实的、伪造的、假的',infl:{comp:'falser',sup:'falsest'}}
+],
+'重要与次要': [
+{en:'important',ph:"im'pɔ:tənt",pos:'adj.',posLabel:'形容词',ch:'重要的、影响很大的',infl:{comp:'more important',sup:'most important'}},
+{en:'main',ph:"mein",pos:'adj.',posLabel:'形容词',ch:'主要的、最重要的',infl:{comp:'more main',sup:'most main'}},
+{en:'major',ph:"'meidʒə",pos:'adj.',posLabel:'形容词',ch:'较大的、主要的、较多的',infl:{comp:'more major',sup:'most major'}},
+{en:'chief',ph:"tʃi:f",pos:'adj.',posLabel:'形容词',ch:'主要的、首席的',infl:{comp:'more chief',sup:'most chief'}},
+{en:'primary',ph:"'praiməri",pos:'adj.',posLabel:'形容词',ch:'最初的、基本的、主要的',infl:{comp:'more primary',sup:'most primary'}},
+{en:'essential',ph:"i'senʃəl",pos:'adj.',posLabel:'形容词',ch:'必要的、重要的、本质的',infl:{comp:'more essential',sup:'most essential'}},
+{en:'significant',ph:"sig'nifikənt",pos:'adj.',posLabel:'形容词',ch:'有意义的、重要的、重大的',infl:{comp:'more significant',sup:'most significant'}},
+{en:'minor',ph:"'mainə",pos:'adj.',posLabel:'形容词',ch:'较小的、较次要的',infl:{comp:'more minor',sup:'most minor'}},
+{en:'unimportant',ph:"'ʌnim'pɔ:tənt",pos:'adj.',posLabel:'形容词',ch:'不重要的',infl:{comp:'more unimportant',sup:'most unimportant'}},
+{en:'trivial',ph:"'triviəl",pos:'adj.',posLabel:'形容词',ch:'琐碎的、不重要的',infl:{comp:'more trivial',sup:'most trivial'}}
+],
+'优秀与低劣': [
+{en:'best',ph:"best",pos:'adj.',posLabel:'形容词',ch:'最好的、最大的',infl:{comp:'—',sup:'—',irregular:true}},
+{en:'worst',ph:"wə:st",pos:'adj.',posLabel:'形容词',ch:'最坏的、最差的',infl:{comp:'—',sup:'—',irregular:true}},
+{en:'superior',ph:"su:'piəriə",pos:'adj.',posLabel:'形容词',ch:'较高的、优越的、上层的',infl:{comp:'more superior',sup:'most superior'}},
+{en:'inferior',ph:"in'fiəriə",pos:'adj.',posLabel:'形容词',ch:'下等的、劣等的、次等的',infl:{comp:'more inferior',sup:'most inferior'}},
+{en:'outstanding',ph:"aut'stændiŋ",pos:'adj.',posLabel:'形容词',ch:'突出的、杰出的、显著的',infl:{comp:'more outstanding',sup:'most outstanding'}},
+{en:'brilliant',ph:"'briljənt",pos:'adj.',posLabel:'形容词',ch:'光辉的、卓越的、杰出的',infl:{comp:'more brilliant',sup:'most brilliant'}},
+{en:'splendid',ph:"'splendid",pos:'adj.',posLabel:'形容词',ch:'壮丽的、显著的、极好的',infl:{comp:'more splendid',sup:'most splendid'}},
+{en:'ordinary',ph:"'ɔ:dnri",pos:'adj.',posLabel:'形容词',ch:'平常的、平凡的、普通的',infl:{comp:'more ordinary',sup:'most ordinary'}},
+{en:'average',ph:"'ævəridʒ",pos:'adj.',posLabel:'形容词',ch:'平均的、一般的、通常的',infl:{comp:'more average',sup:'most average'}}
+]
+}}
+};
+
+VOCAB_DATA[3] = {
+'情感与感受': { units: {
+'快乐与悲伤': [
+{en:'happy',ph:"'hæpi",pos:'adj.',posLabel:'形容词',ch:'快乐的、幸福的',infl:{comp:'happier',sup:'happiest'}},
+{en:'glad',ph:"glæd",pos:'adj.',posLabel:'形容词',ch:'高兴的、乐意的',infl:{comp:'gladder',sup:'gladdest'}},
+{en:'cheerful',ph:"'tʃiəfəl",pos:'adj.',posLabel:'形容词',ch:'快乐的、愉快的',infl:{comp:'more cheerful',sup:'most cheerful'}},
+{en:'merry',ph:"'meri",pos:'adj.',posLabel:'形容词',ch:'欢乐的、愉快的、敏捷的',infl:{comp:'merrier',sup:'merriest'}},
+{en:'joyful',ph:"'dʒɔifəl",pos:'adj.',posLabel:'形容词',ch:'十分喜悦的、快乐的',infl:{comp:'more joyful',sup:'most joyful'}},
+{en:'delighted',ph:"di'laitid",pos:'adj.',posLabel:'形容词',ch:'高兴的、欣喜的',infl:{comp:'more delighted',sup:'most delighted'}},
+{en:'sad',ph:"sæd",pos:'adj.',posLabel:'形容词',ch:'悲哀的、令人悲痛的',infl:{comp:'sadder',sup:'saddest'}},
+{en:'unhappy',ph:"ʌn'hæpi",pos:'adj.',posLabel:'形容词',ch:'不幸福的、不快乐的',infl:{comp:'unhappier',sup:'unhappiest'}},
+{en:'sorrowful',ph:"'sɔrəufəl",pos:'adj.',posLabel:'形容词',ch:'悲伤的、悲痛的',infl:{comp:'more sorrowful',sup:'most sorrowful'}},
+{en:'miserable',ph:"'mizərəbl",pos:'adj.',posLabel:'形容词',ch:'痛苦的、悲惨的、贫乏的',infl:{comp:'more miserable',sup:'most miserable'}}
+],
+'生气与害怕': [
+{en:'angry',ph:"'æŋgri",pos:'adj.',posLabel:'形容词',ch:'愤怒的、生气的',infl:{comp:'angrier',sup:'angriest',irregular:true}},
+{en:'furious',ph:"'fjuəriəs",pos:'adj.',posLabel:'形容词',ch:'狂怒的、狂暴的、猛烈的',infl:{comp:'more furious',sup:'most furious'}},
+{en:'mad',ph:"mæd",pos:'adj.',posLabel:'形容词',ch:'发疯的、恼火的、狂热的',infl:{comp:'madder',sup:'maddest'}},
+{en:'afraid',ph:"ə'freid",pos:'adj.',posLabel:'形容词',ch:'害怕的、担心的',infl:{comp:'more afraid',sup:'most afraid'}},
+{en:'fearful',ph:"'fiəfəl",pos:'adj.',posLabel:'形容词',ch:'害怕的、可怕的、担心的',infl:{comp:'more fearful',sup:'most fearful'}},
+{en:'scared',ph:"skɛəd",pos:'adj.',posLabel:'形容词',ch:'害怕的、恐惧的',infl:{comp:'more scared',sup:'most scared'}},
+{en:'frightened',ph:"'fraitənd",pos:'adj.',posLabel:'形容词',ch:'受惊的、害怕的',infl:{comp:'more frightened',sup:'most frightened'}},
+{en:'nervous',ph:"'nə:vəs",pos:'adj.',posLabel:'形容词',ch:'神经质的、易激动的、紧张的',infl:{comp:'more nervous',sup:'most nervous'}},
+{en:'anxious',ph:"'æŋkʃəs",pos:'adj.',posLabel:'形容词',ch:'焦急的、忧虑的、渴望的',infl:{comp:'more anxious',sup:'most anxious'}},
+{en:'worried',ph:"'wʌrid",pos:'adj.',posLabel:'形容词',ch:'担心的、焦虑的',infl:{comp:'more worried',sup:'most worried'}}
+],
+'惊讶与平静': [
+{en:'surprised',ph:"sə'praizd",pos:'adj.',posLabel:'形容词',ch:'惊讶的、感到意外的',infl:{comp:'more surprised',sup:'most surprised'}},
+{en:'astonished',ph:"əs'tɔniʃt",pos:'adj.',posLabel:'形容词',ch:'惊讶的、吃惊的',infl:{comp:'more astonished',sup:'most astonished'}},
+{en:'amazed',ph:"ə'meizd",pos:'adj.',posLabel:'形容词',ch:'惊奇的、惊愕的',infl:{comp:'more amazed',sup:'most amazed'}},
+{en:'calm',ph:"kɑ:m",pos:'adj.',posLabel:'形容词',ch:'静的、平静的、冷静的',infl:{comp:'calmer',sup:'calmest'}},
+{en:'quiet',ph:"'kwaiət",pos:'adj.',posLabel:'形容词',ch:'寂静的、安静的、静止的',infl:{comp:'quieter',sup:'quietest'}},
+{en:'peaceful',ph:"'pi:sfəl",pos:'adj.',posLabel:'形容词',ch:'和平的、平静的、安宁的',infl:{comp:'more peaceful',sup:'most peaceful'}},
+{en:'relaxed',ph:"ri'lækst",pos:'adj.',posLabel:'形容词',ch:'放松的、轻松的',infl:{comp:'more relaxed',sup:'most relaxed'}},
+{en:'silent',ph:"'sailənt",pos:'adj.',posLabel:'形容词',ch:'沉默的、寂静无声的',infl:{comp:'more silent',sup:'most silent'}}
+],
+'满意与厌倦': [
+{en:'satisfied',ph:"'sætisfaid",pos:'adj.',posLabel:'形容词',ch:'满意的、满足的',infl:{comp:'more satisfied',sup:'most satisfied'}},
+{en:'content',ph:"kən'tent",pos:'adj.',posLabel:'形容词',ch:'满足的、满意的',infl:{comp:'more content',sup:'most content'}},
+{en:'pleased',ph:"pli:zd",pos:'adj.',posLabel:'形容词',ch:'高兴的、满意的',infl:{comp:'more pleased',sup:'most pleased'}},
+{en:'proud',ph:"praud",pos:'adj.',posLabel:'形容词',ch:'骄傲的、自豪的、壮观的',infl:{comp:'prouder',sup:'proudest'}},
+{en:'bored',ph:"bɔ:d",pos:'adj.',posLabel:'形容词',ch:'无聊的、厌烦的',infl:{comp:'more bored',sup:'most bored'}},
+{en:'tired',ph:"'taiəd",pos:'adj.',posLabel:'形容词',ch:'疲劳的、疲倦的、厌倦的',infl:{comp:'more tired',sup:'most tired'}},
+{en:'weary',ph:"'wiəri",pos:'adj.',posLabel:'形容词',ch:'疲倦的、厌烦的',infl:{comp:'wearier',sup:'weariest'}},
+{en:'disappointed',ph:".disə'pɔintid",pos:'adj.',posLabel:'形容词',ch:'失望的、沮丧的',infl:{comp:'more disappointed',sup:'most disappointed'}}
+]
+}}
+};
+
+VOCAB_DATA[4] = {
+'外貌与特征': { units: {
+'美丑': [
+{en:'beautiful',ph:"'bju:tifəl",pos:'adj.',posLabel:'形容词',ch:'美的、美丽的、漂亮的',infl:{comp:'more beautiful',sup:'most beautiful'}},
+{en:'pretty',ph:"'priti",pos:'adj.',posLabel:'形容词',ch:'漂亮的、标致的、机灵的',infl:{comp:'prettier',sup:'prettiest'}},
+{en:'handsome',ph:"'hænsəm",pos:'adj.',posLabel:'形容词',ch:'英俊的、慷慨大方的',infl:{comp:'handsomer',sup:'handsomest'}},
+{en:'lovely',ph:"'lʌvli",pos:'adj.',posLabel:'形容词',ch:'可爱的、令人愉快的',infl:{comp:'lovelier',sup:'loveliest'}},
+{en:'attractive',ph:"ə'træktiv",pos:'adj.',posLabel:'形容词',ch:'有吸引力的、引起注意的',infl:{comp:'more attractive',sup:'most attractive'}},
+{en:'charming',ph:"'tʃɑ:miŋ",pos:'adj.',posLabel:'形容词',ch:'迷人的、可爱的',infl:{comp:'more charming',sup:'most charming'}},
+{en:'ugly',ph:"'ʌgli",pos:'adj.',posLabel:'形容词',ch:'丑陋的、难看的、可怕的',infl:{comp:'uglier',sup:'ugliest'}},
+{en:'plain',ph:"plein",pos:'adj.',posLabel:'形容词',ch:'清楚的、坦白的、简单的、平常的',infl:{comp:'plainer',sup:'plainest'}}
+],
+'胖瘦与年龄': [
+{en:'fat',ph:"fæt",pos:'adj.',posLabel:'形容词',ch:'肥胖的、丰满的',infl:{comp:'fatter',sup:'fattest'}},
+{en:'thin',ph:"θin",pos:'adj.',posLabel:'形容词',ch:'薄的、瘦的、稀的',infl:{comp:'thinner',sup:'thinnest'}},
+{en:'slim',ph:"slim",pos:'adj.',posLabel:'形容词',ch:'苗条的、细长的',infl:{comp:'slimmer',sup:'slimmest'}},
+{en:'slender',ph:"'slendə",pos:'adj.',posLabel:'形容词',ch:'细长的、微薄的、苗条的',infl:{comp:'more slender',sup:'most slender'}},
+{en:'young',ph:"jʌŋ",pos:'adj.',posLabel:'形容词',ch:'年轻的、没有经验的、初期的',infl:{comp:'younger',sup:'youngest'}},
+{en:'old',ph:"əuld",pos:'adj.',posLabel:'形容词',ch:'老的、某年龄的、以前的',infl:{comp:'older / elder',sup:'oldest / eldest',irregular:true}},
+{en:'new',ph:"nju:",pos:'adj.',posLabel:'形容词',ch:'新的、新近出现的',infl:{comp:'newer',sup:'newest'}},
+{en:'ancient',ph:"'einʃənt",pos:'adj.',posLabel:'形容词',ch:'古代的、古老的',infl:{comp:'more ancient',sup:'most ancient'}},
+{en:'modern',ph:"'mɔdən",pos:'adj.',posLabel:'形容词',ch:'现代的、近代的、时髦的',infl:{comp:'more modern',sup:'most modern'}},
+{en:'mature',ph:"mə'tjuə",pos:'adj.',posLabel:'形容词',ch:'成熟的、到期的',infl:{comp:'more mature',sup:'most mature'}}
+],
+'强弱与健康': [
+{en:'strong',ph:"strɔŋ",pos:'adj.',posLabel:'形容词',ch:'强壮的、强烈的、坚强的',infl:{comp:'stronger',sup:'strongest'}},
+{en:'weak',ph:"wi:k",pos:'adj.',posLabel:'形容词',ch:'弱的、软弱的、虚弱的',infl:{comp:'weaker',sup:'weakest'}},
+{en:'powerful',ph:"'pauəfəl",pos:'adj.',posLabel:'形容词',ch:'强有力的、有权威的',infl:{comp:'more powerful',sup:'most powerful'}},
+{en:'healthy',ph:"'helθi",pos:'adj.',posLabel:'形容词',ch:'健康的、有益健康的',infl:{comp:'healthier',sup:'healthiest'}},
+{en:'sick',ph:"sik",pos:'adj.',posLabel:'形容词',ch:'有病的、恶心的、腻烦的',infl:{comp:'sicker',sup:'sickest'}},
+{en:'ill',ph:"il",pos:'adj.',posLabel:'形容词',ch:'有病的、坏的、引起痛苦的',infl:{comp:'worse',sup:'worst',irregular:true}},
+{en:'tired',ph:"'taiəd",pos:'adj.',posLabel:'形容词',ch:'疲劳的、疲倦的',infl:{comp:'more tired',sup:'most tired'}},
+{en:'energetic',ph:".enə'dʒetik",pos:'adj.',posLabel:'形容词',ch:'精力充沛的、积极的',infl:{comp:'more energetic',sup:'most energetic'}}
+]
+}}
+};
+
+VOCAB_DATA[5] = {
+'性格与品质': { units: {
+'善良与友好': [
+{en:'kind',ph:"kaind",pos:'adj.',posLabel:'形容词',ch:'仁慈的、友好的、和蔼的',infl:{comp:'kinder',sup:'kindest'}},
+{en:'friendly',ph:"'frendli",pos:'adj.',posLabel:'形容词',ch:'友好的、友谊的',infl:{comp:'friendlier',sup:'friendliest'}},
+{en:'gentle',ph:"'dʒentl",pos:'adj.',posLabel:'形容词',ch:'和蔼的、轻柔的、温和的',infl:{comp:'gentler',sup:'gentlest'}},
+{en:'warm',ph:"wɔ:m",pos:'adj.',posLabel:'形容词',ch:'温暖的、暖和的、热烈的',infl:{comp:'warmer',sup:'warmest'}},
+{en:'generous',ph:"'dʒenərəs",pos:'adj.',posLabel:'形容词',ch:'慷慨的、宽厚的、丰盛的',infl:{comp:'more generous',sup:'most generous'}},
+{en:'helpful',ph:"'helpfəl",pos:'adj.',posLabel:'形容词',ch:'给予帮助的、有用的',infl:{comp:'more helpful',sup:'most helpful'}},
+{en:'polite',ph:"pə'lait",pos:'adj.',posLabel:'形容词',ch:'有礼貌的、有教养的',infl:{comp:'politer',sup:'politest'}},
+{en:'cruel',ph:"'kru:əl",pos:'adj.',posLabel:'形容词',ch:'残忍的、残酷的',infl:{comp:'crueller',sup:'cruellest'}},
+{en:'rude',ph:"ru:d",pos:'adj.',posLabel:'形容词',ch:'加工粗糙的、粗野的、无礼的',infl:{comp:'ruder',sup:'rudest'}},
+{en:'selfish',ph:"'selfiʃ",pos:'adj.',posLabel:'形容词',ch:'自私的、利己的',infl:{comp:'more selfish',sup:'most selfish'}}
+],
+'勇敢与诚实': [
+{en:'brave',ph:"breiv",pos:'adj.',posLabel:'形容词',ch:'勇敢的、华丽的',infl:{comp:'braver',sup:'bravest'}},
+{en:'bold',ph:"bəuld",pos:'adj.',posLabel:'形容词',ch:'大胆的、冒失的、粗体的',infl:{comp:'bolder',sup:'boldest'}},
+{en:'daring',ph:"'dɛəriŋ",pos:'adj.',posLabel:'形容词',ch:'大胆的、勇敢的',infl:{comp:'more daring',sup:'most daring'}},
+{en:'honest',ph:"'ɔnist",pos:'adj.',posLabel:'形容词',ch:'诚实的、可敬的、正直的',infl:{comp:'more honest',sup:'most honest'}},
+{en:'sincere',ph:"sin'siə",pos:'adj.',posLabel:'形容词',ch:'真诚的、真挚的',infl:{comp:'more sincere',sup:'most sincere'}},
+{en:'loyal',ph:"'lɔiəl",pos:'adj.',posLabel:'形容词',ch:'忠诚的、忠心的',infl:{comp:'more loyal',sup:'most loyal'}},
+{en:'reliable',ph:"ri'laiəbl",pos:'adj.',posLabel:'形容词',ch:'可靠的、可信赖的',infl:{comp:'more reliable',sup:'most reliable'}},
+{en:'dishonest',ph:"dis'ɔnist",pos:'adj.',posLabel:'形容词',ch:'不诚实的',infl:{comp:'more dishonest',sup:'most dishonest'}}
+],
+'聪明与勤劳': [
+{en:'clever',ph:"'klevə",pos:'adj.',posLabel:'形容词',ch:'聪明的、机敏的',infl:{comp:'cleverer',sup:'cleverest'}},
+{en:'smart',ph:"smɑ:t",pos:'adj.',posLabel:'形容词',ch:'巧妙的、聪明的、时髦的',infl:{comp:'smarter',sup:'smartest'}},
+{en:'wise',ph:"waiz",pos:'adj.',posLabel:'形容词',ch:'有智慧的、聪明的、明智的',infl:{comp:'wiser',sup:'wisest'}},
+{en:'intelligent',ph:"in'telidʒənt",pos:'adj.',posLabel:'形容词',ch:'聪明的、理智的',infl:{comp:'more intelligent',sup:'most intelligent'}},
+{en:'brilliant',ph:"'briljənt",pos:'adj.',posLabel:'形容词',ch:'光辉的、卓越的、才华横溢的',infl:{comp:'more brilliant',sup:'most brilliant'}},
+{en:'stupid',ph:"'stju:pid",pos:'adj.',posLabel:'形容词',ch:'愚蠢的、感觉迟钝的',infl:{comp:'stupider',sup:'stupidest'}},
+{en:'diligent',ph:"'dilidʒənt",pos:'adj.',posLabel:'形容词',ch:'勤勉的、勤奋的、用功的',infl:{comp:'more diligent',sup:'most diligent'}},
+{en:'lazy',ph:"'leizi",pos:'adj.',posLabel:'形容词',ch:'懒惰的、懒散的',infl:{comp:'lazier',sup:'laziest'}},
+{en:'hardworking',ph:"'hɑ:d'wə:kiŋ",pos:'adj.',posLabel:'形容词',ch:'勤劳的、努力工作的',infl:{comp:'more hardworking',sup:'most hardworking'}},
+{en:'careful',ph:"'kɛəfəl",pos:'adj.',posLabel:'形容词',ch:'小心的、仔细的、细致的',infl:{comp:'more careful',sup:'most careful'}},
+{en:'careless',ph:"'kɛəlis",pos:'adj.',posLabel:'形容词',ch:'粗心的、漫不经心的',infl:{comp:'more careless',sup:'most careless'}}
+],
+'其他性格': [
+{en:'patient',ph:"'peiʃənt",pos:'adj.',posLabel:'形容词',ch:'耐心的、能忍耐的',infl:{comp:'more patient',sup:'most patient'}},
+{en:'impatient',ph:"im'peiʃənt",pos:'adj.',posLabel:'形容词',ch:'不耐烦的、急躁的',infl:{comp:'more impatient',sup:'most impatient'}},
+{en:'confident',ph:"'kɔnfidənt",pos:'adj.',posLabel:'形容词',ch:'确信的、自信的',infl:{comp:'more confident',sup:'most confident'}},
+{en:'shy',ph:"ʃai",pos:'adj.',posLabel:'形容词',ch:'易受惊的、害羞的、胆怯的',infl:{comp:'shyer',sup:'shyest'}},
+{en:'modest',ph:"'mɔdist",pos:'adj.',posLabel:'形容词',ch:'有节制的、谦虚的、适度的',infl:{comp:'more modest',sup:'most modest'}},
+{en:'proud',ph:"praud",pos:'adj.',posLabel:'形容词',ch:'骄傲的、自豪的',infl:{comp:'prouder',sup:'proudest'}},
+{en:'humble',ph:"'hʌmbl",pos:'adj.',posLabel:'形容词',ch:'谦逊的、地位低下的、卑下的',infl:{comp:'humbler',sup:'humblest'}},
+{en:'ambitious',ph:"æm'biʃəs",pos:'adj.',posLabel:'形容词',ch:'有雄心的、野心勃勃的',infl:{comp:'more ambitious',sup:'most ambitious'}}
+]
+}}
+};
+
+VOCAB_DATA[6] = {
+'时间与新旧': { units: {
+'新旧': [
+{en:'new',ph:"nju:",pos:'adj.',posLabel:'形容词',ch:'新的、新近出现的',infl:{comp:'newer',sup:'newest'}},
+{en:'old',ph:"əuld",pos:'adj.',posLabel:'形容词',ch:'老的、某年龄的、以前的',infl:{comp:'older / elder',sup:'oldest / eldest',irregular:true}},
+{en:'fresh',ph:"freʃ",pos:'adj.',posLabel:'形容词',ch:'新的、新鲜的、无经验的',infl:{comp:'fresher',sup:'freshest'}},
+{en:'modern',ph:"'mɔdən",pos:'adj.',posLabel:'形容词',ch:'现代的、近代的、时髦的',infl:{comp:'more modern',sup:'most modern'}},
+{en:'ancient',ph:"'einʃənt",pos:'adj.',posLabel:'形容词',ch:'古代的、古老的',infl:{comp:'more ancient',sup:'most ancient'}},
+{en:'recent',ph:"'ri:snt",pos:'adj.',posLabel:'形容词',ch:'新近的、最近的',infl:{comp:'more recent',sup:'most recent'}},
+{en:'contemporary',ph:"kən'tempərəri",pos:'adj.',posLabel:'形容词',ch:'当代的、同时代的、现代的',infl:{comp:'more contemporary',sup:'most contemporary'}},
+{en:'up-to-date',ph:"'ʌptə'deit",pos:'adj.',posLabel:'形容词',ch:'直到最近的、现代的、最新的',infl:{comp:'more up-to-date',sup:'most up-to-date'}}
+],
+'快慢': [
+{en:'fast',ph:"fɑ:st",pos:'adj.',posLabel:'形容词',ch:'快速的、偏快的、固定的',infl:{comp:'faster',sup:'fastest'}},
+{en:'slow',ph:"sləu",pos:'adj.',posLabel:'形容词',ch:'慢的、迟钝的',infl:{comp:'slower',sup:'slowest'}},
+{en:'quick',ph:"kwik",pos:'adj.',posLabel:'形容词',ch:'快的、敏捷的、迅速的',infl:{comp:'quicker',sup:'quickest'}},
+{en:'rapid',ph:"'ræpid",pos:'adj.',posLabel:'形容词',ch:'快的、迅速的、急促的',infl:{comp:'more rapid',sup:'most rapid'}},
+{en:'swift',ph:"swift",pos:'adj.',posLabel:'形容词',ch:'快的、反应快的、迅速的',infl:{comp:'swifter',sup:'swiftest'}},
+{en:'sudden',ph:"'sʌdn",pos:'adj.',posLabel:'形容词',ch:'突然的、意外的、快速的',infl:{comp:'more sudden',sup:'most sudden'}}
+],
+'早晚': [
+{en:'early',ph:"'ə:li",pos:'adj.',posLabel:'形容词',ch:'早的、早期的',infl:{comp:'earlier',sup:'earliest'}},
+{en:'late',ph:"leit",pos:'adj.',posLabel:'形容词',ch:'迟的、晚的、已故的',infl:{comp:'later',sup:'latest / last',irregular:true}},
+{en:'present',ph:"'preznt",pos:'adj.',posLabel:'形容词',ch:'现在的、当面的、出席的',infl:{comp:'more present',sup:'most present'}},
+{en:'past',ph:"pɑ:st",pos:'adj.',posLabel:'形容词',ch:'过去的、刚过去的',infl:{comp:'more past',sup:'most past'}},
+{en:'future',ph:"'fju:tʃə",pos:'adj.',posLabel:'形容词',ch:'将来的',infl:{comp:'more future',sup:'most future'}}
+]
+}}
+};
+
+VOCAB_DATA[7] = {
+'难易与状态': { units: {
+'难易': [
+{en:'easy',ph:"'i:zi",pos:'adj.',posLabel:'形容词',ch:'容易的、安逸的、不费力的',infl:{comp:'easier',sup:'easiest'}},
+{en:'difficult',ph:"'difikəlt",pos:'adj.',posLabel:'形容词',ch:'困难的、难对付的',infl:{comp:'more difficult',sup:'most difficult'}},
+{en:'hard',ph:"hɑ:d",pos:'adj.',posLabel:'形容词',ch:'硬的、困难的、艰难的',infl:{comp:'harder',sup:'hardest'}},
+{en:'simple',ph:"'simpl",pos:'adj.',posLabel:'形容词',ch:'简单的、朴素的、无辜的',infl:{comp:'simpler',sup:'simplest'}},
+{en:'complicated',ph:"'kɔmplikeitid",pos:'adj.',posLabel:'形容词',ch:'复杂的、难懂的',infl:{comp:'more complicated',sup:'most complicated'}},
+{en:'complex',ph:"'kɔmpleks",pos:'adj.',posLabel:'形容词',ch:'结合的、复杂的',infl:{comp:'more complex',sup:'most complex'}}
+],
+'清楚与模糊': [
+{en:'clear',ph:"kliə",pos:'adj.',posLabel:'形容词',ch:'清晰的、清楚的、明确的',infl:{comp:'clearer',sup:'clearest'}},
+{en:'obvious',ph:"'ɔbviəs",pos:'adj.',posLabel:'形容词',ch:'明显的、显而易见的',infl:{comp:'more obvious',sup:'most obvious'}},
+{en:'evident',ph:"'evidənt",pos:'adj.',posLabel:'形容词',ch:'明显的、明白的',infl:{comp:'more evident',sup:'most evident'}},
+{en:'vague',ph:"veig",pos:'adj.',posLabel:'形容词',ch:'模糊的、含糊的、不明确的',infl:{comp:'vaguer',sup:'vaguest'}},
+{en:'faint',ph:"feint",pos:'adj.',posLabel:'形容词',ch:'微弱的、虚弱的、模糊的',infl:{comp:'fainter',sup:'faintest'}},
+{en:'distinct',ph:"di'stiŋkt",pos:'adj.',posLabel:'形容词',ch:'与其他不同的、明显的、清楚的',infl:{comp:'more distinct',sup:'most distinct'}}
+],
+'状态': [
+{en:'free',ph:"fri:",pos:'adj.',posLabel:'形容词',ch:'自由的、空闲的、大方的',infl:{comp:'freer',sup:'freest'}},
+{en:'busy',ph:"'bizi",pos:'adj.',posLabel:'形容词',ch:'忙的、繁忙的、杂乱的',infl:{comp:'busier',sup:'busiest'}},
+{en:'ready',ph:"'redi",pos:'adj.',posLabel:'形容词',ch:'准备好的、愿意的、现成的',infl:{comp:'readier',sup:'readiest'}},
+{en:'available',ph:"ə'veiləbəl",pos:'adj.',posLabel:'形容词',ch:'可利用的、可得到的、有用的',infl:{comp:'more available',sup:'most available'}},
+{en:'necessary',ph:"'nesə.səri",pos:'adj.',posLabel:'形容词',ch:'必要的、必需的、必然的',infl:{comp:'more necessary',sup:'most necessary'}},
+{en:'possible',ph:"'pɔsəbl",pos:'adj.',posLabel:'形容词',ch:'可能的、可能存在的',infl:{comp:'more possible',sup:'most possible'}},
+{en:'impossible',ph:"im'pɔsəbl",pos:'adj.',posLabel:'形容词',ch:'不可能的、办不到的',infl:{comp:'more impossible',sup:'most impossible'}}
+]
+}}
+};
+
+VOCAB_DATA[8] = {
+'颜色与形状': { units: {
+'颜色': [
+{en:'red',ph:"red",pos:'adj.',posLabel:'形容词',ch:'红色的',infl:{comp:'redder',sup:'reddest'}},
+{en:'blue',ph:"blu:",pos:'adj.',posLabel:'形容词',ch:'蓝色的、沮丧的、忧郁的',infl:{comp:'bluer',sup:'bluest'}},
+{en:'green',ph:"gri:n",pos:'adj.',posLabel:'形容词',ch:'绿色的、长满绿草的、未成熟的',infl:{comp:'greener',sup:'greenest'}},
+{en:'yellow',ph:"'jeləu",pos:'adj.',posLabel:'形容词',ch:'黄的、黄色的',infl:{comp:'yellower',sup:'yellowest'}},
+{en:'black',ph:"blæk",pos:'adj.',posLabel:'形容词',ch:'黑的、暗的、邪恶的',infl:{comp:'blacker',sup:'blackest'}},
+{en:'white',ph:"wait",pos:'adj.',posLabel:'形容词',ch:'白色的、白种的、纯洁的',infl:{comp:'whiter',sup:'whitest'}},
+{en:'grey',ph:"grei",pos:'adj.',posLabel:'形容词',ch:'灰色的',infl:{comp:'greyer',sup:'greyest'}},
+{en:'brown',ph:"braun",pos:'adj.',posLabel:'形容词',ch:'褐色的、棕色的',infl:{comp:'browner',sup:'brownest'}},
+{en:'purple',ph:"'pə:pl",pos:'adj.',posLabel:'形容词',ch:'紫的、帝王的、辞藻华丽的',infl:{comp:'more purple',sup:'most purple'}},
+{en:'pink',ph:"piŋk",pos:'adj.',posLabel:'形容词',ch:'粉红色的、激进的',infl:{comp:'pinker',sup:'pinkest'}}
+],
+'形状': [
+{en:'round',ph:"raund",pos:'adj.',posLabel:'形容词',ch:'圆的、微胖的、完整的',infl:{comp:'rounder',sup:'roundest'}},
+{en:'square',ph:"skwɛə",pos:'adj.',posLabel:'形容词',ch:'正方形的、正直的、公正的',infl:{comp:'squarer',sup:'squarest'}},
+{en:'straight',ph:"streit",pos:'adj.',posLabel:'形容词',ch:'直的、正直的、坦率的',infl:{comp:'straighter',sup:'straightest'}},
+{en:'flat',ph:"flæt",pos:'adj.',posLabel:'形容词',ch:'平的、扁平的、单调的',infl:{comp:'flatter',sup:'flattest'}},
+{en:'sharp',ph:"ʃɑ:p",pos:'adj.',posLabel:'形容词',ch:'锋利的、敏锐的、刺耳的',infl:{comp:'sharper',sup:'sharpest'}},
+{en:'hollow',ph:"'hɔləu",pos:'adj.',posLabel:'形容词',ch:'空的、空洞的、虚伪的',infl:{comp:'hollower',sup:'hollowest'}}
+],
+'材质': [
+{en:'soft',ph:"sɔft",pos:'adj.',posLabel:'形容词',ch:'软的、柔软的、柔和的',infl:{comp:'softer',sup:'softest'}},
+{en:'hard',ph:"hɑ:d",pos:'adj.',posLabel:'形容词',ch:'硬的、困难的、艰难的',infl:{comp:'harder',sup:'hardest'}},
+{en:'smooth',ph:"smu:ð",pos:'adj.',posLabel:'形容词',ch:'平滑的、平静的、平稳的',infl:{comp:'smoother',sup:'smoothest'}},
+{en:'rough',ph:"rʌf",pos:'adj.',posLabel:'形容词',ch:'表面不平的、粗略的、粗糙的',infl:{comp:'rougher',sup:'roughest'}},
+{en:'solid',ph:"'sɔlid",pos:'adj.',posLabel:'形容词',ch:'固体的、结实的、实心的',infl:{comp:'more solid',sup:'most solid'}},
+{en:'liquid',ph:"'likwid",pos:'adj.',posLabel:'形容词',ch:'液体的、液态的',infl:{comp:'more liquid',sup:'most liquid'}}
+]
+}}
+};
+
+VOCAB_DATA[9] = {
+'温度与触感': { units: {
+'温度': [
+{en:'hot',ph:"hɔt",pos:'adj.',posLabel:'形容词',ch:'热的、热情的、刺激的',infl:{comp:'hotter',sup:'hottest'}},
+{en:'cold',ph:"kəuld",pos:'adj.',posLabel:'形容词',ch:'冷的、冷淡的、漠然的',infl:{comp:'colder',sup:'coldest'}},
+{en:'warm',ph:"wɔ:m",pos:'adj.',posLabel:'形容词',ch:'温暖的、暖和的、热烈的',infl:{comp:'warmer',sup:'warmest'}},
+{en:'cool',ph:"ku:l",pos:'adj.',posLabel:'形容词',ch:'凉的、冷静的、冷色系的',infl:{comp:'cooler',sup:'coolest'}},
+{en:'freezing',ph:"'fri:ziŋ",pos:'adj.',posLabel:'形容词',ch:'冰冻的、极冷的',infl:{comp:'more freezing',sup:'most freezing'}},
+{en:'boiling',ph:"'bɔiliŋ",pos:'adj.',posLabel:'形容词',ch:'沸腾的、极热的',infl:{comp:'more boiling',sup:'most boiling'}}
+],
+'触感': [
+{en:'wet',ph:"wet",pos:'adj.',posLabel:'形容词',ch:'湿的、下雨的、雨天的',infl:{comp:'wetter',sup:'wettest'}},
+{en:'dry',ph:"drai",pos:'adj.',posLabel:'形容词',ch:'干的、干燥的、干旱的',infl:{comp:'drier',sup:'driest'}},
+{en:'damp',ph:"dæmp",pos:'adj.',posLabel:'形容词',ch:'潮湿的、有湿气的',infl:{comp:'damper',sup:'dampest'}},
+{en:'sticky',ph:"'stiki",pos:'adj.',posLabel:'形容词',ch:'粘性的、胶粘的、闷热的',infl:{comp:'stickier',sup:'stickiest'}},
+{en:'tight',ph:"tait",pos:'adj.',posLabel:'形容词',ch:'紧的、紧身的、严厉的',infl:{comp:'tighter',sup:'tightest'}},
+{en:'loose',ph:"lu:s",pos:'adj.',posLabel:'形容词',ch:'松的、宽松的、不牢固的',infl:{comp:'looser',sup:'loosest'}}
+]
+}}
+};
+
+VOCAB_DATA[10] = {
+'社会与关系': { units: {
+'贫富': [
+{en:'rich',ph:"ritʃ",pos:'adj.',posLabel:'形容词',ch:'富的、丰富的、浓厚的',infl:{comp:'richer',sup:'richest'}},
+{en:'poor',ph:"puə",pos:'adj.',posLabel:'形容词',ch:'贫穷的、贫乏的、可怜的',infl:{comp:'poorer',sup:'poorest'}},
+{en:'wealthy',ph:"'welθi",pos:'adj.',posLabel:'形容词',ch:'富的、富裕的',infl:{comp:'wealthier',sup:'wealthiest'}},
+{en:'expensive',ph:"iks'pensiv",pos:'adj.',posLabel:'形容词',ch:'昂贵的、花钱多的、豪华的',infl:{comp:'more expensive',sup:'most expensive'}},
+{en:'cheap',ph:"tʃi:p",pos:'adj.',posLabel:'形容词',ch:'廉价的、便宜的、劣质的',infl:{comp:'cheaper',sup:'cheapest'}}
+],
+'公私': [
+{en:'public',ph:"'pʌblik",pos:'adj.',posLabel:'形容词',ch:'公众的、公开的、众所周知的',infl:{comp:'more public',sup:'most public'}},
+{en:'private',ph:"'praivit",pos:'adj.',posLabel:'形容词',ch:'私人的、私下的、隐蔽的',infl:{comp:'more private',sup:'most private'}},
+{en:'personal',ph:"'pə:sənl",pos:'adj.',posLabel:'形容词',ch:'个人的、私人的、亲自的',infl:{comp:'more personal',sup:'most personal'}},
+{en:'formal',ph:"'fɔ:məl",pos:'adj.',posLabel:'形容词',ch:'正式的、礼仪上的、拘谨的',infl:{comp:'more formal',sup:'most formal'}},
+{en:'informal',ph:"in'fɔ:məl",pos:'adj.',posLabel:'形容词',ch:'非正式的、不拘礼节的',infl:{comp:'more informal',sup:'most informal'}}
+],
+'社会关系': [
+{en:'social',ph:"'səuʃəl",pos:'adj.',posLabel:'形容词',ch:'社会的、社交的、群居的',infl:{comp:'more social',sup:'most social'}},
+{en:'friendly',ph:"'frendli",pos:'adj.',posLabel:'形容词',ch:'友好的、友谊的',infl:{comp:'friendlier',sup:'friendliest'}},
+{en:'hostile',ph:"'hɔstail",pos:'adj.',posLabel:'形容词',ch:'敌方的、不友善的、怀敌意的',infl:{comp:'more hostile',sup:'most hostile'}},
+{en:'equal',ph:"'i:kwəl",pos:'adj.',posLabel:'形容词',ch:'相等的、平等的、胜任的',infl:{comp:'more equal',sup:'most equal'}},
+{en:'independent',ph:".indi'pendənt",pos:'adj.',posLabel:'形容词',ch:'独立的、自主的、私立的',infl:{comp:'more independent',sup:'most independent'}}
+]
+}}
+};
+
+VOCAB_DATA[11] = {
+'能力与可能': { units: {
+'能力': [
+{en:'able',ph:"'eibl",pos:'adj.',posLabel:'形容词',ch:'能干的、有能力的、出色的',infl:{comp:'abler / more able',sup:'ablest / most able'}},
+{en:'capable',ph:"'keipəbl",pos:'adj.',posLabel:'形容词',ch:'有能力的、有才能的、足以胜任的',infl:{comp:'more capable',sup:'most capable'}},
+{en:'competent',ph:"'kɔmpitənt",pos:'adj.',posLabel:'形容词',ch:'有能力的、胜任的、足够的',infl:{comp:'more competent',sup:'most competent'}},
+{en:'skilled',ph:"skild",pos:'adj.',posLabel:'形容词',ch:'有技能的、熟练的',infl:{comp:'more skilled',sup:'most skilled'}},
+{en:'skillful',ph:"'skilfəl",pos:'adj.',posLabel:'形容词',ch:'灵巧的、娴熟的',infl:{comp:'more skillful',sup:'most skillful'}}
+],
+'可能': [
+{en:'possible',ph:"'pɔsəbl",pos:'adj.',posLabel:'形容词',ch:'可能的、可能存在的',infl:{comp:'more possible',sup:'most possible'}},
+{en:'probable',ph:"'prɔbəbl",pos:'adj.',posLabel:'形容词',ch:'或有的、大概的、很可能的',infl:{comp:'more probable',sup:'most probable'}},
+{en:'likely',ph:"'laikli",pos:'adj.',posLabel:'形容词',ch:'可能的、合适的、可信的',infl:{comp:'more likely',sup:'most likely'}},
+{en:'certain',ph:"'sə:tn",pos:'adj.',posLabel:'形容词',ch:'确实的、肯定的、必然的',infl:{comp:'more certain',sup:'most certain'}},
+{en:'sure',ph:"ʃuə",pos:'adj.',posLabel:'形容词',ch:'确信的、确实的、肯定的',infl:{comp:'surer',sup:'surest'}}
+],
+'必要': [
+{en:'necessary',ph:"'nesə.səri",pos:'adj.',posLabel:'形容词',ch:'必要的、必需的、必然的',infl:{comp:'more necessary',sup:'most necessary'}},
+{en:'essential',ph:"i'senʃəl",pos:'adj.',posLabel:'形容词',ch:'必要的、重要的、本质的',infl:{comp:'more essential',sup:'most essential'}},
+{en:'vital',ph:"'vaitl",pos:'adj.',posLabel:'形容词',ch:'生命的、有生命力的、至关重要的',infl:{comp:'more vital',sup:'most vital'}},
+{en:'urgent',ph:"'ə:dʒənt",pos:'adj.',posLabel:'形容词',ch:'紧急的、强求的、急迫的',infl:{comp:'more urgent',sup:'most urgent'}},
+{en:'optional',ph:"'ɔpʃənl",pos:'adj.',posLabel:'形容词',ch:'可以任意选择的',infl:{comp:'more optional',sup:'most optional'}}
+]
+}}
+};
+
+// 主题 12：其他（含 L1 基础 / L2 进阶 两个 Level）
+VOCAB_DATA[12] = {
+'L1 基础': { units: {
+'Unit 1': [
+{en:'active',ph:"'æktiv",pos:'adj.',posLabel:'形容词',ch:'活跃的、积极的、主动的',infl:{comp:'more active',sup:'most active'}},
+{en:'actual',ph:"'æktjuəl",pos:'adj.',posLabel:'形容词',ch:'实际的、真实的、现行的',infl:{comp:'more actual',sup:'most actual'}},
+{en:'dead',ph:"ded",pos:'adj.',posLabel:'形容词',ch:'死的、无生命的、萧条的',infl:{comp:'deader',sup:'deadest'}},
+{en:'dark',ph:"dɑ:k",pos:'adj.',posLabel:'形容词',ch:'暗的、黑色的',infl:{comp:'darker',sup:'darkest'}},
+{en:'daily',ph:"'deili",pos:'adj.',posLabel:'形容词',ch:'每日的、按天计算的、日常的',infl:{comp:'more daily',sup:'most daily'}},
+{en:'dear',ph:"diə",pos:'adj.',posLabel:'形容词',ch:'严重的、珍贵的、亲爱的',infl:{comp:'dearer',sup:'dearest'}},
+{en:'bright',ph:"brait",pos:'adj.',posLabel:'形容词',ch:'明亮的、阳光的、生动的',infl:{comp:'brighter',sup:'brightest'}},
+{en:'broken',ph:"'brəukən",pos:'adj.',posLabel:'形容词',ch:'被打碎的、骨折的、坏掉的',infl:{comp:'more broken',sup:'most broken'}},
+{en:'aware',ph:"ə'weə",pos:'adj.',posLabel:'形容词',ch:'知道的、意识到的',infl:{comp:'more aware',sup:'most aware'}},
+{en:'awful',ph:"'ɔ:fl",pos:'adj.',posLabel:'形容词',ch:'令人不愉快的、可怕的、畏惧的',infl:{comp:'awfuller / more awful',sup:'awfullest / most awful'}},
+{en:'alive',ph:"ə'laiv",pos:'adj.',posLabel:'形容词',ch:'活着的、有活力、活跃的',infl:{comp:'more alive',sup:'most alive'}},
+{en:'alone',ph:"ə'ləun",pos:'adj.',posLabel:'形容词',ch:'单独的、仅仅、独自一人',infl:{comp:'more alone',sup:'most alone'}},
+{en:'certain',ph:"'sə:tn",pos:'adj.',posLabel:'形容词',ch:'确实的、肯定的、必然的',infl:{comp:'more certain',sup:'most certain'}},
+{en:'common',ph:"'kɔmən",pos:'adj.',posLabel:'形容词',ch:'普通的、共同的、平常的',infl:{comp:'commoner / more common',sup:'commonest / most common'}},
+{en:'dangerous',ph:"'deindʒərəs",pos:'adj.',posLabel:'形容词',ch:'危险的、不安全的',infl:{comp:'more dangerous',sup:'most dangerous'}},
+{en:'dirty',ph:"'də:ti",pos:'adj.',posLabel:'形容词',ch:'脏的、下流的、肮脏的',infl:{comp:'dirtier',sup:'dirtiest'}},
+{en:'direct',ph:"di'rekt",pos:'adj.',posLabel:'形容词',ch:'直接的、直率的、笔直的',infl:{comp:'more direct',sup:'most direct'}},
+{en:'different',ph:"'difərənt",pos:'adj.',posLabel:'形容词',ch:'差异的、各种的、不同的',infl:{comp:'more different',sup:'most different'}},
+{en:'fair',ph:"fɛə",pos:'adj.',posLabel:'形容词',ch:'公平的、晴朗的、美丽的',infl:{comp:'fairer',sup:'fairest'}},
+{en:'familiar',ph:"fə'miljə",pos:'adj.',posLabel:'形容词',ch:'熟悉的、熟知的、不拘礼节的',infl:{comp:'more familiar',sup:'most familiar'}},
+{en:'eager',ph:"'i:gə",pos:'adj.',posLabel:'形容词',ch:'渴望的、热切的',infl:{comp:'more eager',sup:'most eager'}},
+{en:'equal',ph:"'i:kwəl",pos:'adj.',posLabel:'形容词',ch:'相等的、平等的、胜任的',infl:{comp:'more equal',sup:'most equal'}},
+{en:'entire',ph:"in'taiə",pos:'adj.',posLabel:'形容词',ch:'全部的、整个的、完整的',infl:{comp:'more entire',sup:'most entire'}},
+{en:'exact',ph:"ig'zækt",pos:'adj.',posLabel:'形容词',ch:'确切的、精确的',infl:{comp:'more exact',sup:'most exact'}},
+{en:'excellent',ph:"'eksələnt",pos:'adj.',posLabel:'形容词',ch:'优秀的、杰出的',infl:{comp:'more excellent',sup:'most excellent'}},
+{en:'exciting',ph:"ik'saitiŋ",pos:'adj.',posLabel:'形容词',ch:'令人兴奋的',infl:{comp:'more exciting',sup:'most exciting'}},
+{en:'expensive',ph:"iks'pensiv",pos:'adj.',posLabel:'形容词',ch:'昂贵的、花钱多的、豪华的',infl:{comp:'more expensive',sup:'most expensive'}}
+],
+'Unit 2': [
+{en:'famous',ph:"'feiməs",pos:'adj.',posLabel:'形容词',ch:'著名的、出名的、一流的',infl:{comp:'more famous',sup:'most famous'}},
+{en:'final',ph:"'fainl",pos:'adj.',posLabel:'形容词',ch:'最后的、决定性的',infl:{comp:'more final',sup:'most final'}},
+{en:'keen',ph:"ki:n",pos:'adj.',posLabel:'形容词',ch:'热心的、激烈的、敏锐的',infl:{comp:'keener',sup:'keenest'}},
+{en:'joint',ph:"dʒɔint",pos:'adj.',posLabel:'形容词',ch:'联合的、共同的、合资的',infl:{comp:'more joint',sup:'most joint'}},
+{en:'junior',ph:"'dʒu:njə",pos:'adj.',posLabel:'形容词',ch:'年少的、下级的、后进的',infl:{comp:'more junior',sup:'most junior'}},
+{en:'jealous',ph:"'dʒeləs",pos:'adj.',posLabel:'形容词',ch:'妒忌的、猜疑的、戒备的',infl:{comp:'more jealous',sup:'most jealous'}},
+{en:'former',ph:"'fɔ:mə",pos:'adj.',posLabel:'形容词',ch:'在前的、以前的、前任的',infl:{comp:'more former',sup:'most former'}},
+{en:'formal',ph:"'fɔ:məl",pos:'adj.',posLabel:'形容词',ch:'正式的、礼仪上的、拘谨的',infl:{comp:'more formal',sup:'most formal'}},
+{en:'foreign',ph:"'fɔrin",pos:'adj.',posLabel:'形容词',ch:'外国的、外来的、外交的',infl:{comp:'more foreign',sup:'most foreign'}},
+{en:'foolish',ph:"'fu:liʃ",pos:'adj.',posLabel:'形容词',ch:'愚蠢的、鲁莽的、荒谬的',infl:{comp:'more foolish',sup:'most foolish'}},
+{en:'generous',ph:"'dʒenərəs",pos:'adj.',posLabel:'形容词',ch:'慷慨的、宽厚的、丰盛的',infl:{comp:'more generous',sup:'most generous'}},
+{en:'gentle',ph:"'dʒentl",pos:'adj.',posLabel:'形容词',ch:'和蔼的、轻柔的、温和的',infl:{comp:'gentler',sup:'gentlest'}},
+{en:'genuine',ph:"'dʒenjuin",pos:'adj.',posLabel:'形容词',ch:'真的、真正的、真实的',infl:{comp:'more genuine',sup:'most genuine'}},
+{en:'golden',ph:"'gəuldən",pos:'adj.',posLabel:'形容词',ch:'金黄色的、极好的',infl:{comp:'more golden',sup:'most golden'}},
+{en:'guilty',ph:"'gilti",pos:'adj.',posLabel:'形容词',ch:'内疚的、有罪的',infl:{comp:'guiltier',sup:'guiltiest'}},
+{en:'grateful',ph:"'greitfəl",pos:'adj.',posLabel:'形容词',ch:'感激的、感谢的、令人愉快的',infl:{comp:'more grateful',sup:'most grateful'}},
+{en:'handy',ph:"'hændi",pos:'adj.',posLabel:'形容词',ch:'手边的、方便的、便于使用的',infl:{comp:'handier',sup:'handiest'}},
+{en:'heavy',ph:"'hevi",pos:'adj.',posLabel:'形容词',ch:'重的、大量的、充满的',infl:{comp:'heavier',sup:'heaviest'}},
+{en:'hopeful',ph:"'həupfəl",pos:'adj.',posLabel:'形容词',ch:'有希望的',infl:{comp:'more hopeful',sup:'most hopeful'}},
+{en:'hopeless',ph:"'həuplis",pos:'adj.',posLabel:'形容词',ch:'没有希望的、绝望的、无可救药的',infl:{comp:'more hopeless',sup:'most hopeless'}},
+{en:'horrible',ph:"'hɔrəbl",pos:'adj.',posLabel:'形容词',ch:'可怕的、令人毛骨悚然的',infl:{comp:'more horrible',sup:'most horrible'}},
+{en:'huge',ph:"hju:dʒ",pos:'adj.',posLabel:'形容词',ch:'巨大的、庞大的',infl:{comp:'huger',sup:'hugest'}},
+{en:'humorous',ph:"'hju:mərəs",pos:'adj.',posLabel:'形容词',ch:'富于幽默的、诙谐的',infl:{comp:'more humorous',sup:'most humorous'}},
+{en:'immediate',ph:"i'mi:djət",pos:'adj.',posLabel:'形容词',ch:'立即的、直接的、即刻的',infl:{comp:'more immediate',sup:'most immediate'}},
+{en:'inner',ph:"'inə",pos:'adj.',posLabel:'形容词',ch:'内部的、内心的、里面的',infl:{comp:'more inner',sup:'most inner'}},
+{en:'innocent',ph:"'inəsnt",pos:'adj.',posLabel:'形容词',ch:'清白的、幼稚的、无罪的',infl:{comp:'more innocent',sup:'most innocent'}},
+{en:'instant',ph:"'instənt",pos:'adj.',posLabel:'形容词',ch:'立即的、即时的',infl:{comp:'more instant',sup:'most instant'}}
+],
+'Unit 3': [
+{en:'large',ph:"lɑ:dʒ",pos:'adj.',posLabel:'形容词',ch:'大的、巨大的、广泛的',infl:{comp:'larger',sup:'largest'}},
+{en:'lucky',ph:"'lʌki",pos:'adj.',posLabel:'形容词',ch:'幸运的、带来好运的、吉祥的',infl:{comp:'luckier',sup:'luckiest'}},
+{en:'loyal',ph:"'lɔiəl",pos:'adj.',posLabel:'形容词',ch:'忠诚的、忠心的',infl:{comp:'more loyal',sup:'most loyal'}},
+{en:'lovely',ph:"'lʌvli",pos:'adj.',posLabel:'形容词',ch:'可爱的、令人愉快的',infl:{comp:'lovelier',sup:'loveliest'}},
+{en:'loud',ph:"laud",pos:'adj.',posLabel:'形容词',ch:'响亮的、吵闹的、大声的',infl:{comp:'louder',sup:'loudest'}},
+{en:'loose',ph:"lu:s",pos:'adj.',posLabel:'形容词',ch:'松的、宽松的、不牢固的',infl:{comp:'looser',sup:'loosest'}},
+{en:'lonely',ph:"'ləunli",pos:'adj.',posLabel:'形容词',ch:'孤独的、荒凉的、寂寞的',infl:{comp:'lonelier',sup:'loneliest'}},
+{en:'mad',ph:"mæd",pos:'adj.',posLabel:'形容词',ch:'发疯的、恼火的、狂热的',infl:{comp:'madder',sup:'maddest'}},
+{en:'main',ph:"mein",pos:'adj.',posLabel:'形容词',ch:'主要的、最重要的',infl:{comp:'more main',sup:'most main'}},
+{en:'major',ph:"'meidʒə",pos:'adj.',posLabel:'形容词',ch:'较大的、主要的、较多的',infl:{comp:'more major',sup:'most major'}},
+{en:'mere',ph:"miə",pos:'adj.',posLabel:'形容词',ch:'仅仅的、纯粹的、微小的',infl:{comp:'more mere',sup:'most mere'}},
+{en:'mild',ph:"maild",pos:'adj.',posLabel:'形容词',ch:'和缓的、温柔的、味淡的',infl:{comp:'milder',sup:'mildest'}},
+{en:'mobile',ph:"'məubail",pos:'adj.',posLabel:'形容词',ch:'运动的、流动的、可移动的',infl:{comp:'more mobile',sup:'most mobile'}},
+{en:'moral',ph:"'mɔrəl",pos:'adj.',posLabel:'形容词',ch:'道德的、合乎道德的',infl:{comp:'more moral',sup:'most moral'}},
+{en:'mental',ph:"'mentl",pos:'adj.',posLabel:'形容词',ch:'智力的、精神的、脑力的',infl:{comp:'more mental',sup:'most mental'}},
+{en:'medical',ph:"'medikəl",pos:'adj.',posLabel:'形容词',ch:'医学的、内科的、医疗的',infl:{comp:'more medical',sup:'most medical'}},
+{en:'national',ph:"'næʃənəl",pos:'adj.',posLabel:'形容词',ch:'民族的、国家的',infl:{comp:'more national',sup:'most national'}},
+{en:'native',ph:"'neitiv",pos:'adj.',posLabel:'形容词',ch:'本土的、本国的、天生的',infl:{comp:'more native',sup:'most native'}},
+{en:'natural',ph:"'nætʃərəl",pos:'adj.',posLabel:'形容词',ch:'自然界的、天然的、正常的',infl:{comp:'more natural',sup:'most natural'}},
+{en:'near',ph:"niə",pos:'adj.',posLabel:'形容词',ch:'近的、接近的、亲近的',infl:{comp:'nearer',sup:'nearest'}},
+{en:'neat',ph:"ni:t",pos:'adj.',posLabel:'形容词',ch:'整洁的、熟练的、巧妙的',infl:{comp:'neater',sup:'neatest'}},
+{en:'naughty',ph:"'nɔ:ti",pos:'adj.',posLabel:'形容词',ch:'顽皮的、淘气的、粗俗的',infl:{comp:'naughtier',sup:'naughtiest'}},
+{en:'necessary',ph:"'nesə.səri",pos:'adj.',posLabel:'形容词',ch:'必要的、必需的、必然的',infl:{comp:'more necessary',sup:'most necessary'}},
+{en:'nervous',ph:"'nə:vəs",pos:'adj.',posLabel:'形容词',ch:'神经质的、易激动的、紧张的',infl:{comp:'more nervous',sup:'most nervous'}},
+{en:'noisy',ph:"'nɔizi",pos:'adj.',posLabel:'形容词',ch:'嘈杂的、喧闹的、发出噪声的',infl:{comp:'noisier',sup:'noisiest'}},
+{en:'normal',ph:"'nɔ:məl",pos:'adj.',posLabel:'形容词',ch:'正常的、正规的、普通的',infl:{comp:'more normal',sup:'most normal'}},
+{en:'northern',ph:"'nɔ:ðən",pos:'adj.',posLabel:'形容词',ch:'北方的、北部的',infl:{comp:'more northern',sup:'most northern'}}
+],
+'Unit 4': [
+{en:'obvious',ph:"'ɔbviəs",pos:'adj.',posLabel:'形容词',ch:'明显的、显而易见的',infl:{comp:'more obvious',sup:'most obvious'}},
+{en:'odd',ph:"ɔd",pos:'adj.',posLabel:'形容词',ch:'奇数的、单只的、古怪的',infl:{comp:'odder',sup:'oddest'}},
+{en:'open',ph:"'əupən",pos:'adj.',posLabel:'形容词',ch:'开着的、开放的、公开的',infl:{comp:'more open',sup:'most open'}},
+{en:'only',ph:"'əunli",pos:'adj.',posLabel:'形容词',ch:'最好的、唯一的、出众的',infl:{comp:'more only',sup:'most only'}},
+{en:'official',ph:"ə'fiʃəl",pos:'adj.',posLabel:'形容词',ch:'官员的、官方的、正式的',infl:{comp:'more official',sup:'most official'}},
+{en:'oral',ph:"'ɔ:rəl",pos:'adj.',posLabel:'形容词',ch:'口头的、口的',infl:{comp:'more oral',sup:'most oral'}},
+{en:'opposite',ph:"'ɔpəzit",pos:'adj.',posLabel:'形容词',ch:'对面的、相对的、相反的',infl:{comp:'more opposite',sup:'most opposite'}},
+{en:'orderly',ph:"'ɔ:dəli",pos:'adj.',posLabel:'形容词',ch:'整洁的、有秩序的、一丝不苟的',infl:{comp:'more orderly',sup:'most orderly'}},
+{en:'original',ph:"ə'ridʒənl",pos:'adj.',posLabel:'形容词',ch:'最初的、新颖的、有独创性的',infl:{comp:'more original',sup:'most original'}},
+{en:'outer',ph:"'autə",pos:'adj.',posLabel:'形容词',ch:'外部的、外面的',infl:{comp:'more outer',sup:'most outer'}},
+{en:'outward',ph:"'autwəd",pos:'adj.',posLabel:'形容词',ch:'外面的、向外的、表面的',infl:{comp:'more outward',sup:'most outward'}},
+{en:'overall',ph:"əuvə'rɔ:l",pos:'adj.',posLabel:'形容词',ch:'全面的、全部的、全体的',infl:{comp:'more overall',sup:'most overall'}},
+{en:'overseas',ph:"'əuvə'si:z",pos:'adj.',posLabel:'形容词',ch:'在海外的',infl:{comp:'more overseas',sup:'most overseas'}},
+{en:'pale',ph:"peil",pos:'adj.',posLabel:'形容词',ch:'苍白的、灰白的、暗淡的',infl:{comp:'paler',sup:'palest'}},
+{en:'peaceful',ph:"'pi:sfəl",pos:'adj.',posLabel:'形容词',ch:'和平的、平静的、安宁的',infl:{comp:'more peaceful',sup:'most peaceful'}},
+{en:'perfect',ph:"'pə:fikt",pos:'adj.',posLabel:'形容词',ch:'完美的、极好的',infl:{comp:'more perfect',sup:'most perfect'}},
+{en:'plain',ph:"plein",pos:'adj.',posLabel:'形容词',ch:'清楚的、坦白的、简单的、平常的',infl:{comp:'plainer',sup:'plainest'}},
+{en:'pleasant',ph:"'pleznt",pos:'adj.',posLabel:'形容词',ch:'令人愉快的、舒适的',infl:{comp:'more pleasant',sup:'most pleasant'}},
+{en:'polite',ph:"pə'lait",pos:'adj.',posLabel:'形容词',ch:'有礼貌的、有教养的',infl:{comp:'politer',sup:'politest'}},
+{en:'popular',ph:"'pɔpjulə",pos:'adj.',posLabel:'形容词',ch:'民众的、流行的、有销路的',infl:{comp:'more popular',sup:'most popular'}},
+{en:'positive',ph:"'pɔzitiv",pos:'adj.',posLabel:'形容词',ch:'确定的、积极的、肯定的',infl:{comp:'more positive',sup:'most positive'}},
+{en:'possible',ph:"'pɔsəbl",pos:'adj.',posLabel:'形容词',ch:'可能的、可能存在的',infl:{comp:'more possible',sup:'most possible'}},
+{en:'powerful',ph:"'pauəfəl",pos:'adj.',posLabel:'形容词',ch:'强有力的、有权威的',infl:{comp:'more powerful',sup:'most powerful'}},
+{en:'pretty',ph:"'priti",pos:'adj.',posLabel:'形容词',ch:'漂亮的、标致的、机灵的',infl:{comp:'prettier',sup:'prettiest'}},
+{en:'previous',ph:"'pri:vjəs",pos:'adj.',posLabel:'形容词',ch:'先的、前的、以前的',infl:{comp:'more previous',sup:'most previous'}},
+{en:'primary',ph:"'praiməri",pos:'adj.',posLabel:'形容词',ch:'最初的、基本的、主要的',infl:{comp:'more primary',sup:'most primary'}},
+{en:'private',ph:"'praivit",pos:'adj.',posLabel:'形容词',ch:'私人的、私下的、隐蔽的',infl:{comp:'more private',sup:'most private'}}
+],
+'Unit 5': [
+{en:'probable',ph:"'prɔbəbl",pos:'adj.',posLabel:'形容词',ch:'或有的、大概的、很可能的',infl:{comp:'more probable',sup:'most probable'}},
+{en:'proud',ph:"praud",pos:'adj.',posLabel:'形容词',ch:'骄傲的、自豪的、壮观的',infl:{comp:'prouder',sup:'proudest'}},
+{en:'public',ph:"'pʌblik",pos:'adj.',posLabel:'形容词',ch:'公众的、公开的、众所周知的',infl:{comp:'more public',sup:'most public'}},
+{en:'pure',ph:"pjuə",pos:'adj.',posLabel:'形容词',ch:'纯的、纯粹的、纯洁的',infl:{comp:'purer',sup:'purest'}},
+{en:'quick',ph:"kwik",pos:'adj.',posLabel:'形容词',ch:'快的、敏捷的、迅速的',infl:{comp:'quicker',sup:'quickest'}},
+{en:'quiet',ph:"'kwaiət",pos:'adj.',posLabel:'形容词',ch:'寂静的、安静的、静止的',infl:{comp:'quieter',sup:'quietest'}},
+{en:'real',ph:"'ri:əl",pos:'adj.',posLabel:'形容词',ch:'真的、现实的、实际的',infl:{comp:'more real',sup:'most real'}},
+{en:'ready',ph:"'redi",pos:'adj.',posLabel:'形容词',ch:'准备好的、愿意的、现成的',infl:{comp:'readier',sup:'readiest'}},
+{en:'raw',ph:"rɔ:",pos:'adj.',posLabel:'形容词',ch:'未煮过的、生的、未加工的',infl:{comp:'rawer',sup:'rawest'}},
+{en:'rare',ph:"rɛə",pos:'adj.',posLabel:'形容词',ch:'稀薄的、稀有的、稀罕的',infl:{comp:'rarer',sup:'rarest'}},
+{en:'rapid',ph:"'ræpid",pos:'adj.',posLabel:'形容词',ch:'快的、迅速的、急促的',infl:{comp:'more rapid',sup:'most rapid'}},
+{en:'ripe',ph:"raip",pos:'adj.',posLabel:'形容词',ch:'熟的、成熟的、上年纪的',infl:{comp:'riper',sup:'ripest'}},
+{en:'rich',ph:"ritʃ",pos:'adj.',posLabel:'形容词',ch:'富的、丰富的、浓厚的',infl:{comp:'richer',sup:'richest'}},
+{en:'reasonable',ph:"'ri:znəbl",pos:'adj.',posLabel:'形容词',ch:'情合理的、公道的、通情达理的',infl:{comp:'more reasonable',sup:'most reasonable'}},
+{en:'recent',ph:"'ri:snt",pos:'adj.',posLabel:'形容词',ch:'新近的、最近的',infl:{comp:'more recent',sup:'most recent'}},
+{en:'regular',ph:"'regjulə",pos:'adj.',posLabel:'形容词',ch:'规则的、有规律的、整齐的',infl:{comp:'more regular',sup:'most regular'}},
+{en:'relative',ph:"'relətiv",pos:'adj.',posLabel:'形容词',ch:'有关系的、相对的、比较的',infl:{comp:'more relative',sup:'most relative'}},
+{en:'remote',ph:"ri'məut",pos:'adj.',posLabel:'形容词',ch:'相隔很远的、遥远的、偏僻的',infl:{comp:'remoter',sup:'remotest'}},
+{en:'rough',ph:"rʌf",pos:'adj.',posLabel:'形容词',ch:'表面不平的、粗略的、粗糙的',infl:{comp:'rougher',sup:'roughest'}},
+{en:'round',ph:"raund",pos:'adj.',posLabel:'形容词',ch:'圆的、微胖的、完整的',infl:{comp:'rounder',sup:'roundest'}},
+{en:'royal',ph:"'rɔiəl",pos:'adj.',posLabel:'形容词',ch:'王室的、皇家的、盛大的',infl:{comp:'more royal',sup:'most royal'}},
+{en:'rural',ph:"'ru:rəl",pos:'adj.',posLabel:'形容词',ch:'农村的、田园的',infl:{comp:'more rural',sup:'most rural'}},
+{en:'sad',ph:"sæd",pos:'adj.',posLabel:'形容词',ch:'悲哀的、令人悲痛的',infl:{comp:'sadder',sup:'saddest'}},
+{en:'safe',ph:"seif",pos:'adj.',posLabel:'形容词',ch:'安全的、谨慎的',infl:{comp:'safer',sup:'safest'}},
+{en:'serious',ph:"'siəriəs",pos:'adj.',posLabel:'形容词',ch:'严肃的、认真的、庄重的',infl:{comp:'more serious',sup:'most serious'}},
+{en:'sharp',ph:"ʃɑ:p",pos:'adj.',posLabel:'形容词',ch:'锋利的、敏锐的、刺耳的',infl:{comp:'sharper',sup:'sharpest'}},
+{en:'shy',ph:"ʃai",pos:'adj.',posLabel:'形容词',ch:'易受惊的、害羞的、胆怯的',infl:{comp:'shyer',sup:'shyest'}}
+],
+'Unit 6': [
+{en:'sick',ph:"sik",pos:'adj.',posLabel:'形容词',ch:'有病的、恶心的、腻烦的',infl:{comp:'sicker',sup:'sickest'}},
+{en:'silent',ph:"'sailənt",pos:'adj.',posLabel:'形容词',ch:'沉默的、寂静无声的',infl:{comp:'more silent',sup:'most silent'}},
+{en:'silly',ph:"'sili",pos:'adj.',posLabel:'形容词',ch:'傻的、愚蠢的、淳朴的',infl:{comp:'sillier',sup:'silliest'}},
+{en:'simple',ph:"'simpl",pos:'adj.',posLabel:'形容词',ch:'简单的、朴素的、无辜的',infl:{comp:'simpler',sup:'simplest'}},
+{en:'similar',ph:"'similə",pos:'adj.',posLabel:'形容词',ch:'相似的、类似的、同样的',infl:{comp:'more similar',sup:'most similar'}},
+{en:'single',ph:"'siŋgl",pos:'adj.',posLabel:'形容词',ch:'单一的、独身的、单纯的',infl:{comp:'more single',sup:'most single'}},
+{en:'slight',ph:"slait",pos:'adj.',posLabel:'形容词',ch:'细长的、轻微的、纤细的',infl:{comp:'slighter',sup:'slightest'}},
+{en:'slim',ph:"slim",pos:'adj.',posLabel:'形容词',ch:'苗条的、细长的',infl:{comp:'slimmer',sup:'slimmest'}},
+{en:'smooth',ph:"smu:ð",pos:'adj.',posLabel:'形容词',ch:'平滑的、平静的、平稳的',infl:{comp:'smoother',sup:'smoothest'}},
+{en:'soft',ph:"sɔft",pos:'adj.',posLabel:'形容词',ch:'软的、柔软的、柔和的',infl:{comp:'softer',sup:'softest'}},
+{en:'solid',ph:"'sɔlid",pos:'adj.',posLabel:'形容词',ch:'固体的、结实的、实心的',infl:{comp:'more solid',sup:'most solid'}},
+{en:'sore',ph:"sɔ:",pos:'adj.',posLabel:'形容词',ch:'痛的、痛心的、恼火的',infl:{comp:'sorer',sup:'sorest'}},
+{en:'sour',ph:"'sauə",pos:'adj.',posLabel:'形容词',ch:'酸的、酸腐的、刻薄的',infl:{comp:'sourer',sup:'sourest'}},
+{en:'special',ph:"'speʃəl",pos:'adj.',posLabel:'形容词',ch:'特殊的、特别的、专门的',infl:{comp:'more special',sup:'most special'}},
+{en:'specific',ph:"spi'sifik",pos:'adj.',posLabel:'形容词',ch:'特有的、特殊的、明确的',infl:{comp:'more specific',sup:'most specific'}},
+{en:'stable',ph:"'steibl",pos:'adj.',posLabel:'形容词',ch:'稳定的、不变的、安定的',infl:{comp:'more stable',sup:'most stable'}},
+{en:'standard',ph:"'stændəd",pos:'adj.',posLabel:'形容词',ch:'标准的、规范的、普通的',infl:{comp:'more standard',sup:'most standard'}},
+{en:'steady',ph:"'stedi",pos:'adj.',posLabel:'形容词',ch:'稳固的、稳定的、坚定的',infl:{comp:'steadier',sup:'steadiest'}},
+{en:'still',ph:"stil",pos:'adj.',posLabel:'形容词',ch:'静止的、不动的、静寂的',infl:{comp:'stiller',sup:'stillest'}},
+{en:'straight',ph:"streit",pos:'adj.',posLabel:'形容词',ch:'直的、正直的、坦率的',infl:{comp:'straighter',sup:'straightest'}},
+{en:'strange',ph:"streindʒ",pos:'adj.',posLabel:'形容词',ch:'陌生的、奇怪的',infl:{comp:'stranger',sup:'strangest'}},
+{en:'strict',ph:"strikt",pos:'adj.',posLabel:'形容词',ch:'严格的、严谨的、精确的',infl:{comp:'stricter',sup:'strictest'}},
+{en:'strong',ph:"strɔŋ",pos:'adj.',posLabel:'形容词',ch:'强壮的、强烈的、坚强的',infl:{comp:'stronger',sup:'strongest'}},
+{en:'sudden',ph:"'sʌdn",pos:'adj.',posLabel:'形容词',ch:'突然的、意外的、快速的',infl:{comp:'more sudden',sup:'most sudden'}},
+{en:'sunny',ph:"'sʌni",pos:'adj.',posLabel:'形容词',ch:'阳光充足的、睛朗的、明媚的',infl:{comp:'sunnier',sup:'sunniest'}},
+{en:'sure',ph:"ʃuə",pos:'adj.',posLabel:'形容词',ch:'确信的、确实的、肯定的',infl:{comp:'surer',sup:'surest'}},
+{en:'stupid',ph:"'stju:pid",pos:'adj.',posLabel:'形容词',ch:'愚蠢的、感觉迟钝的',infl:{comp:'stupider',sup:'stupidest'}}
+],
+'Unit 7': [
+{en:'sweet',ph:"swi:t",pos:'adj.',posLabel:'形容词',ch:'甜的、愉快的、可爱的',infl:{comp:'sweeter',sup:'sweetest'}},
+{en:'swift',ph:"swift",pos:'adj.',posLabel:'形容词',ch:'快的、反应快的、迅速的',infl:{comp:'swifter',sup:'swiftest'}},
+{en:'tall',ph:"tɔ:l",pos:'adj.',posLabel:'形容词',ch:'高的、身材高的',infl:{comp:'taller',sup:'tallest'}},
+{en:'tame',ph:"teim",pos:'adj.',posLabel:'形容词',ch:'驯服的、顺从的、柔顺的',infl:{comp:'tamer',sup:'tamest'}},
+{en:'thin',ph:"θin",pos:'adj.',posLabel:'形容词',ch:'薄的、淡的、稀的',infl:{comp:'thinner',sup:'thinnest'}},
+{en:'thick',ph:"θik",pos:'adj.',posLabel:'形容词',ch:'厚的、粗的、密的',infl:{comp:'thicker',sup:'thickest'}},
+{en:'thirsty',ph:"'θə:sti",pos:'adj.',posLabel:'形容词',ch:'口渴的、渴望的',infl:{comp:'thirstier',sup:'thirstiest'}},
+{en:'tight',ph:"tait",pos:'adj.',posLabel:'形容词',ch:'紧的、紧身的、严厉的',infl:{comp:'tighter',sup:'tightest'}},
+{en:'tender',ph:"'tendə",pos:'adj.',posLabel:'形容词',ch:'嫩的、脆弱的、温柔的',infl:{comp:'tenderer',sup:'tenderest'}},
+{en:'terrible',ph:"'terəbl",pos:'adj.',posLabel:'形容词',ch:'可怕的、极度的、糟糕的',infl:{comp:'more terrible',sup:'most terrible'}},
+{en:'tough',ph:"tʌf",pos:'adj.',posLabel:'形容词',ch:'坚韧的、健壮的、强硬的',infl:{comp:'tougher',sup:'toughest'}},
+{en:'traditional',ph:"trə'diʃənəl",pos:'adj.',posLabel:'形容词',ch:'传统的、惯例的',infl:{comp:'more traditional',sup:'most traditional'}},
+{en:'true',ph:"tru:",pos:'adj.',posLabel:'形容词',ch:'真的、真实的、忠实的',infl:{comp:'truer',sup:'truest'}},
+{en:'typical',ph:"'tipikəl",pos:'adj.',posLabel:'形容词',ch:'典型的、代表性的、特有的',infl:{comp:'more typical',sup:'most typical'}},
+{en:'ugly',ph:"'ʌgli",pos:'adj.',posLabel:'形容词',ch:'丑陋的、难看的、可怕的',infl:{comp:'uglier',sup:'ugliest'}},
+{en:'unable',ph:"ʌn'eibl",pos:'adj.',posLabel:'形容词',ch:'不能的、不会的',infl:{comp:'more unable',sup:'most unable'}},
+{en:'uncertain',ph:"ʌn'sə:tn",pos:'adj.',posLabel:'形容词',ch:'无常的、不确定的',infl:{comp:'more uncertain',sup:'most uncertain'}},
+{en:'uneasy',ph:"ʌn'i:zi",pos:'adj.',posLabel:'形容词',ch:'心神不安的、忧虑的、不自在的',infl:{comp:'uneasier',sup:'uneasiest'}},
+{en:'unfair',ph:"ʌn'fɛə",pos:'adj.',posLabel:'形容词',ch:'不公平的、不公正的',infl:{comp:'more unfair',sup:'most unfair'}},
+{en:'unfortunate',ph:"ʌn'fɔ:tʃənit",pos:'adj.',posLabel:'形容词',ch:'不幸的、可取的、令人遗憾的',infl:{comp:'more unfortunate',sup:'most unfortunate'}},
+{en:'unhappy',ph:"ʌn'hæpi",pos:'adj.',posLabel:'形容词',ch:'不幸福的、不快乐的',infl:{comp:'unhappier',sup:'unhappiest'}},
+{en:'uniform',ph:"'ju:nifɔ:m",pos:'adj.',posLabel:'形容词',ch:'一样的、一致的、统一的',infl:{comp:'more uniform',sup:'most uniform'}},
+{en:'unique',ph:"ju:'ni:k",pos:'adj.',posLabel:'形容词',ch:'唯一的、独一无二的、独特的',infl:{comp:'more unique',sup:'most unique'}},
+{en:'unknown',ph:"'ʌn'nəun",pos:'adj.',posLabel:'形容词',ch:'不知道的、未知的、不出名的',infl:{comp:'more unknown',sup:'most unknown'}},
+{en:'unlike',ph:"'ʌn'laik",pos:'adj.',posLabel:'形容词',ch:'不同的、不相似的',infl:{comp:'more unlike',sup:'most unlike'}},
+{en:'unlikely',ph:"ʌn'laikli",pos:'adj.',posLabel:'形容词',ch:'未必的、未必可能的',infl:{comp:'more unlikely',sup:'most unlikely'}},
+{en:'unlucky',ph:"ʌn'lʌki",pos:'adj.',posLabel:'形容词',ch:'不幸的、不吉的、倒霉的',infl:{comp:'unluckier',sup:'unluckiest'}}
+],
+'Unit 8': [
+{en:'unnecessary',ph:"ʌn'nesisəri",pos:'adj.',posLabel:'形容词',ch:'不必要的、多余的',infl:{comp:'more unnecessary',sup:'most unnecessary'}},
+{en:'unusual',ph:"ʌn'ju:ʒuəl",pos:'adj.',posLabel:'形容词',ch:'不平常的、独特的、异常的',infl:{comp:'more unusual',sup:'most unusual'}},
+{en:'unwilling',ph:"'ʌn'wiliŋ",pos:'adj.',posLabel:'形容词',ch:'不愿意的',infl:{comp:'more unwilling',sup:'most unwilling'}},
+{en:'upper',ph:"'ʌpə",pos:'adj.',posLabel:'形容词',ch:'上面的、地位较高的、上部的',infl:{comp:'more upper',sup:'most upper'}},
+{en:'upright',ph:"'ʌp'rait",pos:'adj.',posLabel:'形容词',ch:'垂直的、正直的、诚实的',infl:{comp:'more upright',sup:'most upright'}},
+{en:'upward',ph:"'ʌpwəd",pos:'adj.',posLabel:'形容词',ch:'向上的、上升的',infl:{comp:'more upward',sup:'most upward'}},
+{en:'urban',ph:"'ə:bən",pos:'adj.',posLabel:'形容词',ch:'城市的、都市的',infl:{comp:'more urban',sup:'most urban'}},
+{en:'urgent',ph:"'ə:dʒənt",pos:'adj.',posLabel:'形容词',ch:'紧急的、强求的、急迫的',infl:{comp:'more urgent',sup:'most urgent'}},
+{en:'useful',ph:"'ju:sfəl",pos:'adj.',posLabel:'形容词',ch:'有用的、有益的、实用的',infl:{comp:'more useful',sup:'most useful'}},
+{en:'useless',ph:"'ju:slis",pos:'adj.',posLabel:'形容词',ch:'无用的、无价值的、无效的',infl:{comp:'more useless',sup:'most useless'}},
+{en:'usual',ph:"'ju:ʒuəl",pos:'adj.',posLabel:'形容词',ch:'通常的、平常的、惯常的',infl:{comp:'more usual',sup:'most usual'}},
+{en:'vacant',ph:"'veikənt",pos:'adj.',posLabel:'形容词',ch:'空的、空虚的、未被占用的',infl:{comp:'more vacant',sup:'most vacant'}},
+{en:'vague',ph:"veig",pos:'adj.',posLabel:'形容词',ch:'模糊的、含糊的、不明确的',infl:{comp:'vaguer',sup:'vaguest'}},
+{en:'vain',ph:"vein",pos:'adj.',posLabel:'形容词',ch:'徒劳的、无效的、自负的',infl:{comp:'vainer',sup:'vainest'}},
+{en:'valid',ph:"'vælid",pos:'adj.',posLabel:'形容词',ch:'有效的、有根据的、正当的',infl:{comp:'more valid',sup:'most valid'}},
+{en:'valuable',ph:"'væljuəbl",pos:'adj.',posLabel:'形容词',ch:'值钱的、有价值的',infl:{comp:'more valuable',sup:'most valuable'}},
+{en:'various',ph:"'vɛəriəs",pos:'adj.',posLabel:'形容词',ch:'各种各样的、不同的',infl:{comp:'more various',sup:'most various'}},
+{en:'vast',ph:"vɑ:st",pos:'adj.',posLabel:'形容词',ch:'巨大的、大量的、广阔的',infl:{comp:'vaster',sup:'vastest'}},
+{en:'vertical',ph:"'və:tikəl",pos:'adj.',posLabel:'形容词',ch:'垂直的、竖式的、纵向的',infl:{comp:'more vertical',sup:'most vertical'}},
+{en:'violent',ph:"'vaiələnt",pos:'adj.',posLabel:'形容词',ch:'猛烈的、狂暴的、暴力的',infl:{comp:'more violent',sup:'most violent'}},
+{en:'virtual',ph:"'və:tʃuəl",pos:'adj.',posLabel:'形容词',ch:'实际上的、事实上的',infl:{comp:'more virtual',sup:'most virtual'}},
+{en:'visible',ph:"'vizəbl",pos:'adj.',posLabel:'形容词',ch:'可见的、看得见的',infl:{comp:'more visible',sup:'most visible'}}
+],
+'Unit 9': [
+{en:'vital',ph:"'vaitl",pos:'adj.',posLabel:'形容词',ch:'生命的、有生命力的、至关重要的',infl:{comp:'more vital',sup:'most vital'}},
+{en:'vivid',ph:"'vivid",pos:'adj.',posLabel:'形容词',ch:'鲜艳的、生动的、栩栩如生的',infl:{comp:'more vivid',sup:'most vivid'}},
+{en:'warm',ph:"wɔ:m",pos:'adj.',posLabel:'形容词',ch:'温暖的、暖和的、热烈的',infl:{comp:'warmer',sup:'warmest'}},
+{en:'weak',ph:"wi:k",pos:'adj.',posLabel:'形容词',ch:'弱的、软弱的、虚弱的',infl:{comp:'weaker',sup:'weakest'}},
+{en:'wealthy',ph:"'welθi",pos:'adj.',posLabel:'形容词',ch:'富的、富裕的',infl:{comp:'wealthier',sup:'wealthiest'}},
+{en:'welcome',ph:"'welkəm",pos:'adj.',posLabel:'形容词',ch:'受欢迎的',infl:{comp:'more welcome',sup:'most welcome'}},
+{en:'western',ph:"'westən",pos:'adj.',posLabel:'形容词',ch:'西方的、西部的、西洋的',infl:{comp:'more western',sup:'most western'}},
+{en:'wet',ph:"wet",pos:'adj.',posLabel:'形容词',ch:'湿的、下雨的、雨天的',infl:{comp:'wetter',sup:'wettest'}},
+{en:'whole',ph:"həul",pos:'adj.',posLabel:'形容词',ch:'完整的、全部的、整体的',infl:{comp:'more whole',sup:'most whole'}},
+{en:'wide',ph:"waid",pos:'adj.',posLabel:'形容词',ch:'宽阔的、广泛的',infl:{comp:'wider',sup:'widest'}},
+{en:'widespread',ph:"'waidspred",pos:'adj.',posLabel:'形容词',ch:'分布广的、普遍的',infl:{comp:'more widespread',sup:'most widespread'}},
+{en:'wild',ph:"waild",pos:'adj.',posLabel:'形容词',ch:'野生的、野蛮的、未开发的',infl:{comp:'wilder',sup:'wildest'}},
+{en:'willing',ph:"'wiliŋ",pos:'adj.',posLabel:'形容词',ch:'愿意的、心甘情愿的',infl:{comp:'more willing',sup:'most willing'}},
+{en:'wise',ph:"waiz",pos:'adj.',posLabel:'形容词',ch:'有智慧的、聪明的、明智的',infl:{comp:'wiser',sup:'wisest'}},
+{en:'wonderful',ph:"'wʌndəfəl",pos:'adj.',posLabel:'形容词',ch:'惊人的、极好的、精彩的',infl:{comp:'more wonderful',sup:'most wonderful'}},
+{en:'wooden',ph:"'wudn",pos:'adj.',posLabel:'形容词',ch:'木制的、呆板的、生硬笨拙的',infl:{comp:'more wooden',sup:'most wooden'}},
+{en:'worthy',ph:"'wə:ði",pos:'adj.',posLabel:'形容词',ch:'有价值的、可尊敬的、值得的',infl:{comp:'worthier',sup:'worthiest'}},
+{en:'wrong',ph:"rɔŋ",pos:'adj.',posLabel:'形容词',ch:'错误的、有毛病的',infl:{comp:'wronger',sup:'wrongest'}},
+{en:'young',ph:"jʌŋ",pos:'adj.',posLabel:'形容词',ch:'年轻的、没有经验的、初期的',infl:{comp:'younger',sup:'youngest'}},
+{en:'youthful',ph:"'ju:θfəl",pos:'adj.',posLabel:'形容词',ch:'年轻的、青年的、有青春活力的',infl:{comp:'more youthful',sup:'most youthful'}}
+],
+'Unit 10': [
+{en:'zealous',ph:"'zeləs",pos:'adj.',posLabel:'形容词',ch:'热心的、热情的、狂热的',infl:{comp:'more zealous',sup:'most zealous'}}
+]
+}},
+'L2 进阶': { units: {
+'Unit 1': [
+{en:'absolute',ph:"'æbsəlu:t",pos:'adj.',posLabel:'形容词',ch:'绝对的、纯粹的、完全的',infl:{comp:'more absolute',sup:'most absolute'}},
+{en:'acceptable',ph:"ək'septəbl",pos:'adj.',posLabel:'形容词',ch:'可接受的、合意的、受欢迎的',infl:{comp:'more acceptable',sup:'most acceptable'}},
+{en:'annual',ph:"'ænjuəl",pos:'adj.',posLabel:'形容词',ch:'每年的、年度的、一年生的',infl:{comp:'more annual',sup:'most annual'}},
+{en:'ashamed',ph:"ə'ʃeimd",pos:'adj.',posLabel:'形容词',ch:'惭愧的、羞耻的、感到惭愧',infl:{comp:'more ashamed',sup:'most ashamed'}},
+{en:'asleep',ph:"ə'sli:p",pos:'adj.',posLabel:'形容词',ch:'睡着的、睡熟的、已死的',infl:{comp:'more asleep',sup:'most asleep'}},
+{en:'attentive',ph:"ə'tentiv",pos:'adj.',posLabel:'形容词',ch:'注意的、留意的、有礼貌的',infl:{comp:'more attentive',sup:'most attentive'}},
+{en:'awkward',ph:"'ɔ:kwəd",pos:'adj.',posLabel:'形容词',ch:'笨拙的、尴尬的',infl:{comp:'more awkward',sup:'most awkward'}},
+{en:'alike',ph:"ə'laik",pos:'adj.',posLabel:'形容词',ch:'同样的、相同的、相似的',infl:{comp:'more alike',sup:'most alike'}},
+{en:'alternative',ph:"ɔ:l'tə:nətiv",pos:'adj.',posLabel:'形容词',ch:'两者择一的、供选择的',infl:{comp:'more alternative',sup:'most alternative'}},
+{en:'apparent',ph:"ə'pærənt",pos:'adj.',posLabel:'形容词',ch:'表面上的、明显的',infl:{comp:'more apparent',sup:'most apparent'}},
+{en:'automatic',ph:".ɔ:tə'mætik",pos:'adj.',posLabel:'形容词',ch:'自动的、机械的、半自动化的',infl:{comp:'more automatic',sup:'most automatic'}},
+{en:'aural',ph:"'ɔ:rəl",pos:'adj.',posLabel:'形容词',ch:'耳的、听觉的',infl:{comp:'more aural',sup:'most aural'}},
+{en:'accidental',ph:".æksi'dentl",pos:'adj.',posLabel:'形容词',ch:'意外的、偶然的、附属的',infl:{comp:'more accidental',sup:'most accidental'}},
+{en:'accustomed',ph:"ə'kʌstəmd",pos:'adj.',posLabel:'形容词',ch:'惯常的、习惯的',infl:{comp:'more accustomed',sup:'most accustomed'}},
+{en:'advanced',ph:"əd'vɑ:nst",pos:'adj.',posLabel:'形容词',ch:'先进的、高级的',infl:{comp:'more advanced',sup:'most advanced'}},
+{en:'advisable',ph:"əd'vaizəbl",pos:'adj.',posLabel:'形容词',ch:'明智的、可取的',infl:{comp:'more advisable',sup:'most advisable'}},
+{en:'aggressive',ph:"ə'gresiv",pos:'adj.',posLabel:'形容词',ch:'侵略的、好斗的、有进取心的',infl:{comp:'more aggressive',sup:'most aggressive'}},
+{en:'central',ph:"'sentrəl",pos:'adj.',posLabel:'形容词',ch:'中心的、主要的、基本的',infl:{comp:'more central',sup:'most central'}},
+{en:'civil',ph:"'sivil",pos:'adj.',posLabel:'形容词',ch:'国内的、公民的、文职的',infl:{comp:'more civil',sup:'most civil'}},
+{en:'classical',ph:"'klæsikəl",pos:'adj.',posLabel:'形容词',ch:'古典的、经典的、典雅的',infl:{comp:'more classical',sup:'most classical'}},
+{en:'clumsy',ph:"'klʌmzi",pos:'adj.',posLabel:'形容词',ch:'笨拙的、笨重的、愚笨的',infl:{comp:'clumsier',sup:'clumsiest'}},
+{en:'constant',ph:"'kɔnstənt",pos:'adj.',posLabel:'形容词',ch:'经常的、永恒的、不变的',infl:{comp:'more constant',sup:'most constant'}},
+{en:'convenient',ph:"kən'vi:njənt",pos:'adj.',posLabel:'形容词',ch:'便利的、近便的、方便的',infl:{comp:'more convenient',sup:'most convenient'}},
+{en:'crazy',ph:"'kreizi",pos:'adj.',posLabel:'形容词',ch:'疯狂的、荒唐的',infl:{comp:'crazier',sup:'craziest'}},
+{en:'curious',ph:"'kjuəriəs",pos:'adj.',posLabel:'形容词',ch:'好奇的、奇特的、稀奇古怪的',infl:{comp:'more curious',sup:'most curious'}},
+{en:'creative',ph:"kri'eitiv",pos:'adj.',posLabel:'形容词',ch:'创造性的、创作的',infl:{comp:'more creative',sup:'most creative'}},
+{en:'critical',ph:"'kritikəl",pos:'adj.',posLabel:'形容词',ch:'决定性的、批评的、危险的',infl:{comp:'more critical',sup:'most critical'}}
+],
+'Unit 2': [
+{en:'current',ph:"'kʌrənt",pos:'adj.',posLabel:'形容词',ch:'当前的、现在的、最近的',infl:{comp:'more current',sup:'most current'}},
+{en:'dull',ph:"dʌl",pos:'adj.',posLabel:'形容词',ch:'枯燥的、不鲜明的、呆滞的',infl:{comp:'duller',sup:'dullest'}},
+{en:'decent',ph:"'di:snt",pos:'adj.',posLabel:'形容词',ch:'正派的、体面的、有分寸的',infl:{comp:'more decent',sup:'most decent'}},
+{en:'delicate',ph:"'delikit",pos:'adj.',posLabel:'形容词',ch:'纤细的、易碎的、精美的',infl:{comp:'more delicate',sup:'most delicate'}},
+{en:'delicious',ph:"di'liʃəs",pos:'adj.',posLabel:'形容词',ch:'美味的、可口的、怡人的',infl:{comp:'more delicious',sup:'most delicious'}},
+{en:'dense',ph:"dens",pos:'adj.',posLabel:'形容词',ch:'密集的、浓厚的、愚钝的',infl:{comp:'denser',sup:'densest'}},
+{en:'distant',ph:"'distənt",pos:'adj.',posLabel:'形容词',ch:'在远处的、疏远的、陌生的',infl:{comp:'more distant',sup:'most distant'}},
+{en:'double',ph:"'dʌbl",pos:'adj.',posLabel:'形容词',ch:'两倍的、双的、双重的',infl:{comp:'more double',sup:'most double'}},
+{en:'doubtful',ph:"'dautfəl",pos:'adj.',posLabel:'形容词',ch:'难以预测的、怀疑的、疑心的',infl:{comp:'more doubtful',sup:'most doubtful'}},
+{en:'desperate',ph:"'despərit",pos:'adj.',posLabel:'形容词',ch:'拼死的、绝望的、不顾一切的',infl:{comp:'more desperate',sup:'most desperate'}},
+{en:'extra',ph:"'ekstrə",pos:'adj.',posLabel:'形容词',ch:'额外的',infl:{comp:'more extra',sup:'most extra'}},
+{en:'external',ph:"eks'tə:nl",pos:'adj.',posLabel:'形容词',ch:'外部的、外面的、外用的',infl:{comp:'more external',sup:'most external'}},
+{en:'elder',ph:"'eldə",pos:'adj.',posLabel:'形容词',ch:'年龄较大的、年长的',infl:{comp:'more elder',sup:'most elder'}},
+{en:'electric',ph:"i'lektrik",pos:'adj.',posLabel:'形容词',ch:'电的、电动的、令人激动的',infl:{comp:'more electric',sup:'most electric'}},
+{en:'electronic',ph:"ilek'trɔnik",pos:'adj.',posLabel:'形容词',ch:'电子的',infl:{comp:'more electronic',sup:'most electronic'}},
+{en:'effective',ph:"i'fektiv",pos:'adj.',posLabel:'形容词',ch:'有效的、有影响的',infl:{comp:'more effective',sup:'most effective'}},
+{en:'efficient',ph:"i'fiʃənt",pos:'adj.',posLabel:'形容词',ch:'效率高的、有能力的、胜任的',infl:{comp:'more efficient',sup:'most efficient'}},
+{en:'fatal',ph:"'feitl",pos:'adj.',posLabel:'形容词',ch:'致命的、毁灭性的、决定性的',infl:{comp:'more fatal',sup:'most fatal'}},
+{en:'favourite',ph:"'feivərit",pos:'adj.',posLabel:'形容词',ch:'特别受喜爱的',infl:{comp:'more favourite',sup:'most favourite'}},
+{en:'flexible',ph:"'fleksəbl",pos:'adj.',posLabel:'形容词',ch:'易弯曲的、灵活的、柔韧的',infl:{comp:'more flexible',sup:'most flexible'}},
+{en:'feasible',ph:"'fi:zəbl",pos:'adj.',posLabel:'形容词',ch:'可行的、可能的',infl:{comp:'more feasible',sup:'most feasible'}},
+{en:'federal',ph:"'fedərəl",pos:'adj.',posLabel:'形容词',ch:'联邦的、联邦政府的、联盟的',infl:{comp:'more federal',sup:'most federal'}},
+{en:'fertile',ph:"'fə:tail",pos:'adj.',posLabel:'形容词',ch:'肥沃的、多产的、能繁殖的',infl:{comp:'more fertile',sup:'most fertile'}},
+{en:'feeble',ph:"'fi:bl",pos:'adj.',posLabel:'形容词',ch:'虚弱的、微弱的、无力的',infl:{comp:'feebler',sup:'feeblest'}},
+{en:'fierce',ph:"fiəs",pos:'adj.',posLabel:'形容词',ch:'凶猛的、猛烈的、残暴的',infl:{comp:'fiercer',sup:'fiercest'}},
+{en:'financial',ph:"fai'nænʃəl",pos:'adj.',posLabel:'形容词',ch:'财政的、金融的',infl:{comp:'more financial',sup:'most financial'}},
+{en:'fashionable',ph:"'fæʃənəbl",pos:'adj.',posLabel:'形容词',ch:'流行的、时髦的',infl:{comp:'more fashionable',sup:'most fashionable'}}
+],
+'Unit 3': [
+{en:'fluent',ph:"'flu:ənt",pos:'adj.',posLabel:'形容词',ch:'流利的、流畅的',infl:{comp:'more fluent',sup:'most fluent'}},
+{en:'fortunate',ph:"'fɔ:tʃənit",pos:'adj.',posLabel:'形容词',ch:'幸运的、侥幸的',infl:{comp:'more fortunate',sup:'most fortunate'}},
+{en:'frequent',ph:"'fri:kwənt",pos:'adj.',posLabel:'形容词',ch:'时常发生的、经常的、频繁的',infl:{comp:'more frequent',sup:'most frequent'}},
+{en:'funny',ph:"'fʌni",pos:'adj.',posLabel:'形容词',ch:'古怪的、滑稽的、有趣的',infl:{comp:'funnier',sup:'funniest'}},
+{en:'fundamental',ph:".fʌndə'mentl",pos:'adj.',posLabel:'形容词',ch:'基础的、基本的、根本的',infl:{comp:'more fundamental',sup:'most fundamental'}},
+{en:'glorious',ph:"'glɔ:riəs",pos:'adj.',posLabel:'形容词',ch:'光荣的、壮丽的、辉煌的',infl:{comp:'more glorious',sup:'most glorious'}},
+{en:'gradual',ph:"'grædjuəl",pos:'adj.',posLabel:'形容词',ch:'逐渐的、渐进的',infl:{comp:'more gradual',sup:'most gradual'}},
+{en:'grand',ph:"grænd",pos:'adj.',posLabel:'形容词',ch:'宏伟的、重大的、豪华的',infl:{comp:'grander',sup:'grandest'}},
+{en:'graceful',ph:"'greisfəl",pos:'adj.',posLabel:'形容词',ch:'优美的、优雅的',infl:{comp:'more graceful',sup:'most graceful'}},
+{en:'greedy',ph:"'gri:di",pos:'adj.',posLabel:'形容词',ch:'贪吃的、贪婪的',infl:{comp:'greedier',sup:'greediest'}},
+{en:'harsh',ph:"hɑ:ʃ",pos:'adj.',posLabel:'形容词',ch:'严厉的、刺耳的、粗糙的',infl:{comp:'harsher',sup:'harshest'}},
+{en:'hasty',ph:"'heisti",pos:'adj.',posLabel:'形容词',ch:'急速的、仓促的、匆匆的',infl:{comp:'hastier',sup:'hastiest'}},
+{en:'holy',ph:"'həuli",pos:'adj.',posLabel:'形容词',ch:'神圣的、圣洁的、令人敬仰的',infl:{comp:'holier',sup:'holiest'}},
+{en:'humid',ph:"'hju:mid",pos:'adj.',posLabel:'形容词',ch:'湿的、湿气重的、潮湿的',infl:{comp:'more humid',sup:'most humid'}},
+{en:'historic',ph:"his'tɔrik",pos:'adj.',posLabel:'形容词',ch:'历史性的、有历史意义的',infl:{comp:'more historic',sup:'most historic'}},
+{en:'historical',ph:"his'tɔ:rikəl",pos:'adj.',posLabel:'形容词',ch:'历史的、有关历史的',infl:{comp:'more historical',sup:'most historical'}},
+{en:'honourable',ph:"'ɔnərəbl",pos:'adj.',posLabel:'形容词',ch:'诚实的、光荣的、荣誉的',infl:{comp:'more honourable',sup:'most honourable'}},
+{en:'ideal',ph:"ai'diəl",pos:'adj.',posLabel:'形容词',ch:'理想的、观念的、完美的',infl:{comp:'more ideal',sup:'most ideal'}},
+{en:'identical',ph:"ai'dentikəl",pos:'adj.',posLabel:'形容词',ch:'完全相同的、同一的',infl:{comp:'more identical',sup:'most identical'}},
+{en:'idle',ph:"'aidl",pos:'adj.',posLabel:'形容词',ch:'空闲的、懒散的、无目的的',infl:{comp:'idler',sup:'idlest'}},
+{en:'illegal',ph:"i'li:gəl",pos:'adj.',posLabel:'形容词',ch:'不合法的、非法的',infl:{comp:'more illegal',sup:'most illegal'}},
+{en:'imaginary',ph:"i'mædʒinəri",pos:'adj.',posLabel:'形容词',ch:'想象中的、假想的、虚构的',infl:{comp:'more imaginary',sup:'most imaginary'}},
+{en:'immense',ph:"i'mens",pos:'adj.',posLabel:'形容词',ch:'巨大的、广大的、非常好的',infl:{comp:'more immense',sup:'most immense'}},
+{en:'incorrect',ph:".inkə'rekt",pos:'adj.',posLabel:'形容词',ch:'不正确的、错误的',infl:{comp:'more incorrect',sup:'most incorrect'}},
+{en:'indefinite',ph:"in'definit",pos:'adj.',posLabel:'形容词',ch:'不明确的、模糊的、不定的',infl:{comp:'more indefinite',sup:'most indefinite'}},
+{en:'ignorant',ph:"'ignərənt",pos:'adj.',posLabel:'形容词',ch:'不知道的、无知的、愚昧的',infl:{comp:'more ignorant',sup:'most ignorant'}},
+{en:'impressive',ph:"im'presiv",pos:'adj.',posLabel:'形容词',ch:'给人印象深刻的',infl:{comp:'more impressive',sup:'most impressive'}}
+],
+'Unit 4': [
+{en:'indifferent',ph:"in'difrənt",pos:'adj.',posLabel:'形容词',ch:'冷漠的、不积极的、漠不关心的',infl:{comp:'more indifferent',sup:'most indifferent'}},
+{en:'inexpensive',ph:".inik'spensiv",pos:'adj.',posLabel:'形容词',ch:'花费不多的、廉价的',infl:{comp:'more inexpensive',sup:'most inexpensive'}},
+{en:'infinite',ph:"'infinit",pos:'adj.',posLabel:'形容词',ch:'无限的、无穷的、无数的',infl:{comp:'more infinite',sup:'most infinite'}},
+{en:'initial',ph:"i'niʃəl",pos:'adj.',posLabel:'形容词',ch:'最初的、开始的、字首的',infl:{comp:'more initial',sup:'most initial'}},
+{en:'influential',ph:".influ'enʃəl",pos:'adj.',posLabel:'形容词',ch:'有影响的、有权势的',infl:{comp:'more influential',sup:'most influential'}},
+{en:'intensive',ph:"in'tensiv",pos:'adj.',posLabel:'形容词',ch:'加强的、强烈的、密集的',infl:{comp:'more intensive',sup:'most intensive'}},
+{en:'interior',ph:"in'tiəriə",pos:'adj.',posLabel:'形容词',ch:'内的、内地的、国内的',infl:{comp:'more interior',sup:'most interior'}},
+{en:'internal',ph:"in'tə:nəl",pos:'adj.',posLabel:'形容词',ch:'内的、国内的、内在的',infl:{comp:'more internal',sup:'most internal'}},
+{en:'international',ph:".intə'næʃənəl",pos:'adj.',posLabel:'形容词',ch:'国际的、世界性的',infl:{comp:'more international',sup:'most international'}},
+{en:'intimate',ph:"'intimit",pos:'adj.',posLabel:'形容词',ch:'亲密的、个人的、私人的',infl:{comp:'more intimate',sup:'most intimate'}},
+{en:'invisible',ph:"in'vizəbl",pos:'adj.',posLabel:'形容词',ch:'看不见的、无形的',infl:{comp:'more invisible',sup:'most invisible'}},
+{en:'inward',ph:"'inwəd",pos:'adj.',posLabel:'形容词',ch:'里面的、内心的、向内的',infl:{comp:'more inward',sup:'most inward'}},
+{en:'irregular',ph:"i'regjulə",pos:'adj.',posLabel:'形容词',ch:'不规则的、不整齐的、不合法的',infl:{comp:'more irregular',sup:'most irregular'}},
+{en:'intermediate',ph:".intə'mi:diət",pos:'adj.',posLabel:'形容词',ch:'中间的、中级的',infl:{comp:'more intermediate',sup:'most intermediate'}},
+{en:'leading',ph:"'li:diŋ",pos:'adj.',posLabel:'形容词',ch:'指导的、领导的、最主要的',infl:{comp:'more leading',sup:'most leading'}},
+{en:'legal',ph:"'li:gəl",pos:'adj.',posLabel:'形容词',ch:'法律的、合法的、法定的',infl:{comp:'more legal',sup:'most legal'}},
+{en:'liable',ph:"'laiəbl",pos:'adj.',posLabel:'形容词',ch:'易于...的、可能的、有义务的',infl:{comp:'more liable',sup:'most liable'}},
+{en:'liberal',ph:"'libərəl",pos:'adj.',posLabel:'形容词',ch:'心胸宽大的、慷慨的、开明的',infl:{comp:'more liberal',sup:'most liberal'}},
+{en:'literary',ph:"'litərəri",pos:'adj.',posLabel:'形容词',ch:'文学上的',infl:{comp:'more literary',sup:'most literary'}},
+{en:'logical',ph:"'lɔdʒikəl",pos:'adj.',posLabel:'形容词',ch:'逻辑的、符合逻辑的',infl:{comp:'more logical',sup:'most logical'}},
+{en:'magnetic',ph:"mæg'netik",pos:'adj.',posLabel:'形容词',ch:'磁的、有吸引力的',infl:{comp:'more magnetic',sup:'most magnetic'}},
+{en:'manual',ph:"'mænjuəl",pos:'adj.',posLabel:'形容词',ch:'体力的、手工的',infl:{comp:'more manual',sup:'most manual'}},
+{en:'medium',ph:"'mi:diəm",pos:'adj.',posLabel:'形容词',ch:'中等的、适中的',infl:{comp:'more medium',sup:'most medium'}},
+{en:'marvelous',ph:"'mɑ:viləs",pos:'adj.',posLabel:'形容词',ch:'奇迹般的、了不起的、令人惊异的',infl:{comp:'more marvelous',sup:'most marvelous'}},
+{en:'material',ph:"mə'tiəriəl",pos:'adj.',posLabel:'形容词',ch:'物质的、实体的、重要的',infl:{comp:'more material',sup:'most material'}},
+{en:'magnificent',ph:"mæg'nifisnt",pos:'adj.',posLabel:'形容词',ch:'壮丽的、华丽的、宏伟的',infl:{comp:'more magnificent',sup:'most magnificent'}},
+{en:'marine',ph:"mə'ri:n",pos:'adj.',posLabel:'形容词',ch:'海的、海上的、海事的',infl:{comp:'more marine',sup:'most marine'}}
+],
+'Unit 5': [
+{en:'mighty',ph:"'maiti",pos:'adj.',posLabel:'形容词',ch:'强大的、有力的',infl:{comp:'mightier',sup:'mightiest'}},
+{en:'military',ph:"'militəri",pos:'adj.',posLabel:'形容词',ch:'军事的、军人的',infl:{comp:'more military',sup:'most military'}},
+{en:'minimum',ph:"'miniməm",pos:'adj.',posLabel:'形容词',ch:'最低的、最小的',infl:{comp:'more minimum',sup:'most minimum'}},
+{en:'missing',ph:"'misiŋ",pos:'adj.',posLabel:'形容词',ch:'缺掉的、失去的、失踪的',infl:{comp:'more missing',sup:'most missing'}},
+{en:'mixed',ph:"mikst",pos:'adj.',posLabel:'形容词',ch:'混合的',infl:{comp:'more mixed',sup:'most mixed'}},
+{en:'moderate',ph:"'mɔdərit",pos:'adj.',posLabel:'形容词',ch:'温和的、有节制的、适度的',infl:{comp:'more moderate',sup:'most moderate'}},
+{en:'mortal',ph:"'mɔ:tl",pos:'adj.',posLabel:'形容词',ch:'终有一死的、人世间的、致命的',infl:{comp:'more mortal',sup:'most mortal'}},
+{en:'multiple',ph:"'mʌltipl",pos:'adj.',posLabel:'形容词',ch:'复合的、并联的、许多的',infl:{comp:'more multiple',sup:'most multiple'}},
+{en:'mutual',ph:"'mju:tʃuəl",pos:'adj.',posLabel:'形容词',ch:'相互的、共同的',infl:{comp:'more mutual',sup:'most mutual'}},
+{en:'naked',ph:"'neikid",pos:'adj.',posLabel:'形容词',ch:'裸体的、无遮敝的、明白的',infl:{comp:'more naked',sup:'most naked'}},
+{en:'nasty',ph:"'nɑ:sti",pos:'adj.',posLabel:'形容词',ch:'龌龊的、淫猥的、令人作呕的',infl:{comp:'nastier',sup:'nastiest'}},
+{en:'negative',ph:"'negətiv",pos:'adj.',posLabel:'形容词',ch:'否定的、消极的、负的',infl:{comp:'more negative',sup:'most negative'}},
+{en:'noble',ph:"'nəubl",pos:'adj.',posLabel:'形容词',ch:'贵族的、高尚的、宏伟的',infl:{comp:'nobler',sup:'noblest'}},
+{en:'neutral',ph:"'nju:trəl",pos:'adj.',posLabel:'形容词',ch:'中立的、中性的',infl:{comp:'more neutral',sup:'most neutral'}},
+{en:'numerous',ph:"'nju:mərəs",pos:'adj.',posLabel:'形容词',ch:'为数众多的、许多',infl:{comp:'more numerous',sup:'most numerous'}},
+{en:'occasional',ph:"ə'keiʒənəl",pos:'adj.',posLabel:'形容词',ch:'偶然的、临时的、不时的',infl:{comp:'more occasional',sup:'most occasional'}},
+{en:'organic',ph:"ɔ:'gænik",pos:'adj.',posLabel:'形容词',ch:'有机体的、器官的、根本的',infl:{comp:'more organic',sup:'most organic'}},
+{en:'outdoor',ph:"'autdɔ:",pos:'adj.',posLabel:'形容词',ch:'户外的、室外的、野外的',infl:{comp:'more outdoor',sup:'most outdoor'}},
+{en:'optical',ph:"'ɔptikəl",pos:'adj.',posLabel:'形容词',ch:'眼的、眼睛的、视觉的',infl:{comp:'more optical',sup:'most optical'}},
+{en:'optimistic',ph:".ɔpti'mistik",pos:'adj.',posLabel:'形容词',ch:'乐观的、乐观主义的',infl:{comp:'more optimistic',sup:'most optimistic'}},
+{en:'parallel',ph:"'pærəlel",pos:'adj.',posLabel:'形容词',ch:'平行的、类似的',infl:{comp:'more parallel',sup:'most parallel'}},
+{en:'partial',ph:"'pɑ:ʃəl",pos:'adj.',posLabel:'形容词',ch:'部分的、偏袒的',infl:{comp:'more partial',sup:'most partial'}},
+{en:'passive',ph:"'pæsiv",pos:'adj.',posLabel:'形容词',ch:'被动的、消极的',infl:{comp:'more passive',sup:'most passive'}},
+{en:'permanent',ph:"'pə:mənənt",pos:'adj.',posLabel:'形容词',ch:'永久的、永恒的、固定的',infl:{comp:'more permanent',sup:'most permanent'}},
+{en:'physical',ph:"'fizikəl",pos:'adj.',posLabel:'形容词',ch:'身体的、物质的、物理的',infl:{comp:'more physical',sup:'most physical'}},
+{en:'plenty',ph:"'plenti",pos:'adj.',posLabel:'形容词',ch:'充足的',infl:{comp:'more plenty',sup:'most plenty'}},
+{en:'particular',ph:"pə'tikjulə",pos:'adj.',posLabel:'形容词',ch:'特殊的、特别的、详细的',infl:{comp:'more particular',sup:'most particular'}}
+],
+'Unit 6': [
+{en:'political',ph:"pə'litikəl",pos:'adj.',posLabel:'形容词',ch:'政治的、政治上的、政党的',infl:{comp:'more political',sup:'most political'}},
+{en:'precious',ph:"'preʃəs",pos:'adj.',posLabel:'形容词',ch:'珍贵的、宝贵的',infl:{comp:'more precious',sup:'most precious'}},
+{en:'precise',ph:"pri'sais",pos:'adj.',posLabel:'形容词',ch:'精确的、准确的、认真的',infl:{comp:'more precise',sup:'most precise'}},
+{en:'preliminary',ph:"pri'liminəri",pos:'adj.',posLabel:'形容词',ch:'预备的、初步的、开始的',infl:{comp:'more preliminary',sup:'most preliminary'}},
+{en:'present',ph:"'preznt",pos:'adj.',posLabel:'形容词',ch:'现在的、当面的、出席的',infl:{comp:'more present',sup:'most present'}},
+{en:'prime',ph:"praim",pos:'adj.',posLabel:'形容词',ch:'首要的、最初的、最好的',infl:{comp:'more prime',sup:'most prime'}},
+{en:'primitive',ph:"'primitiv",pos:'adj.',posLabel:'形容词',ch:'原始的、粗糙的',infl:{comp:'more primitive',sup:'most primitive'}},
+{en:'principal',ph:"'prinsəpəl",pos:'adj.',posLabel:'形容词',ch:'主要的、首要的',infl:{comp:'more principal',sup:'most principal'}},
+{en:'productive',ph:"prə'dʌktiv",pos:'adj.',posLabel:'形容词',ch:'生产的、丰饶的、多产的',infl:{comp:'more productive',sup:'most productive'}},
+{en:'professional',ph:"prə'feʃənəl",pos:'adj.',posLabel:'形容词',ch:'职业的、专业的',infl:{comp:'more professional',sup:'most professional'}},
+{en:'prompt',ph:"prɔmpt",pos:'adj.',posLabel:'形容词',ch:'及时的、迅速的、敏捷的',infl:{comp:'prompter',sup:'promptest'}},
+{en:'promising',ph:"'prɔmisiŋ",pos:'adj.',posLabel:'形容词',ch:'有希望的、有前途的',infl:{comp:'more promising',sup:'most promising'}},
+{en:'prominent',ph:"'prɔminənt",pos:'adj.',posLabel:'形容词',ch:'实起的、突出的、杰出的',infl:{comp:'more prominent',sup:'most prominent'}},
+{en:'profitable',ph:"'prɔfitəbl",pos:'adj.',posLabel:'形容词',ch:'有利润的、有益的',infl:{comp:'more profitable',sup:'most profitable'}},
+{en:'pregnant',ph:"'preɡnənt",pos:'adj.',posLabel:'形容词',ch:'怀孕的、孕育的',infl:{comp:'more pregnant',sup:'most pregnant'}},
+{en:'preferable',ph:"'prefərəbl",pos:'adj.',posLabel:'形容词',ch:'更可取的、更好的、更合意的',infl:{comp:'more preferable',sup:'most preferable'}},
+{en:'regardless',ph:"ri'gɑ:dlis",pos:'adj.',posLabel:'形容词',ch:'不注意的、粗心的',infl:{comp:'more regardless',sup:'most regardless'}},
+{en:'relevant',ph:"'relivənt",pos:'adj.',posLabel:'形容词',ch:'有关的、相关的、贴切的',infl:{comp:'more relevant',sup:'most relevant'}},
+{en:'reliable',ph:"ri'laiəbl",pos:'adj.',posLabel:'形容词',ch:'可靠的、可信赖的',infl:{comp:'more reliable',sup:'most reliable'}},
+{en:'religious',ph:"ri'lidʒəs",pos:'adj.',posLabel:'形容词',ch:'宗教的、虔诚的、细心的',infl:{comp:'more religious',sup:'most religious'}},
+{en:'remarkable',ph:"ri'mɑ:kəbl",pos:'adj.',posLabel:'形容词',ch:'异常的、非凡的、显著的',infl:{comp:'more remarkable',sup:'most remarkable'}},
+{en:'reluctant',ph:"ri'lʌktənt",pos:'adj.',posLabel:'形容词',ch:'不愿的、勉强的',infl:{comp:'more reluctant',sup:'most reluctant'}},
+{en:'representative',ph:"repri'zentətiv",pos:'adj.',posLabel:'形容词',ch:'代表性的、代议制的、典型的',infl:{comp:'more representative',sup:'most representative'}},
+{en:'responsible',ph:"ri'spɔnsəbl",pos:'adj.',posLabel:'形容词',ch:'有责任的、尽责的、可靠的',infl:{comp:'more responsible',sup:'most responsible'}},
+{en:'ridiculous',ph:"ri'dikjuləs",pos:'adj.',posLabel:'形容词',ch:'荒谬的、可笑的',infl:{comp:'more ridiculous',sup:'most ridiculous'}},
+{en:'rigid',ph:"'ridʒid",pos:'adj.',posLabel:'形容词',ch:'刚硬的、僵硬的、刻板的',infl:{comp:'more rigid',sup:'most rigid'}},
+{en:'restless',ph:"'restlis",pos:'adj.',posLabel:'形容词',ch:'不安定的、焦虑的、静不下来的',infl:{comp:'more restless',sup:'most restless'}}
+],
+'Unit 7': [
+{en:'sacred',ph:"'seikrid",pos:'adj.',posLabel:'形容词',ch:'上帝的、神圣的、受尊重的',infl:{comp:'more sacred',sup:'most sacred'}},
+{en:'scarce',ph:"skɛəs",pos:'adj.',posLabel:'形容词',ch:'缺乏的、希有的、不足的',infl:{comp:'scarcer',sup:'scarcest'}},
+{en:'satisfactory',ph:".sætis'fæktəri",pos:'adj.',posLabel:'形容词',ch:'令人满意的、良好的',infl:{comp:'more satisfactory',sup:'most satisfactory'}},
+{en:'scientific',ph:".saiən'tifik",pos:'adj.',posLabel:'形容词',ch:'科学上的',infl:{comp:'more scientific',sup:'most scientific'}},
+{en:'secondary',ph:"'sekənderi",pos:'adj.',posLabel:'形容词',ch:'第二的、次要的、中级的',infl:{comp:'more secondary',sup:'most secondary'}},
+{en:'secure',ph:"si'kjuə",pos:'adj.',posLabel:'形容词',ch:'安心的、安全的、无虑的',infl:{comp:'more secure',sup:'most secure'}},
+{en:'sensible',ph:"'sensəbl",pos:'adj.',posLabel:'形容词',ch:'感觉得到的、明智的、可察觉的',infl:{comp:'more sensible',sup:'most sensible'}},
+{en:'sensitive',ph:"'sensitiv",pos:'adj.',posLabel:'形容词',ch:'敏感的、灵敏的、易受伤害的',infl:{comp:'more sensitive',sup:'most sensitive'}},
+{en:'separate',ph:"'sepərit",pos:'adj.',posLabel:'形容词',ch:'分离的、个别的、各自的',infl:{comp:'more separate',sup:'most separate'}},
+{en:'severe',ph:"si'viə",pos:'adj.',posLabel:'形容词',ch:'严格的、严厉的、剧烈的',infl:{comp:'more severe',sup:'most severe'}},
+{en:'shallow',ph:"'ʃæləu",pos:'adj.',posLabel:'形容词',ch:'浅的、浅薄的、肤浅的',infl:{comp:'shallower',sup:'shallowest'}},
+{en:'shameful',ph:"'ʃeimfəl",pos:'adj.',posLabel:'形容词',ch:'可耻的、丢脸的',infl:{comp:'more shameful',sup:'most shameful'}},
+{en:'significant',ph:"sig'nifikənt",pos:'adj.',posLabel:'形容词',ch:'有意义的、重要的、重大的',infl:{comp:'more significant',sup:'most significant'}},
+{en:'spare',ph:"spɛə",pos:'adj.',posLabel:'形容词',ch:'多余的、闲置的、备用的',infl:{comp:'sparer',sup:'sparest'}},
+{en:'splendid',ph:"'splendid",pos:'adj.',posLabel:'形容词',ch:'壮丽的、显著的、极好的',infl:{comp:'more splendid',sup:'most splendid'}},
+{en:'stale',ph:"steil",pos:'adj.',posLabel:'形容词',ch:'不新鲜的、陈腐的、失效的',infl:{comp:'staler',sup:'stalest'}},
+{en:'static',ph:"'stætik",pos:'adj.',posLabel:'形容词',ch:'静的、静态的、静力的',infl:{comp:'more static',sup:'most static'}},
+{en:'steep',ph:"sti:p",pos:'adj.',posLabel:'形容词',ch:'险峻的、陡峭的',infl:{comp:'steeper',sup:'steepest'}},
+{en:'sticky',ph:"'stiki",pos:'adj.',posLabel:'形容词',ch:'粘性的、胶粘的、闷热的',infl:{comp:'stickier',sup:'stickiest'}},
+{en:'stiff',ph:"stif",pos:'adj.',posLabel:'形容词',ch:'硬的、僵直的、生硬的',infl:{comp:'stiffer',sup:'stiffest'}},
+{en:'stormy',ph:"'stɔ:mi",pos:'adj.',posLabel:'形容词',ch:'有暴风雨的、激烈的、粗暴的',infl:{comp:'stormier',sup:'stormiest'}},
+{en:'super',ph:"'sju:pə",pos:'adj.',posLabel:'形容词',ch:'极好的、超级的',infl:{comp:'more super',sup:'most super'}},
+{en:'sufficient',ph:"sə'fiʃənt",pos:'adj.',posLabel:'形容词',ch:'足够的、充分的',infl:{comp:'more sufficient',sup:'most sufficient'}},
+{en:'suitable',ph:"'sju:təbl",pos:'adj.',posLabel:'形容词',ch:'合适的、适宜的',infl:{comp:'more suitable',sup:'most suitable'}},
+{en:'successful',ph:"sək'sesful",pos:'adj.',posLabel:'形容词',ch:'成功的、结果良好的、圆满的',infl:{comp:'more successful',sup:'most successful'}},
+{en:'substantial',ph:"səb'stænʃəl",pos:'adj.',posLabel:'形容词',ch:'物质的、坚固的、实质的',infl:{comp:'more substantial',sup:'most substantial'}},
+{en:'spiritual',ph:"'spiritjuəl",pos:'adj.',posLabel:'形容词',ch:'精神的、心灵的、与上帝有关的',infl:{comp:'more spiritual',sup:'most spiritual'}}
+],
+'Unit 8': [
+{en:'superior',ph:"su:'piəriə",pos:'adj.',posLabel:'形容词',ch:'较高的、优越的、上层的',infl:{comp:'more superior',sup:'most superior'}},
+{en:'supreme',ph:"sju:'pri:m",pos:'adj.',posLabel:'形容词',ch:'最高的、最大的、至上的',infl:{comp:'more supreme',sup:'most supreme'}},
+{en:'superficial',ph:".su:pə'fiʃəl",pos:'adj.',posLabel:'形容词',ch:'表面的、肤浅的',infl:{comp:'more superficial',sup:'most superficial'}},
+{en:'surprising',ph:"sə'praiziŋ",pos:'adj.',posLabel:'形容词',ch:'惊人的、出人意外的、令人惊讶的',infl:{comp:'more surprising',sup:'most surprising'}},
+{en:'synthetic',ph:"sin'θetik",pos:'adj.',posLabel:'形容词',ch:'综合的、合成的、人造的',infl:{comp:'more synthetic',sup:'most synthetic'}},
+{en:'systematic',ph:".sisti'mætik",pos:'adj.',posLabel:'形容词',ch:'有系统的、有条理的、有计划的',infl:{comp:'more systematic',sup:'most systematic'}},
+{en:'tedious',ph:"'ti:diəs",pos:'adj.',posLabel:'形容词',ch:'冗长乏味的、单调乏味的',infl:{comp:'more tedious',sup:'most tedious'}},
+{en:'temporary',ph:"'tempərəri",pos:'adj.',posLabel:'形容词',ch:'暂时的',infl:{comp:'more temporary',sup:'most temporary'}},
+{en:'tense',ph:"tens",pos:'adj.',posLabel:'形容词',ch:'拉紧的、绷紧的、紧张的',infl:{comp:'tenser',sup:'tensest'}},
+{en:'terrific',ph:"tə'rifik",pos:'adj.',posLabel:'形容词',ch:'可怕的、极大的、极好的',infl:{comp:'more terrific',sup:'most terrific'}},
+{en:'timid',ph:"'timid",pos:'adj.',posLabel:'形容词',ch:'胆怯的、羞怯的',infl:{comp:'more timid',sup:'most timid'}},
+{en:'thorough',ph:"'θʌrə",pos:'adj.',posLabel:'形容词',ch:'彻底的、详尽的、完全的',infl:{comp:'more thorough',sup:'most thorough'}},
+{en:'thoughtful',ph:"'θɔ:tfəl",pos:'adj.',posLabel:'形容词',ch:'沉思的、体贴的',infl:{comp:'more thoughtful',sup:'most thoughtful'}},
+{en:'tremendous',ph:"tri'mendəs",pos:'adj.',posLabel:'形容词',ch:'极大的、非常的、巨大的',infl:{comp:'more tremendous',sup:'most tremendous'}},
+{en:'tropical',ph:"'trɔpikəl",pos:'adj.',posLabel:'形容词',ch:'热带的、炎热的、热带植物的',infl:{comp:'more tropical',sup:'most tropical'}},
+{en:'troublesome',ph:"'trʌblsəm",pos:'adj.',posLabel:'形容词',ch:'令人烦恼的、麻烦的、讨厌的',infl:{comp:'more troublesome',sup:'most troublesome'}},
+{en:'ultimate',ph:"'ʌltimit",pos:'adj.',posLabel:'形容词',ch:'最后的、最终的、终极的',infl:{comp:'more ultimate',sup:'most ultimate'}},
+{en:'unbearable',ph:"'ʌn'bɛərəbl",pos:'adj.',posLabel:'形容词',ch:'难堪的、忍受不了的',infl:{comp:'more unbearable',sup:'most unbearable'}},
+{en:'unconscious',ph:"ʌn'kɔnʃəs",pos:'adj.',posLabel:'形容词',ch:'不省人事的、失去知觉的',infl:{comp:'more unconscious',sup:'most unconscious'}},
+{en:'underground',ph:"'ʌndəgraund",pos:'adj.',posLabel:'形容词',ch:'地下的、秘密的',infl:{comp:'more underground',sup:'most underground'}},
+{en:'unexpected',ph:"'ʌnik'spektid",pos:'adj.',posLabel:'形容词',ch:'想不到的、意外的',infl:{comp:'more unexpected',sup:'most unexpected'}},
+{en:'uncomfortable',ph:"ʌn'kʌmftəbl",pos:'adj.',posLabel:'形容词',ch:'不舒服的、不自在的',infl:{comp:'more uncomfortable',sup:'most uncomfortable'}},
+{en:'unjust',ph:"'ʌn'dʒʌst",pos:'adj.',posLabel:'形容词',ch:'非正义的、不公平的',infl:{comp:'more unjust',sup:'most unjust'}},
+{en:'unkind',ph:"ʌn'kaind",pos:'adj.',posLabel:'形容词',ch:'不仁慈的、不和善的、无情的',infl:{comp:'more unkind',sup:'most unkind'}},
+{en:'unpleasant',ph:"ʌn'pleznt",pos:'adj.',posLabel:'形容词',ch:'令人不快的、讨厌的',infl:{comp:'more unpleasant',sup:'most unpleasant'}},
+{en:'unsatisfactory',ph:"'ʌn.sætisfæktəri",pos:'adj.',posLabel:'形容词',ch:'不能令人满意的',infl:{comp:'more unsatisfactory',sup:'most unsatisfactory'}},
+{en:'unstable',ph:"'ʌn'steibl",pos:'adj.',posLabel:'形容词',ch:'不稳固的、不稳定的、易变的',infl:{comp:'more unstable',sup:'most unstable'}}
+],
+'Unit 9': [
+{en:'unsuitable',ph:"'ʌn'sju:təbl",pos:'adj.',posLabel:'形容词',ch:'不合适的、不适宜的',infl:{comp:'more unsuitable',sup:'most unsuitable'}},
+{en:'variable',ph:"'vɛəriəbl",pos:'adj.',posLabel:'形容词',ch:'易变的、可变的',infl:{comp:'more variable',sup:'most variable'}},
+{en:'vigorous',ph:"'vigərəs",pos:'adj.',posLabel:'形容词',ch:'朝气蓬勃的、精力充沛的、有力的',infl:{comp:'more vigorous',sup:'most vigorous'}},
+{en:'visual',ph:"'vizjuəl",pos:'adj.',posLabel:'形容词',ch:'看的、看得见的、视觉的',infl:{comp:'more visual',sup:'most visual'}},
+{en:'voluntary',ph:"'vɔləntəri",pos:'adj.',posLabel:'形容词',ch:'自愿的、志愿的',infl:{comp:'more voluntary',sup:'most voluntary'}},
+{en:'wasteful',ph:"'weistfəl",pos:'adj.',posLabel:'形容词',ch:'浪费的、挥霍的',infl:{comp:'more wasteful',sup:'most wasteful'}},
+{en:'weird',ph:"wiəd",pos:'adj.',posLabel:'形容词',ch:'怪异的、离奇的',infl:{comp:'weirder',sup:'weirdest'}},
+{en:'approximate',ph:"ə'prɔksimət",pos:'adj.',posLabel:'形容词',ch:'近似的、大约的',infl:{comp:'more approximate',sup:'most approximate'}},
+{en:'applicable',ph:"'æplikəbəl",pos:'adj.',posLabel:'形容词',ch:'能应用的、适当的、合适的',infl:{comp:'more applicable',sup:'most applicable'}},
+{en:'appropriate',ph:"ə'prəupri:ət",pos:'adj.',posLabel:'形容词',ch:'适当的、恰当的、相称的',infl:{comp:'more appropriate',sup:'most appropriate'}},
+{en:'arbitrary',ph:"'ɑ:bi.trəri",pos:'adj.',posLabel:'形容词',ch:'随心所欲的、专断的、任意的',infl:{comp:'more arbitrary',sup:'most arbitrary'}},
+{en:'artificial',ph:".ɑ:ti'fiʃəl",pos:'adj.',posLabel:'形容词',ch:'人工的、人造的、虚伪的',infl:{comp:'more artificial',sup:'most artificial'}},
+{en:'indignant',ph:"in'dignənt",pos:'adj.',posLabel:'形容词',ch:'愤慨的、义愤的、愤愤不平的',infl:{comp:'more indignant',sup:'most indignant'}},
+{en:'indispensable',ph:".indis'pensəbl",pos:'adj.',posLabel:'形容词',ch:'必不可少的、必需的',infl:{comp:'more indispensable',sup:'most indispensable'}}
+]
+}}
+};
+
+/* ================================================================
+   密码页自动隐藏
+   ================================================================ */
+const lockScreen = document.getElementById('lockScreen');
+if (lockScreen) {
+    lockScreen.classList.add('hide');
+    setTimeout(() => { lockScreen.style.display = 'none'; }, 500);
+}
+
+/* ================================================================
+   主页按钮
+   ================================================================ */
+const homeButtons = document.getElementById('homeButtons');
+const PART_NAMES = ['大小与数量', '好坏与评价', '情感与感受', '外貌与特征', '性格与品质', '时间与新旧', '难易与状态', '颜色与形状', '温度与触感', '社会与关系', '能力与可能', '其他'];
+
+function countWords(part){
+  let n = 0;
+  const data = VOCAB_DATA[part];
+  if (!data) return 0;
+  Object.values(data).forEach(theme => {
+    Object.values(theme.units).forEach(arr => { n += arr.length; });
+  });
+  return n;
+}
+
+[1,2,3,4,5,6,7,8,9,10,11,12].forEach(part => {
+  const btn = document.createElement('button');
+  btn.className = 'home-btn';
+  btn.innerHTML = `${PART_NAMES[part-1]} <span class="badge">${countWords(part)} 词</span>`;
+  btn.addEventListener('click', () => openPart(part));
+  homeButtons.appendChild(btn);
+});
+
+/* ================================================================
+   Part 页面构建
+   ================================================================ */
+const PART_STATE = {};
+
+function buildPartPage(part){
+  const data = VOCAB_DATA[part];
+  const themeList = Object.keys(data);
+  const unitMap = {};
+  const allVocab = [];
+
+  themeList.forEach(theme => {
+    const unitNames = Object.keys(data[theme].units);
+    unitMap[theme] = unitNames;
+    unitNames.forEach(unitName => {
+      data[theme].units[unitName].forEach(w => {
+        allVocab.push({ ...w, theme, unit:unitName });
+      });
+    });
+  });
+
+  const state = {
+    part, themeList, unitMap, allVocab,
+    currentTheme: themeList[0],
+    currentUnit: unitMap[themeList[0]][0],
+    currentIndex: 0,
+    difficultSet: new Set(),
+    currentWords: []
+  };
+  state.currentWords = allVocab.filter(w => w.theme === state.currentTheme && w.unit === state.currentUnit);
+  PART_STATE[part] = state;
+
+  const inner = document.getElementById('partInner' + part);
+  inner.innerHTML = `
+    <button class="back-btn" data-back="${part}">← 返回主页</button>
+    <div class="header">
+      <h1>Reborner 基础核心词汇</h1>
+      <div class="sub1">形容词 · ${PART_NAMES[part-1]}</div>
+      <div class="sub2">形容词全量版</div>
+      <div class="sub3">📂 ${themeList.length} 大主题 · ${Object.values(unitMap).reduce((a,b)=>a+b.length,0)} 个单元 · 共 ${allVocab.length} 个词条</div>
+    </div>
+    <div class="chapter-scroll"><div class="chap-flex"><button class="chap-btn active">${PART_NAMES[part-1]}</button></div></div>
+    <div class="subchapter-scroll"><div class="sub-flex" id="subFlex${part}"></div></div>
+    <div class="unit-scroll"><div class="unit-flex" id="unitFlex${part}"></div></div>
+    <div class="flip-container">
+      <div class="flipper" id="flipper${part}">
+        <div class="front"><div class="en-word" id="mainEn${part}">—</div></div>
+        <div class="back">
+          <div class="en-word" id="backEn${part}">—</div>
+          <div class="ph-word" id="phInfo${part}"></div>
+          <div class="pos" id="posInfo${part}"></div>
+          <div class="inflection-box" id="inflBox${part}"></div>
+          <div class="ch-word" id="mainCh${part}"></div>
+          <div class="other-group" id="otherGroup${part}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" data-act="prev" data-p="${part}">← 前</button>
+      <button class="nav-btn" data-act="next" data-p="${part}">后 →</button>
+      <button class="nav-btn" data-act="speak" data-p="${part}">🔊 发音</button>
+    </div>
+    <div class="thumb-header">
+      <span>📌 当前单元词汇 · 勾选难词</span>
+      <div class="actions">
+        <button class="select-all-btn" data-act="all" data-p="${part}">✅ 全选</button>
+        <button class="select-all-btn" data-act="none" data-p="${part}">⬜ 取消</button>
+        <button data-act="export" data-p="${part}">📎 导出难词</button>
+      </div>
+    </div>
+    <div class="thumb-grid-container"><div class="thumb-grid" id="thumbGrid${part}"></div></div>
+    <div class="tip">✓ 点击卡片翻转 · 勾选方格标记难词 · 三级分类层层筛选</div>
+  `;
+
+  inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+  inner.querySelectorAll('[data-act]').forEach(b => {
+    b.addEventListener('click', () => handleAction(b.dataset.act, part));
+  });
+  document.getElementById('flipper' + part).addEventListener('click', function(){
+    this.classList.toggle('flipped');
+  });
+
+  renderThemes(part);
+  renderUnits(part);
+  renderCard(part);
+  renderThumbs(part);
+}
+
+function renderThemes(part){
+  const s = PART_STATE[part];
+  const box = document.getElementById('subFlex' + part);
+  box.innerHTML = '';
+  s.themeList.forEach(theme => {
+    const btn = document.createElement('button');
+    btn.className = 'sub-btn' + (theme === s.currentTheme ? ' active-sub' : '');
+    const cnt = s.allVocab.filter(w => w.theme === theme).length;
+    btn.innerHTML = `${theme}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentTheme = theme;
+      s.currentUnit = s.unitMap[theme][0];
+      renderThemes(part); renderUnits(part);
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === s.currentUnit);
+      s.currentIndex = 0;
+      renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderUnits(part){
+  const s = PART_STATE[part];
+  const box = document.getElementById('unitFlex' + part);
+  box.innerHTML = '';
+  s.unitMap[s.currentTheme].forEach(unitName => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-btn' + (unitName === s.currentUnit ? ' active-unit' : '');
+    const cnt = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName).length;
+    btn.innerHTML = `${unitName}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentUnit = unitName;
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName);
+      s.currentIndex = 0;
+      renderUnits(part); renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderCard(part){
+  const s = PART_STATE[part];
+  const mainEn = document.getElementById('mainEn' + part);
+  const backEn = document.getElementById('backEn' + part);
+  const phInfo = document.getElementById('phInfo' + part);
+  const posInfo = document.getElementById('posInfo' + part);
+  const inflBox = document.getElementById('inflBox' + part);
+  const mainCh = document.getElementById('mainCh' + part);
+  const otherGroup = document.getElementById('otherGroup' + part);
+  const flipper = document.getElementById('flipper' + part);
+  flipper.classList.remove('flipped');
+
+  if (!s.currentWords.length) {
+    mainEn.textContent = '无'; backEn.textContent = '';
+    phInfo.textContent = ''; posInfo.textContent = ''; inflBox.innerHTML = ''; mainCh.textContent = ''; otherGroup.textContent = '';
+    return;
+  }
+  const w = s.currentWords[s.currentIndex];
+  mainEn.textContent = w.en; backEn.textContent = w.en;
+  phInfo.textContent = w.ph ? '/' + w.ph + '/' : '';
+  posInfo.textContent = w.posLabel || w.pos || '';
+  mainCh.textContent = w.ch;
+  otherGroup.textContent = '';
+
+  let inflHtml = '';
+  if (w.infl) {
+    const rows = [];
+    if (w.infl.comp) rows.push(['比较级', w.infl.comp, w.infl.irregular]);
+    if (w.infl.sup) rows.push(['最高级', w.infl.sup, w.infl.irregular]);
+    rows.forEach(([label, val, irregular]) => {
+      inflHtml += `<div class="inflection-row ${irregular?'irregular':''}"><span class="inflection-label">${label}:</span><span>${val}</span></div>`;
+    });
+  }
+  inflBox.innerHTML = inflHtml;
+  speak(w.en);
+}
+
+function renderThumbs(part){
+  const s = PART_STATE[part];
+  const box = document.getElementById('thumbGrid' + part);
+  box.innerHTML = '';
+  s.currentWords.forEach((w, idx) => {
+    const key = w.en + '|' + w.ch;
+    const card = document.createElement('div');
+    card.className = 'thumb-item';
+    card.innerHTML = `<input type="checkbox" class="diff-check" data-key="${key.replace(/"/g,'&quot;')}" ${s.difficultSet.has(key)?'checked':''}><label>${w.en}</label>`;
+    card.addEventListener('click', e => {
+      if (e.target.tagName !== 'INPUT') { s.currentIndex = idx; renderCard(part); }
+    });
+    const chk = card.querySelector('.diff-check');
+    chk.addEventListener('change', e => {
+      e.stopPropagation();
+      const k = e.target.dataset.key;
+      if (e.target.checked) s.difficultSet.add(k); else s.difficultSet.delete(k);
+    });
+    box.appendChild(card);
+  });
+}
+
+function handleAction(act, part){
+  const s = PART_STATE[part];
+  if (act === 'prev') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex - 1 + s.currentWords.length) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'next') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex + 1) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'speak') {
+    if (s.currentWords[s.currentIndex]) speak(s.currentWords[s.currentIndex].en);
+  } else if (act === 'all') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = true; s.difficultSet.add(c.dataset.key);
+    });
+  } else if (act === 'none') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = false; s.difficultSet.delete(c.dataset.key);
+    });
+  } else if (act === 'export') {
+    exportCsv(part);
+  }
+}
+
+function exportCsv(part){
+  const s = PART_STATE[part];
+  const selected = s.allVocab.filter(v => s.difficultSet.has(v.en + '|' + v.ch));
+  if (!selected.length) { alert('没有勾选难词'); return; }
+  const seen = new Set();
+  let csv = '英文,音标,词性,中文含义,变形,主题,单元\n';
+  selected.forEach(w => {
+    const key = w.en;
+    if (seen.has(key)) return;
+    seen.add(key);
+    let inflStr = '';
+    if (w.infl) {
+      const parts = [];
+      if (w.infl.comp) parts.push('比较级:' + w.infl.comp);
+      if (w.infl.sup) parts.push('最高级:' + w.infl.sup);
+      inflStr = parts.join('; ');
+    }
+    csv += `"${w.en}","${w.ph||''}","${w.posLabel||w.pos||''}","${w.ch}","${inflStr}","${w.theme}","${w.unit}"\n`;
+  });
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `basic_adj_difficult_${PART_NAMES[part-1]}.csv`;
+  link.click();
+}
+
+/* ================================================================
+   滑动切换
+   ================================================================ */
+function openPart(part){
+  if (!PART_STATE[part]) buildPartPage(part);
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  home.classList.add('slide-left');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      page.classList.add('slide-in');
+      page.scrollTop = 0;
+    });
+  });
+}
+function closePart(part){
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  page.classList.remove('slide-in');
+  home.classList.remove('slide-left');
+}
+
+function speak(text){
+  if (window.parent && window.parent !== window) {
+    try {
+      window.parent.postMessage({ type: 'speak', text: text }, '*');
+      return;
+    } catch(e) {}
+  }
+  if ('speechSynthesis' in window) {
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+}
+</script>
+<a class="go-home" href="./">← 返回入口</a>
+</body>
+</html>

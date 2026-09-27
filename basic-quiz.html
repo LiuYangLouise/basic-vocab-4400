@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Reborner 基础4400 · 选范围</title>
+<style>
+:root {
+  --main: #2E5938;
+  --beige: #F2E9D2;
+  --bg: #F8F7F0;
+  --card: #F5F4EB;
+  --input: #FFFFFF;
+  --text: #222222;
+  --placeholder: #999999;
+  --radius-card: 24px;
+  --radius-btn: 16px;
+  --radius-input: 12px;
+  --radius-tag: 999px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 24px 16px 60px;
+}
+.app-container {
+  max-width: 720px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.brand-card {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 26px 20px 20px;
+  text-align: center;
+}
+.brand-card h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--main);
+  letter-spacing: 2px;
+}
+.brand-card .sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--placeholder);
+  letter-spacing: 4px;
+  margin-top: 4px;
+}
+.section-card {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+}
+.section-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .badge {
+  background: var(--main);
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 12px;
+  border-radius: var(--radius-tag);
+}
+.section-title .count {
+  font-size: 14px;
+  color: #999;
+  margin-left: auto;
+}
+.pronounce-group { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-accent {
+  background: #fff;
+  border: 1.5px solid #ddd;
+  color: var(--placeholder);
+  padding: 8px 28px;
+  border-radius: var(--radius-btn);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-accent.active {
+  background: var(--main);
+  color: #fff;
+  border-color: var(--main);
+}
+.type-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.type-chip {
+  padding: 10px 18px;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: var(--radius-tag);
+  font-size: 15px;
+  cursor: pointer;
+  user-select: none;
+}
+.type-chip.active {
+  background: var(--main);
+  color: #fff;
+  border-color: var(--main);
+}
+.part-group { margin-bottom: 12px; }
+.part-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  background: #fff;
+  border-radius: var(--radius-input);
+  cursor: pointer;
+  border: 1px solid #eee;
+  margin-bottom: 8px;
+}
+.part-header .part-name { font-weight: 600; font-size: 15px; }
+.part-header .part-meta { font-size: 13px; color: var(--placeholder); }
+.part-body { padding: 0 4px; display: none; }
+.part-body.open { display: block; }
+.unit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding: 4px 8px 12px;
+}
+.unit-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  padding: 6px 14px 6px 12px;
+  border-radius: var(--radius-tag);
+  font-size: 14px;
+  border: 1px solid #eaeaea;
+  cursor: pointer;
+  user-select: none;
+}
+.unit-chip:hover { border-color: var(--main); }
+.unit-chip input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--main);
+  cursor: pointer;
+}
+.option-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.opt-btn {
+  background: #fff;
+  border: 1.5px solid #ddd;
+  color: #555;
+  padding: 10px 22px;
+  border-radius: var(--radius-btn);
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.opt-btn.active {
+  background: var(--main);
+  color: #fff;
+  border-color: var(--main);
+}
+.btn-start {
+  background: var(--main);
+  color: #fff;
+  border: none;
+  padding: 18px 56px;
+  border-radius: var(--radius-btn);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 2px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 4px 0 #1f452b;
+}
+.btn-start:active { transform: translateY(2px); box-shadow: 0 2px 0 #1f452b; }
+.btn-start:disabled { opacity: 0.4; cursor: not-allowed; }
+.start-hint {
+  font-size: 13px;
+  color: var(--placeholder);
+  margin-top: 10px;
+  text-align: center;
+}
+.mode-hint {
+  font-size: 13px;
+  color: #b06a00;
+  background: #fff6e6;
+  border: 1px solid #f0d8a8;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-top: 12px;
+  display: none;
+}
+.mode-hint.show { display: block; }
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.toolbar button {
+  background: #e8f0e0;
+  border: 1px solid #c8d8c0;
+  border-radius: var(--radius-tag);
+  padding: 4px 14px;
+  font-size: 13px;
+  color: var(--main);
+  cursor: pointer;
+}
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 15px;
+}
+
+/* ==== 返回入口悬浮按钮 ==== */
+.go-home {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 99999;
+  background: rgba(252,255,248,0.95);
+  border: 1px solid #cde0c3;
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #2d543b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(100,140,90,0.22);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s;
+}
+.go-home:hover { background: #eef9e6; transform: translateY(-1px); }
+.go-home:active { transform: scale(.96); }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="brand-card">
+    <h1>Reborner 基础核心词汇</h1>
+    <div class="sub">4400 词 · 选范围测试</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">① 选择词性 <span class="badge">可多选</span></div>
+    <div class="type-grid" id="typeGrid"></div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">② 选择单元 <span class="count" id="unitCount">已选 0 个</span></div>
+    <div class="toolbar">
+      <button id="btnSelectAll">全选已选词性下的所有单元</button>
+      <button id="btnClear">清空选择</button>
+    </div>
+    <div id="partContainer"><div class="loading">加载词库中…</div></div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">③ 测试模式</div>
+    <div class="option-row" id="modeRow">
+      <button class="opt-btn active" data-mode="spell">默写拼写</button>
+      <button class="opt-btn" data-mode="choice">选择测试</button>
+      <button class="opt-btn" data-mode="transform">变形挑战</button>
+    </div>
+    <div class="mode-hint" id="transformHint">
+      变形挑战仅对「名词 / 动词 / 形容词」有效，其他词性会被自动跳过。若只选了其他词性，将无法开始测试。
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">④ 发音</div>
+    <div class="pronounce-group" id="accentRow">
+      <button class="btn-accent active" data-accent="uk">🇬🇧 英音</button>
+      <button class="btn-accent" data-accent="us">🇺🇸 美音</button>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title">⑤ 题量与计时</div>
+    <div class="option-row" id="countRow" style="margin-bottom:12px;">
+      <button class="opt-btn" data-count="10">10 题</button>
+      <button class="opt-btn active" data-count="20">20 题</button>
+      <button class="opt-btn" data-count="30">30 题</button>
+      <button class="opt-btn" data-count="50">50 题</button>
+      <button class="opt-btn" data-count="0">全部</button>
+    </div>
+    <div class="option-row" id="timerRow">
+      <button class="opt-btn active" data-timer="0">不限时</button>
+      <button class="opt-btn" data-timer="15">每题 15 秒</button>
+      <button class="opt-btn" data-timer="30">每题 30 秒</button>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <button class="btn-start" id="startBtn" disabled>开始测试</button>
+    <div class="start-hint" id="startHint">从已选单元中随机抽题 · 支持错题回顾</div>
+  </div>
+</div>
+
+<a class="go-home" href="./">← 返回入口</a>
+
+<script src="vocab-data.js"></script>
+<script>
+(function() {
+  if (typeof window.VOCAB_DATA === 'undefined') {
+    document.getElementById('partContainer').innerHTML =
+      '<div class="loading" style="color:#c00;">⚠️ vocab-data.js 未加载，请确保与 basic-quiz.html 在同一目录</div>';
+    return;
+  }
+
+  var DATA = window.VOCAB_DATA;
+  var TYPE_ORDER = ['noun','verb','adj','adv','prep','other'];
+  var TYPE_LABEL = {
+    noun: '名词', verb: '动词', adj: '形容词',
+    adv: '副词', prep: '介词连词代词', other: '感叹词/缩略词/短语/专有名词'
+  };
+  /* 变形挑战只支持这三种词性 */
+  var TRANSFORM_TYPES = ['noun','verb','adj'];
+
+  var state = {
+    types: new Set(),
+    units: new Set(),
+    mode: 'spell',
+    accent: 'uk',
+    count: 20,
+    timer: 0
+  };
+
+  /* ---------- 词性 chips ---------- */
+  var typeGrid = document.getElementById('typeGrid');
+  TYPE_ORDER.forEach(function(t) {
+    var chip = document.createElement('div');
+    chip.className = 'type-chip';
+    chip.dataset.type = t;
+    chip.textContent = TYPE_LABEL[t];
+    chip.addEventListener('click', function() {
+      if (state.types.has(t)) {
+        state.types.delete(t);
+        chip.classList.remove('active');
+        Array.from(state.units).forEach(function(k) {
+          if (k.indexOf(t + '|') === 0) state.units.delete(k);
+        });
+      } else {
+        state.types.add(t);
+        chip.classList.add('active');
+      }
+      renderUnits();
+      updateCounts();
+    });
+    typeGrid.appendChild(chip);
+  });
+
+  /* ---------- 渲染单元列表 ---------- */
+  var partContainer = document.getElementById('partContainer');
+
+  function renderUnits() {
+    partContainer.innerHTML = '';
+    var any = false;
+    TYPE_ORDER.forEach(function(t) {
+      if (!state.types.has(t)) return;
+      any = true;
+      var typeData = DATA[t];
+      if (!typeData) return;
+      var themeNames = Object.keys(typeData.themes);
+      themeNames.forEach(function(themeName) {
+        var unitsObj = typeData.themes[themeName].units;
+        var unitNames = Object.keys(unitsObj);
+        var group = document.createElement('div');
+        group.className = 'part-group';
+        var header = document.createElement('div');
+        header.className = 'part-header';
+        var selInGroup = unitNames.filter(function(u) {
+          return state.units.has(t + '|' + themeName + '|' + u);
+        }).length;
+        header.innerHTML = '<span class="part-name">' + TYPE_LABEL[t] + ' · ' + themeName +
+          '</span><span class="part-meta"><span class="gc">' + selInGroup + '</span>/' + unitNames.length + '</span>';
+        var body = document.createElement('div');
+        body.className = 'part-body';
+        var grid = document.createElement('div');
+        grid.className = 'unit-grid';
+        unitNames.forEach(function(u) {
+          var key = t + '|' + themeName + '|' + u;
+          var label = document.createElement('label');
+          label.className = 'unit-chip';
+          var cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = state.units.has(key);
+          cb.addEventListener('change', function() {
+            if (cb.checked) state.units.add(key);
+            else state.units.delete(key);
+            header.querySelector('.gc').textContent =
+              unitNames.filter(function(u2) {
+                return state.units.has(t + '|' + themeName + '|' + u2);
+              }).length;
+            updateCounts();
+          });
+          var span = document.createElement('span');
+          span.textContent = u + ' (' + unitsObj[u].length + ')';
+          label.appendChild(cb);
+          label.appendChild(span);
+          grid.appendChild(label);
+        });
+        body.appendChild(grid);
+        header.addEventListener('click', function(e) {
+          if (e.target.tagName === 'INPUT') return;
+          body.classList.toggle('open');
+        });
+        group.appendChild(header);
+        group.appendChild(body);
+        partContainer.appendChild(group);
+      });
+    });
+    if (!any) {
+      partContainer.innerHTML = '<div class="loading">请先选择词性</div>';
+    }
+  }
+
+  /* ---------- 全选 / 清空 ---------- */
+  document.getElementById('btnSelectAll').addEventListener('click', function() {
+    TYPE_ORDER.forEach(function(t) {
+      if (!state.types.has(t)) return;
+      var typeData = DATA[t];
+      if (!typeData) return;
+      Object.keys(typeData.themes).forEach(function(themeName) {
+        var unitsObj = typeData.themes[themeName].units;
+        Object.keys(unitsObj).forEach(function(u) {
+          state.units.add(t + '|' + themeName + '|' + u);
+        });
+      });
+    });
+    renderUnits();
+    updateCounts();
+  });
+  document.getElementById('btnClear').addEventListener('click', function() {
+    state.units.clear();
+    renderUnits();
+    updateCounts();
+  });
+
+  /* ---------- 模式 ---------- */
+  var transformHintEl = document.getElementById('transformHint');
+  document.getElementById('modeRow').addEventListener('click', function(e) {
+    var btn = e.target.closest('.opt-btn');
+    if (!btn) return;
+    this.querySelectorAll('.opt-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.mode = btn.dataset.mode;
+    transformHintEl.classList.toggle('show', state.mode === 'transform');
+    updateCounts();
+  });
+
+  /* ---------- 发音 ---------- */
+  document.getElementById('accentRow').addEventListener('click', function(e) {
+    var btn = e.target.closest('.btn-accent');
+    if (!btn) return;
+    this.querySelectorAll('.btn-accent').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.accent = btn.dataset.accent;
+  });
+
+  /* ---------- 题量 ---------- */
+  document.getElementById('countRow').addEventListener('click', function(e) {
+    var btn = e.target.closest('.opt-btn');
+    if (!btn) return;
+    this.querySelectorAll('.opt-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.count = parseInt(btn.dataset.count, 10);
+  });
+
+  /* ---------- 计时 ---------- */
+  document.getElementById('timerRow').addEventListener('click', function(e) {
+    var btn = e.target.closest('.opt-btn');
+    if (!btn) return;
+    this.querySelectorAll('.opt-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    state.timer = parseInt(btn.dataset.timer, 10);
+  });
+
+  /* ---------- 判断某个已选单元是否含可变形词 ---------- */
+  function unitHasTransformable(type, theme, unit) {
+    if (TRANSFORM_TYPES.indexOf(type) === -1) return false;
+    var td = DATA[type];
+    if (!td || !td.themes[theme] || !td.themes[theme].units[unit]) return false;
+    var arr = td.themes[theme].units[unit];
+    for (var i = 0; i < arr.length; i++) {
+      var w = arr[i];
+      if (!w.infl) continue;
+      if (type === 'noun' && typeof w.infl.plural === 'string') return true;
+      if (type === 'verb' && w.infl.past && w.infl.pp && w.infl.ing && w.infl.s) return true;
+      if (type === 'adj' && w.infl.comp && w.infl.sup) return true;
+    }
+    return false;
+  }
+
+  /* ---------- 计数 & 开始按钮状态 ---------- */
+  function updateCounts() {
+    var countEl = document.getElementById('unitCount');
+    var startBtn = document.getElementById('startBtn');
+    var hintEl = document.getElementById('startHint');
+
+    countEl.textContent = '已选 ' + state.units.size + ' 个';
+
+    var canStart = state.units.size > 0;
+    var transformBlocked = false;
+
+    if (canStart && state.mode === 'transform') {
+      // 检查至少有一个单元含可变形词
+      var hasAny = false;
+      state.units.forEach(function(k) {
+        if (hasAny) return;
+        var parts = k.split('|');
+        if (parts.length === 3 && unitHasTransformable(parts[0], parts[1], parts[2])) {
+          hasAny = true;
+        }
+      });
+      if (!hasAny) {
+        transformBlocked = true;
+        canStart = false;
+      }
+    }
+
+    startBtn.disabled = !canStart;
+
+    if (state.units.size === 0) {
+      startBtn.textContent = '开始测试';
+      hintEl.textContent = '从已选单元中随机抽题 · 支持错题回顾';
+    } else if (transformBlocked) {
+      startBtn.textContent = '变形挑战 · 无可测词';
+      hintEl.textContent = '当前所选单元没有含变形数据的名词/动词/形容词，请更换单元或换模式。';
+    } else {
+      startBtn.textContent = '开始测试 (' + state.units.size + ' 个单元)';
+      hintEl.textContent = '从已选单元中随机抽题 · 支持错题回顾';
+    }
+  }
+
+  /* ---------- 开始测试 ---------- */
+  document.getElementById('startBtn').addEventListener('click', function() {
+    if (state.units.size === 0) return;
+    var unitsParam = Array.from(state.units).join(',');
+    var url = 'basic-test.html?units=' + encodeURIComponent(unitsParam) +
+      '&mode=' + state.mode +
+      '&accent=' + state.accent +
+      '&count=' + state.count +
+      '&timer=' + state.timer;
+    window.location.href = url;
+  });
+
+  updateCounts();
+})();
+</script>
+</body>
+</html>

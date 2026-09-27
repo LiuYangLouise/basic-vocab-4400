@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Reborner 基础4400 · 测试</title>
+<style>
+:root {
+  --main: #2E5938;
+  --bg: #F8F7F0;
+  --card: #FFFFFF;
+  --text: #222222;
+  --muted: #888;
+  --green: #4CAF50;
+  --red: #E53935;
+  --orange: #f5a623;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 20px 14px 60px;
+}
+.app {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.topbar .back {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--main);
+}
+.topbar .progress-text {
+  font-size: 14px;
+  color: var(--muted);
+  flex: 1;
+}
+.topbar .score-text {
+  font-size: 14px;
+  color: var(--main);
+  font-weight: 600;
+}
+.progress-bar {
+  height: 6px;
+  background: #e5e5e5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-bar > i {
+  display: block;
+  height: 100%;
+  background: var(--main);
+  width: 0;
+  transition: width .2s;
+}
+.q-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px 22px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.q-en {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--main);
+  word-break: break-word;
+}
+.q-ch {
+  font-size: 26px;
+  color: var(--text);
+  word-break: break-word;
+}
+.q-ph {
+  font-size: 15px;
+  color: var(--muted);
+}
+.q-pos {
+  font-size: 14px;
+  color: #6b8f70;
+}
+.speak-btn {
+  background: #eef6ea;
+  border: 1px solid #cde0c3;
+  border-radius: 40px;
+  padding: 8px 22px;
+  font-size: 16px;
+  color: var(--main);
+  cursor: pointer;
+  margin-top: 6px;
+}
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+.input-row input {
+  flex: 1;
+  padding: 14px 18px;
+  font-size: 18px;
+  border: 2px solid #ddd;
+  border-radius: 14px;
+  outline: none;
+  font-family: inherit;
+  transition: border-color .2s;
+}
+.input-row input:focus { border-color: var(--main); }
+.input-row input.correct { border-color: var(--green); background: #f0fff0; }
+.input-row input.wrong { border-color: var(--red); background: #fff0f0; }
+.btn {
+  background: var(--main);
+  color: #fff;
+  border: none;
+  padding: 14px 26px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn-secondary {
+  background: #fff;
+  color: var(--main);
+  border: 2px solid var(--main);
+}
+.btn-skip {
+  background: #fff;
+  color: var(--muted);
+  border: 2px solid #ddd;
+}
+.btn-skip:hover { border-color: var(--orange); color: var(--orange); }
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.choice {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 14px;
+  padding: 16px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: all .15s;
+  font-family: inherit;
+}
+.choice:hover { border-color: var(--main); }
+.choice.correct { background: #f0fff0; border-color: var(--green); color: var(--green); }
+.choice.wrong { background: #fff0f0; border-color: var(--red); color: var(--red); }
+.choice:disabled { cursor: default; }
+.feedback {
+  font-size: 15px;
+  text-align: center;
+  min-height: 22px;
+  font-weight: 600;
+}
+.feedback.ok { color: var(--green); }
+.feedback.no { color: var(--red); }
+.correct-answer {
+  font-size: 15px;
+  color: var(--muted);
+  text-align: center;
+}
+.result-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px 22px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  text-align: center;
+}
+.result-card h2 {
+  font-size: 26px;
+  color: var(--main);
+  margin-bottom: 10px;
+}
+.big-score {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--main);
+  line-height: 1.1;
+}
+.big-score small { font-size: 22px; color: var(--muted); font-weight: 400; }
+.result-meta {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 10px 0 22px;
+}
+.result-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-export {
+  background: #e8f0e0;
+  color: var(--main);
+  border: 2px solid #c8d8c0;
+}
+.btn-export:hover { background: #dbeace; border-color: #9abb90; }
+.btn-export:disabled {
+  background: #f2f2f2;
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+}
+.wrong-list {
+  margin-top: 22px;
+  text-align: left;
+}
+.wrong-list h3 {
+  font-size: 16px;
+  color: var(--main);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wrong-list h3 .export-inline {
+  font-size: 14px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  background: #e8f0e0;
+  color: var(--main);
+  border: 1px solid #c8d8c0;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+}
+.wrong-list h3 .export-inline:hover { background: #dbeace; }
+.wrong-item {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--red);
+}
+.wrong-item .w-en {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--main);
+}
+.wrong-item .w-ch {
+  font-size: 14px;
+  color: #555;
+  margin-top: 3px;
+}
+.wrong-item .w-your {
+  font-size: 13px;
+  color: var(--red);
+  margin-top: 4px;
+}
+.wrong-item .w-correct {
+  font-size: 13px;
+  color: var(--green);
+  margin-top: 4px;
+}
+/* 变形挑战 UI */
+.transform-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tf-block {
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tf-block .tf-label {
+  font-size: 15px;
+  color: var(--main);
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 88px;
+}
+.tf-block input[type="text"] {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 14px;
+  font-size: 17px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  font-family: inherit;
+}
+.tf-block input[type="text"]:focus { border-color: var(--main); }
+.tf-block input[type="text"].correct { border-color: var(--green); background: #f0fff0; }
+.tf-block input[type="text"].wrong { border-color: var(--red); background: #fff0f0; }
+.tf-block input[type="text"]:disabled { background: #f4f4f4; }
+.tf-radio-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tf-radio {
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  padding: 10px 22px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tf-radio.active { background: var(--main); color: #fff; border-color: var(--main); }
+.tf-radio:disabled { cursor: default; }
+.tf-radio.correct { background: #f0fff0; border-color: var(--green); color: var(--green); }
+.tf-radio.wrong { background: #fff0f0; border-color: var(--red); color: var(--red); }
+.tf-hint {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 2px 4px;
+}
+.the-prefix {
+  font-size: 17px;
+  color: var(--main);
+  font-weight: 600;
+  padding-left: 4px;
+}
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(46,89,56,0.92);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-size: 15px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .3s ease;
+  z-index: 9999;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="topbar">
+    <button class="back" id="backBtn" title="返回选范围">←</button>
+    <span class="progress-text" id="progressText">— / —</span>
+    <span class="score-text" id="scoreText">✓ 0 &nbsp; ✗ 0</span>
+  </div>
+  <div class="progress-bar"><i id="progressFill"></i></div>
+
+  <!-- 答题区域 -->
+  <div id="quizArea">
+    <div class="q-card">
+      <div class="q-en hidden" id="qEn"></div>
+      <div class="q-ch hidden" id="qCh"></div>
+      <div class="q-ph" id="qPh"></div>
+      <div class="q-pos" id="qPos"></div>
+      <button class="speak-btn" id="speakBtn">🔊 发音</button>
+    </div>
+
+    <!-- 默写 -->
+    <div class="input-row" id="spellRow">
+      <input type="text" id="spellInput" placeholder="输入英文…" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="btn" id="submitBtn">确认</button>
+    </div>
+
+    <!-- 选择 -->
+    <div class="choices hidden" id="choiceRow"></div>
+
+    <!-- 变形挑战 -->
+    <div class="transform-area hidden" id="transformRow"></div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="correct-answer" id="correctAnswer"></div>
+    <div style="margin-top:12px;text-align:center;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-skip" id="skipBtn">跳过 →</button>
+      <button class="btn btn-secondary hidden" id="nextBtn">下一题 →</button>
+    </div>
+  </div>
+
+  <!-- 结果卡片 -->
+  <div class="result-card hidden" id="resultArea">
+    <h2>测试完成</h2>
+    <div class="big-score" id="bigScore">0<small>%</small></div>
+    <div class="result-meta" id="resultMeta"></div>
+    <div class="result-actions">
+      <button class="btn" id="restartBtn">重新测试</button>
+      <button class="btn btn-secondary" id="backBtn2">返回选范围</button>
+      <button class="btn btn-export" id="exportBtn">📎 导出错词</button>
+    </div>
+    <div class="wrong-list hidden" id="wrongList">
+      <h3>
+        <span>❌ 错题回顾</span>
+        <button class="export-inline" id="exportBtn2">📎 导出 CSV</button>
+      </h3>
+      <div id="wrongItems"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="vocab-data.js"></script>
+<script>
+(function() {
+  if (typeof window.VOCAB_DATA === 'undefined') {
+    document.getElementById('app').innerHTML =
+      '<div style="padding:40px;text-align:center;color:#c00;">⚠️ vocab-data.js 未加载</div>';
+    return;
+  }
+
+  /* ---------- 读 URL 参数 ---------- */
+  var params = new URLSearchParams(window.location.search);
+  var unitsParam = params.get('units') || '';
+  var mode = params.get('mode') || 'spell';
+  var accent = params.get('accent') || 'uk';
+  var count = parseInt(params.get('count') || '20', 10);
+  // 0 = 不限时；>0 = 每题固定秒数（覆盖默认值）
+  var timerParam = parseInt(params.get('timer') || '0', 10);
+
+  /* ---------- 每题固定时间（秒） ---------- */
+  function timeForMode(m, wordType) {
+    // 用户选了限时，统一用用户的值
+    if (timerParam > 0) return timerParam;
+    // 不限时：返回 0 表示不启动计时器
+    return 0;
+  }
+
+  /* ---------- 判断词条是否有变形数据 ---------- */
+  function hasTransformData(t, w) {
+    if (!w.infl) return false;
+    if (t === 'noun') {
+      return typeof w.infl.plural === 'string';
+    }
+    if (t === 'verb') {
+      return !!(w.infl.past && w.infl.pp && w.infl.ing && w.infl.s);
+    }
+    if (t === 'adj') {
+      return !!(w.infl.comp && w.infl.sup);
+    }
+    return false;
+  }
+
+  /* ---------- 抽题 ---------- */
+  function pickQuestions() {
+    var keys = unitsParam.split(',').filter(Boolean);
+    var pool = [];
+    keys.forEach(function(k) {
+      var parts = k.split('|');
+      if (parts.length !== 3) return;
+      var t = parts[0], theme = parts[1], unit = parts[2];
+      var typeData = window.VOCAB_DATA[t];
+      if (!typeData) return;
+      var themeData = typeData.themes[theme];
+      if (!themeData) return;
+      var arr = themeData.units[unit];
+      if (!arr) return;
+      arr.forEach(function(w) {
+        if (pool.some(function(x) { return x.en === w.en && x._type === t; })) return;
+        if (mode === 'transform' && !hasTransformData(t, w)) return;
+        pool.push(Object.assign({}, w, { _type: t, _theme: theme, _unit: unit }));
+      });
+    });
+    for (var i = pool.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    }
+    var n = (count === 0) ? pool.length : Math.min(count, pool.length);
+    return pool.slice(0, n);
+  }
+
+  var questions = pickQuestions();
+  if (questions.length === 0) {
+    document.getElementById('app').innerHTML =
+      '<div style="padding:40px;text-align:center;">没有可测试的题目，请返回重新选范围。</div>';
+    return;
+  }
+
+  /* ---------- 状态 ---------- */
+  var idx = 0;
+  var correctCount = 0;
+  var wrongCount = 0;
+  var wrongList = [];
+  var answered = false;
+  var timerHandle = null;
+  var timerLeft = 0;
+  var curTimeLimit = 0;
+  var timerEnabled = false;
+
+  /* ---------- DOM ---------- */
+  var $ = function(id) { return document.getElementById(id); };
+  var qEn = $('qEn'), qCh = $('qCh'), qPh = $('qPh'), qPos = $('qPos');
+  var spellRow = $('spellRow'), spellInput = $('spellInput'), submitBtn = $('submitBtn');
+  var choiceRow = $('choiceRow');
+  var transformRow = $('transformRow');
+  var feedback = $('feedback'), correctAnswer = $('correctAnswer');
+  var skipBtn = $('skipBtn');
+  var nextBtn = $('nextBtn');
+  var progressText = $('progressText'), scoreText = $('scoreText'), progressFill = $('progressFill');
+
+  /* ---------- Toast ---------- */
+  var toastEl = $('toast');
+  var toastTimer = null;
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { toastEl.classList.remove('show'); }, 2200);
+  }
+
+  /* ---------- 发音 ---------- */
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = (accent === 'us') ? 'en-US' : 'en-GB';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+  $('speakBtn').addEventListener('click', function() {
+    var w = questions[idx];
+    if (w) speak(w.en);
+  });
+
+  /* ---------- 清空 UI ---------- */
+  function resetUI() {
+    qEn.classList.add('hidden');
+    qCh.classList.add('hidden');
+    qPh.textContent = '';
+    qPos.textContent = '';
+    feedback.textContent = '';
+    feedback.className = 'feedback';
+    correctAnswer.textContent = '';
+    nextBtn.classList.add('hidden');
+    skipBtn.classList.remove('hidden');
+    skipBtn.disabled = false;
+
+    spellRow.classList.add('hidden');
+    choiceRow.classList.add('hidden');
+    transformRow.classList.add('hidden');
+    spellInput.classList.remove('correct','wrong');
+    spellInput.value = '';
+    spellInput.disabled = false;
+    submitBtn.disabled = false;
+    choiceRow.innerHTML = '';
+    transformRow.innerHTML = '';
+  }
+
+  /* ---------- 渲染题目 ---------- */
+  function renderQuestion() {
+    answered = false;
+    resetUI();
+    var w = questions[idx];
+    var t = w._type;
+
+    progressText.textContent = (idx + 1) + ' / ' + questions.length;
+    progressFill.style.width = ((idx) / questions.length * 100) + '%';
+    updateScore();
+
+    qCh.textContent = w.ch;
+    qCh.classList.remove('hidden');
+    if (w.ph) qPh.textContent = '/' + w.ph + '/';
+    if (w.posLabel || w.pos) qPos.textContent = w.posLabel || w.pos;
+
+    if (mode === 'spell') {
+      spellRow.classList.remove('hidden');
+      speak(w.en);
+      setTimeout(function() { spellInput.focus(); }, 100);
+    } else if (mode === 'choice') {
+      renderChoices(w);
+    } else if (mode === 'transform') {
+      renderTransform(w);
+    }
+
+    curTimeLimit = timeForMode(mode, t);
+    timerEnabled = (curTimeLimit > 0);
+    if (timerEnabled) startTimer();
+  }
+
+  /* ---------- 选择模式 ---------- */
+  function renderChoices(w) {
+    var en2ch = Math.random() < 0.5;
+    var correctText;
+    if (en2ch) {
+      correctText = w.ch;
+      qCh.classList.add('hidden');
+      qEn.textContent = w.en;
+      qEn.classList.remove('hidden');
+    } else {
+      correctText = w.en;
+      qCh.textContent = w.ch;
+      qCh.classList.remove('hidden');
+    }
+    var pool = [];
+    var typeData = window.VOCAB_DATA[w._type];
+    if (typeData && typeData.themes[w._theme]) {
+      Object.keys(typeData.themes[w._theme].units).forEach(function(u) {
+        typeData.themes[w._theme].units[u].forEach(function(x) {
+          if (x.en !== w.en) pool.push(x);
+        });
+      });
+    }
+    if (pool.length < 6) {
+      Object.keys(window.VOCAB_DATA).forEach(function(t) {
+        var td = window.VOCAB_DATA[t];
+        if (!td) return;
+        Object.keys(td.themes).forEach(function(th) {
+          Object.keys(td.themes[th].units).forEach(function(u) {
+            td.themes[th].units[u].forEach(function(x) {
+              if (x.en !== w.en) pool.push(x);
+            });
+          });
+        });
+      });
+    }
+    var seen = {};
+    pool = pool.filter(function(x) {
+      if (seen[x.en]) return false;
+      seen[x.en] = 1;
+      return true;
+    });
+    for (var i = pool.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    }
+    var distractors = pool.slice(0, 3);
+    var options = distractors.map(function(x) { return en2ch ? x.ch : x.en; });
+    options.push(correctText);
+    for (var k = options.length - 1; k > 0; k--) {
+      var m = Math.floor(Math.random() * (k + 1));
+      var t2 = options[k]; options[k] = options[m]; options[m] = t2;
+    }
+    choiceRow.classList.remove('hidden');
+    options.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.textContent = opt;
+      btn.addEventListener('click', function() {
+        if (answered) return;
+        var isCorrect = (opt === correctText);
+        handleChoice(btn, isCorrect, correctText);
+      });
+      choiceRow.appendChild(btn);
+    });
+  }
+
+  function handleChoice(btn, isCorrect, correctText) {
+    answered = true;
+    stopTimer();
+    var w = questions[idx];
+    Array.from(choiceRow.children).forEach(function(b) {
+      b.disabled = true;
+      if (b.textContent === correctText) b.classList.add('correct');
+    });
+    if (isCorrect) {
+      correctCount++;
+      feedback.textContent = '✓ 回答正确';
+      feedback.className = 'feedback ok';
+      speak(w.en);
+      skipBtn.classList.add('hidden');
+      setTimeout(nextQuestion, 700);
+    } else {
+      btn.classList.add('wrong');
+      wrongCount++;
+      wrongList.push({ w: w, your: btn.textContent });
+      feedback.textContent = '✗ 回答错误';
+      feedback.className = 'feedback no';
+      correctAnswer.textContent = '正确答案：' + correctText;
+      skipBtn.classList.add('hidden');
+      nextBtn.classList.remove('hidden');
+    }
+    updateScore();
+  }
+
+  /* ---------- 变形挑战 ---------- */
+  function renderTransform(w) {
+    var t = w._type;
+    transformRow.classList.remove('hidden');
+
+    if (t === 'noun') {
+      var isCountable = (w.infl.plural !== '—');
+      var plural = w.infl.plural;
+
+      var hint = document.createElement('div');
+      hint.className = 'tf-hint';
+      hint.textContent = '选择可数性' + (isCountable ? '，然后填写复数形式' : '');
+      transformRow.appendChild(hint);
+
+      var radioGroup = document.createElement('div');
+      radioGroup.className = 'tf-radio-group';
+      var btnCountable = document.createElement('button');
+      btnCountable.className = 'tf-radio';
+      btnCountable.textContent = '可数';
+      var btnUncountable = document.createElement('button');
+      btnUncountable.className = 'tf-radio';
+      btnUncountable.textContent = '不可数';
+      radioGroup.appendChild(btnCountable);
+      radioGroup.appendChild(btnUncountable);
+      transformRow.appendChild(radioGroup);
+
+      var block = document.createElement('div');
+      block.className = 'tf-block';
+      var label = document.createElement('span');
+      label.className = 'tf-label';
+      label.textContent = '复数形式';
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = '不可数则无需填写';
+      input.disabled = true;
+      input.autocomplete = 'off';
+      input.spellcheck = false;
+      block.appendChild(label);
+      block.appendChild(input);
+      transformRow.appendChild(block);
+
+      var choice = null;
+      btnCountable.addEventListener('click', function() {
+        if (answered) return;
+        choice = 'countable';
+        btnCountable.classList.add('active');
+        btnUncountable.classList.remove('active');
+        input.disabled = false;
+        input.focus();
+        if (isCountable) setTimeout(submitTransform, 3000);
+      });
+      btnUncountable.addEventListener('click', function() {
+        if (answered) return;
+        choice = 'uncountable';
+        btnUncountable.classList.add('active');
+        btnCountable.classList.remove('active');
+        input.disabled = true;
+        input.value = '';
+        if (!isCountable) submitTransform();
+      });
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') submitTransform();
+      });
+
+      transformRow._state = {
+        type: 'noun',
+        choice: function() { return choice; },
+        input: input,
+        isCountable: isCountable,
+        plural: plural,
+        radioButtons: [btnCountable, btnUncountable]
+      };
+    } else if (t === 'verb') {
+      var hint = document.createElement('div');
+      hint.className = 'tf-hint';
+      hint.textContent = '填写四种变形（全对才算对）';
+      transformRow.appendChild(hint);
+
+      var fields = [
+        { key: 'past', label: '过去式', val: w.infl.past },
+        { key: 'pp',   label: '过去分词', val: w.infl.pp },
+        { key: 'ing',  label: '现在分词', val: w.infl.ing },
+        { key: 's',    label: '第三人称单数', val: w.infl.s }
+      ];
+      var inputs = {};
+      fields.forEach(function(f) {
+        var block = document.createElement('div');
+        block.className = 'tf-block';
+        var label = document.createElement('span');
+        label.className = 'tf-label';
+        label.textContent = f.label;
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        block.appendChild(label);
+        block.appendChild(input);
+        transformRow.appendChild(block);
+        inputs[f.key] = input;
+      });
+      inputs.past.focus();
+      Object.keys(inputs).forEach(function(k) {
+        inputs[k].addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') submitTransform();
+        });
+      });
+
+      transformRow._state = {
+        type: 'verb',
+        inputs: inputs,
+        answers: {
+          past: w.infl.past,
+          pp: w.infl.pp,
+          ing: w.infl.ing,
+          s: w.infl.s
+        },
+        irregular: !!w.infl.irregular
+      };
+    } else if (t === 'adj') {
+      var hint = document.createElement('div');
+      hint.className = 'tf-hint';
+      hint.textContent = '填写比较级和最高级（全对才算对）';
+      transformRow.appendChild(hint);
+
+      var fields = [
+        { key: 'comp', label: '比较级', val: w.infl.comp, prefix: '' },
+        { key: 'sup',  label: '最高级', val: w.infl.sup, prefix: 'the ' }
+      ];
+      var inputs = {};
+      fields.forEach(function(f) {
+        var block = document.createElement('div');
+        block.className = 'tf-block';
+        var label = document.createElement('span');
+        label.className = 'tf-label';
+        label.textContent = f.label;
+        block.appendChild(label);
+        if (f.prefix) {
+          var pf = document.createElement('span');
+          pf.className = 'the-prefix';
+          pf.textContent = f.prefix;
+          block.appendChild(pf);
+        }
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        block.appendChild(input);
+        transformRow.appendChild(block);
+        inputs[f.key] = input;
+      });
+      inputs.comp.focus();
+      Object.keys(inputs).forEach(function(k) {
+        inputs[k].addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') submitTransform();
+        });
+      });
+
+      transformRow._state = {
+        type: 'adj',
+        inputs: inputs,
+        answers: {
+          comp: w.infl.comp,
+          sup: w.infl.sup
+        },
+        irregular: !!w.infl.irregular
+      };
+    }
+  }
+
+  /* ---------- 变形提交 ---------- */
+  function submitTransform() {
+    if (answered) return;
+    var st = transformRow._state;
+    if (!st) return;
+    answered = true;
+    stopTimer();
+
+    var w = questions[idx];
+    var isCorrect = false;
+    var yourAnswer = '';
+    var correctStr = '';
+
+    if (st.type === 'noun') {
+      var choice = st.choice();
+      if (choice === null) {
+        isCorrect = false;
+        yourAnswer = '（未选）';
+      } else if (choice === 'countable') {
+        var input = st.input.value.trim().toLowerCase();
+        var correctPlural = String(st.plural).toLowerCase();
+        if (st.isCountable && input === correctPlural) {
+          isCorrect = true;
+        } else if (!st.isCountable) {
+          isCorrect = false;
+        }
+        yourAnswer = '可数 → ' + (input || '(未填)');
+      } else if (choice === 'uncountable') {
+        if (!st.isCountable) isCorrect = true;
+        yourAnswer = '不可数';
+      }
+      correctStr = st.isCountable ? ('可数 → ' + st.plural) : '不可数';
+      st.radioButtons.forEach(function(b) {
+        b.disabled = true;
+        var txt = b.textContent;
+        if (txt === '可数' && st.isCountable) b.classList.add('correct');
+        if (txt === '不可数' && !st.isCountable) b.classList.add('correct');
+        if (txt === '可数' && choice === 'countable' && !st.isCountable) b.classList.add('wrong');
+        if (txt === '不可数' && choice === 'uncountable' && st.isCountable) b.classList.add('wrong');
+      });
+      st.input.disabled = true;
+      if (st.isCountable) {
+        var entered = st.input.value.trim().toLowerCase();
+        if (entered === String(st.plural).toLowerCase()) st.input.classList.add('correct');
+        else st.input.classList.add('wrong');
+      }
+    } else if (st.type === 'verb') {
+      var allOk = true;
+      var parts = [];
+      Object.keys(st.inputs).forEach(function(k) {
+        var v = st.inputs[k].value.trim().toLowerCase();
+        var correct = String(st.answers[k]).toLowerCase();
+        if (v === correct) st.inputs[k].classList.add('correct');
+        else { st.inputs[k].classList.add('wrong'); allOk = false; }
+        st.inputs[k].disabled = true;
+        parts.push(v || '(空)');
+      });
+      isCorrect = allOk;
+      yourAnswer = parts.join(' / ');
+      correctStr = [st.answers.past, st.answers.pp, st.answers.ing, st.answers.s].join(' / ');
+    } else if (st.type === 'adj') {
+      var allOk = true;
+      var parts = [];
+      Object.keys(st.inputs).forEach(function(k) {
+        var v = st.inputs[k].value.trim().toLowerCase();
+        var correct = String(st.answers[k]).toLowerCase();
+        if (v === correct) st.inputs[k].classList.add('correct');
+        else { st.inputs[k].classList.add('wrong'); allOk = false; }
+        st.inputs[k].disabled = true;
+        parts.push(v || '(空)');
+      });
+      isCorrect = allOk;
+      yourAnswer = parts.join(' / ');
+      correctStr = st.answers.comp + ' / the ' + st.answers.sup;
+    }
+
+    if (isCorrect) {
+      correctCount++;
+      feedback.textContent = '✓ 回答正确';
+      feedback.className = 'feedback ok';
+      speak(w.en);
+      skipBtn.classList.add('hidden');
+      setTimeout(nextQuestion, 700);
+    } else {
+      wrongCount++;
+      wrongList.push({ w: w, your: yourAnswer, correctStr: correctStr });
+      feedback.textContent = '✗ 回答错误';
+      feedback.className = 'feedback no';
+      correctAnswer.textContent = '正确答案：' + correctStr;
+      skipBtn.classList.add('hidden');
+      nextBtn.classList.remove('hidden');
+    }
+    updateScore();
+  }
+
+  /* ---------- 默写提交 ---------- */
+  function submitSpell() {
+    if (answered) return;
+    var val = spellInput.value.trim();
+    if (!val) return;
+    answered = true;
+    stopTimer();
+    var w = questions[idx];
+    var isCorrect = (val.toLowerCase() === w.en.toLowerCase());
+    if (isCorrect) {
+      spellInput.classList.add('correct');
+      correctCount++;
+      feedback.textContent = '✓ 回答正确';
+      feedback.className = 'feedback ok';
+      speak(w.en);
+      skipBtn.classList.add('hidden');
+      setTimeout(nextQuestion, 700);
+    } else {
+      spellInput.classList.add('wrong');
+      wrongCount++;
+      wrongList.push({ w: w, your: val });
+      feedback.textContent = '✗ 回答错误';
+      feedback.className = 'feedback no';
+      correctAnswer.textContent = '正确答案：' + w.en;
+      skipBtn.classList.add('hidden');
+      nextBtn.classList.remove('hidden');
+    }
+    spellInput.disabled = true;
+    submitBtn.disabled = true;
+    updateScore();
+  }
+
+  submitBtn.addEventListener('click', submitSpell);
+  spellInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitSpell();
+  });
+  nextBtn.addEventListener('click', nextQuestion);
+
+  /* ---------- 跳过 ---------- */
+  skipBtn.addEventListener('click', function() {
+    if (answered) return;
+    answered = true;
+    stopTimer();
+    var w = questions[idx];
+    wrongCount++;
+    wrongList.push({ w: w, your: '（跳过）' });
+    feedback.textContent = '⏭ 已跳过';
+    feedback.className = 'feedback no';
+    if (mode === 'spell') {
+      correctAnswer.textContent = '正确答案：' + w.en;
+      spellInput.disabled = true;
+      submitBtn.disabled = true;
+    } else if (mode === 'choice') {
+      Array.from(choiceRow.children).forEach(function(b) {
+        b.disabled = true;
+      });
+      correctAnswer.textContent = '正确答案：' + w.ch + ' / ' + w.en;
+    } else if (mode === 'transform') {
+      var st = transformRow._state;
+      if (st) {
+        var cs = '';
+        if (st.type === 'noun') {
+          cs = st.isCountable ? ('可数 → ' + st.plural) : '不可数';
+          st.radioButtons.forEach(function(b) { b.disabled = true; });
+          st.input.disabled = true;
+        } else if (st.type === 'verb') {
+          cs = [st.answers.past, st.answers.pp, st.answers.ing, st.answers.s].join(' / ');
+          Object.keys(st.inputs).forEach(function(k) { st.inputs[k].disabled = true; });
+        } else if (st.type === 'adj') {
+          cs = st.answers.comp + ' / the ' + st.answers.sup;
+          Object.keys(st.inputs).forEach(function(k) { st.inputs[k].disabled = true; });
+        }
+        correctAnswer.textContent = '正确答案：' + cs;
+        wrongList[wrongList.length - 1].correctStr = cs;
+      }
+    }
+    skipBtn.classList.add('hidden');
+    nextBtn.classList.remove('hidden');
+    updateScore();
+  });
+
+  /* ---------- 计时 ---------- */
+  function startTimer() {
+    stopTimer();
+    if (curTimeLimit <= 0) return;   // 不限时
+    timerLeft = curTimeLimit;
+    timerHandle = setInterval(function() {
+      timerLeft -= 0.1;
+      if (timerLeft <= 0) {
+        stopTimer();
+        if (!answered) timeUp();
+      }
+    }, 100);
+  }
+  function stopTimer() {
+    if (timerHandle) { clearInterval(timerHandle); timerHandle = null; }
+  }
+  function timeUp() {
+    if (answered) return;
+    answered = true;
+    var w = questions[idx];
+    wrongCount++;
+    wrongList.push({ w: w, your: '（超时）' });
+
+    if (mode === 'spell') {
+      spellInput.classList.add('wrong');
+      spellInput.disabled = true;
+      submitBtn.disabled = true;
+      correctAnswer.textContent = '正确答案：' + w.en;
+    } else if (mode === 'choice') {
+      Array.from(choiceRow.children).forEach(function(b) {
+        b.disabled = true;
+        if (b.textContent === w.ch || b.textContent === w.en) b.classList.add('correct');
+      });
+      correctAnswer.textContent = '正确答案：' + w.ch + ' / ' + w.en;
+    } else if (mode === 'transform') {
+      var st = transformRow._state;
+      if (st) {
+        var cs = '';
+        if (st.type === 'noun') {
+          cs = st.isCountable ? ('可数 → ' + st.plural) : '不可数';
+          st.radioButtons.forEach(function(b) { b.disabled = true; });
+          st.input.disabled = true;
+        } else if (st.type === 'verb') {
+          cs = [st.answers.past, st.answers.pp, st.answers.ing, st.answers.s].join(' / ');
+          Object.keys(st.inputs).forEach(function(k) { st.inputs[k].disabled = true; });
+        } else if (st.type === 'adj') {
+          cs = st.answers.comp + ' / the ' + st.answers.sup;
+          Object.keys(st.inputs).forEach(function(k) { st.inputs[k].disabled = true; });
+        }
+        correctAnswer.textContent = '正确答案：' + cs;
+        wrongList[wrongList.length - 1].correctStr = cs;
+      }
+    }
+    feedback.textContent = '⏰ 超时';
+    feedback.className = 'feedback no';
+    skipBtn.classList.add('hidden');
+    nextBtn.classList.remove('hidden');
+    updateScore();
+  }
+
+  /* ---------- 下一题 ---------- */
+  function nextQuestion() {
+    idx++;
+    if (idx >= questions.length) {
+      showResult();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  /* ---------- 分数 ---------- */
+  function updateScore() {
+    scoreText.textContent = '✓ ' + correctCount + '  ✗ ' + wrongCount;
+  }
+
+  /* ---------- 结果 ---------- */
+  function showResult() {
+    stopTimer();
+    progressFill.style.width = '100%';
+    $('quizArea').classList.add('hidden');
+    $('resultArea').classList.remove('hidden');
+    var total = correctCount + wrongCount;
+    var rate = total ? Math.round(correctCount / total * 100) : 0;
+    $('bigScore').innerHTML = rate + '<small>%</small>';
+    $('resultMeta').textContent = '正确 ' + correctCount + ' 题 · 错误 ' + wrongCount + ' 题 · 共 ' + total + ' 题';
+
+    if (wrongList.length > 0) {
+      $('wrongList').classList.remove('hidden');
+      var box = $('wrongItems');
+      box.innerHTML = '';
+      wrongList.forEach(function(item) {
+        var div = document.createElement('div');
+        div.className = 'wrong-item';
+        var enLine = item.w.en + (item.w.ph ? ' <span style="font-weight:400;color:#888;font-size:14px;">/' + item.w.ph + '/</span>' : '');
+        var html = '<div class="w-en">' + enLine + '</div>' +
+                   '<div class="w-ch">' + item.w.ch + '</div>' +
+                   '<div class="w-your">你的答案：' + item.your + '</div>';
+        if (item.correctStr) {
+          html += '<div class="w-correct">正确答案：' + item.correctStr + '</div>';
+        }
+        div.innerHTML = html;
+        box.appendChild(div);
+      });
+    } else {
+      $('wrongList').classList.add('hidden');
+    }
+    $('exportBtn').disabled = (wrongList.length === 0);
+  }
+
+  /* ---------- 导出 CSV ---------- */
+  function exportWrongWords() {
+    if (!wrongList.length) {
+      showToast('本次没有错题，无需导出');
+      return;
+    }
+    var headers = ['英文', '音标', '词性', '中文含义', '你的答案', '正确答案', '词性分类', '主题', '单元'];
+    var lines = [headers.join(',')];
+    wrongList.forEach(function(item) {
+      var w = item.w || {};
+      var row = [
+        w.en || '',
+        w.ph || '',
+        w.posLabel || w.pos || '',
+        w.ch || '',
+        item.your || '',
+        item.correctStr || '',
+        w._type || '',
+        w._theme || '',
+        w._unit || ''
+      ];
+      lines.push(row.map(function(s) {
+        return '"' + String(s).replace(/"/g, '""') + '"';
+      }).join(','));
+    });
+    var csv = lines.join('\r\n');
+    var d = new Date();
+    var pad = function(n) { return n < 10 ? '0' + n : '' + n; };
+    var dateStr = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+    var filename = 'basic_错词_' + dateStr + '.csv';
+    var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 800);
+    showToast('已导出 ' + wrongList.length + ' 个错词');
+  }
+
+  $('exportBtn').addEventListener('click', exportWrongWords);
+  $('exportBtn2').addEventListener('click', exportWrongWords);
+
+  $('restartBtn').addEventListener('click', function() {
+    window.location.reload();
+  });
+  $('backBtn').addEventListener('click', function() {
+    window.location.href = 'basic-quiz.html';
+  });
+  $('backBtn2').addEventListener('click', function() {
+    window.location.href = 'basic-quiz.html';
+  });
+
+  /* ---------- 启动 ---------- */
+  renderQuestion();
+})();
+</script>
+</body>
+</html>

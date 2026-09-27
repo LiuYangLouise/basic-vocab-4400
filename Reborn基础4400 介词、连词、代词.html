@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Reborner 基础核心词汇 · 介词连词代词</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; }
+html,body { height:100%; overflow:hidden; }
+body { background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); }
+#homePage { position:fixed; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:2rem 1rem; overflow-y:auto; -webkit-overflow-scrolling:touch; transition:transform .5s cubic-bezier(.65,0,.35,1); }
+#homePage.slide-left { transform:translateX(-30%); }
+.home-header { text-align:center; margin-bottom:1.8rem; flex-shrink:0; }
+.home-header h1 { font-size:1.8rem; font-weight:380; color:#2d543b; line-height:1.3; margin-bottom:.3rem; }
+.home-header .sub1 { font-size:1.15rem; color:#4f7b5a; font-weight:340; }
+.home-header .sub2 { font-size:.95rem; color:#618967; font-weight:300; margin-top:.2rem; }
+.home-buttons { display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; width:100%; max-width:420px; padding-bottom:2.5rem; }
+.home-btn { background:#fcfff8; border:1px solid #d2e2c7; border-radius:30px; padding:.9rem .6rem; font-size:.95rem; font-weight:460; color:#2b5538; cursor:pointer; box-shadow:0 4px 12px rgba(150,180,140,.16); transition:all .2s ease; text-align:center; line-height:1.4; }
+.home-btn:hover { background:#eef9e6; border-color:#9abb90; transform:translateY(-2px); }
+.home-btn:active { transform:translateY(0); }
+.home-btn .badge { display:block; font-size:.68rem; background:#c3ddb6; border-radius:20px; padding:.1rem .45rem; margin:.25rem auto 0; color:#23522e; font-weight:400; width:fit-content; }
+.part-page { position:fixed; inset:0; z-index:100; background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); transform:translateX(100%); transition:transform .5s cubic-bezier(.65,0,.35,1); overflow-y:auto; -webkit-overflow-scrolling:touch; padding:1.5rem 1rem 2rem 1rem; }
+.part-page.slide-in { transform:translateX(0); }
+.part-inner { max-width:620px; width:100%; margin:0 auto; }
+.back-btn { position:sticky; top:0; z-index:50; display:inline-flex; align-items:center; gap:.35rem; background:rgba(252,255,248,.92); backdrop-filter:blur(8px); border:1px solid #cde0c3; border-radius:40px; padding:.5rem 1.1rem; font-size:.95rem; color:#295e36; cursor:pointer; margin-bottom:.8rem; box-shadow:0 2px 8px rgba(150,180,140,.18); }
+.back-btn:active { transform:scale(.96); }
+.header { margin-bottom:1.5rem; text-align:center; }
+.header h1 { font-size:2.1rem; font-weight:380; color:#2d543b; line-height:1.3; letter-spacing:-.2px; margin-bottom:.2rem; }
+.header .sub1 { font-size:1.5rem; color:#4f7b5a; font-weight:340; line-height:1.4; }
+.header .sub2 { font-size:1.2rem; color:#618967; font-weight:300; line-height:1.4; }
+.header .sub3 { font-size:.9rem; color:#7a9f7e; font-weight:300; margin-top:.2rem; }
+.chapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:.2rem 0 .4rem 0; scrollbar-width:none; }
+.chapter-scroll::-webkit-scrollbar { display:none; }
+.chap-flex { display:inline-flex; gap:.7rem; padding:0 .2rem; }
+.chap-btn { background:#f3fcee; border:1px solid #d2e2c7; border-radius:40px; padding:.6rem 1.8rem; font-size:1.2rem; font-weight:430; color:#2b5538; white-space:nowrap; box-shadow:0 2px 6px rgba(150,180,140,.08); cursor:pointer; }
+.chap-btn.active { background:#cde5c2; border-color:#8bb282; color:#1b4125; font-weight:500; }
+.subchapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .4rem 0; scrollbar-width:none; }
+.subchapter-scroll::-webkit-scrollbar { display:none; }
+.sub-flex { display:inline-flex; gap:.6rem; padding:0 .2rem; }
+.sub-btn { background:#ecf7e4; border:1px solid #cde0c0; border-radius:30px; padding:.4rem 1.3rem; font-size:.96rem; font-weight:400; color:#336941; white-space:nowrap; box-shadow:0 1px 4px rgba(120,150,100,.1); cursor:pointer; }
+.sub-btn.active-sub { background:#d4ebc5; border-color:#9abb90; color:#1e4529; font-weight:460; }
+.unit-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .8rem 0; scrollbar-width:none; }
+.unit-scroll::-webkit-scrollbar { display:none; }
+.unit-flex { display:inline-flex; gap:.5rem; padding:0 .2rem; }
+.unit-btn { background:#f5fcf0; border:1px solid #dae8cf; border-radius:20px; padding:.3rem 1.1rem; font-size:.85rem; font-weight:380; color:#3d734a; white-space:nowrap; box-shadow:0 1px 3px rgba(120,150,100,.06); cursor:pointer; }
+.unit-btn.active-unit { background:#d0e8c2; border-color:#9ec092; color:#1a4024; font-weight:460; }
+.word-count-badge { font-size:.7rem; background:#c3ddb6; border-radius:20px; padding:.1rem .5rem; margin-left:.4rem; color:#23522e; }
+.flip-container { perspective:1000px; width:100%; margin:.8rem 0 1.2rem 0; }
+.flipper { position:relative; width:100%; height:auto; transition:transform .4s ease; transform-style:preserve-3d; }
+.flipper.flipped { transform:rotateY(180deg); }
+.front,.back { backface-visibility:hidden; -webkit-backface-visibility:hidden; position:relative; top:0; left:0; width:100%; border-radius:42px; padding:2.2rem 1.2rem; background:#fcfff8; border:1px solid #e3f0da; box-shadow:0 10px 20px rgba(130,160,120,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:220px; }
+.back { position:absolute; transform:rotateY(180deg); min-height:220px; }
+.en-word { font-size:2.8rem; font-weight:370; color:#1c4a2a; line-height:1.3; word-break:break-word; text-align:center; width:100%; }
+.ph-word { font-size:1rem; color:#7a9f7e; font-weight:340; margin-top:.3rem; text-align:center; width:100%; }
+.pos { font-size:1.1rem; color:#719b79; font-weight:380; text-align:center; width:100%; margin-top:.2rem; }
+.ch-word { font-size:1.6rem; font-weight:340; color:#316a42; margin-top:.6rem; text-align:center; width:100%; }
+.nav-row { display:flex; align-items:center; justify-content:center; gap:.8rem; margin:1.2rem 0 1.8rem 0; flex-wrap:wrap; }
+.nav-btn { background:#f1fde9; border:1px solid #cde0c3; border-radius:60px; padding:.6rem 1.5rem; font-size:1.1rem; color:#295e36; box-shadow:0 2px 6px rgba(0,0,0,.02); cursor:pointer; }
+.thumb-header { display:flex; justify-content:space-between; align-items:center; margin:1rem 0 .8rem; flex-wrap:wrap; gap:.5rem; }
+.thumb-header span { font-size:1.1rem; color:#3d6d4b; font-weight:330; }
+.thumb-header .actions { display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; }
+.thumb-header .actions button { background:#dbeace; border:1px solid #adc9a2; border-radius:40px; padding:.3rem 1.1rem; font-size:.9rem; color:#23562f; cursor:pointer; white-space:nowrap; }
+.thumb-grid-container { max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch; border-radius:20px; padding:.2rem .2rem .5rem .2rem; }
+.thumb-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; padding:.2rem; }
+.thumb-item { background:#f9fff3; border:1px solid #dbefd0; border-radius:24px; padding:.6rem .2rem .6rem .5rem; display:flex; align-items:center; gap:.2rem; box-shadow:0 2px 6px rgba(160,180,140,.1); min-width:0; }
+.thumb-item input[type="checkbox"] { width:1.1rem; height:1.1rem; accent-color:#86b07c; border-radius:4px; flex-shrink:0; }
+.thumb-item label { font-size:.85rem; color:#2e623d; font-weight:420; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; cursor:pointer; }
+.tip { color:#799e7a; font-size:.9rem; margin-top:.8rem; text-align:center; }
+@media (max-width:480px) {
+  .thumb-grid { grid-template-columns:repeat(3,1fr); }
+  .en-word { font-size:2.2rem; }
+  .ch-word { font-size:1.4rem; }
+  .front,.back { padding:1.6rem 1rem; min-height:180px; }
+  .header h1 { font-size:1.6rem; }
+  .home-header h1 { font-size:1.5rem; }
+  .chap-btn { font-size:1rem; padding:.4rem 1.2rem; }
+  .sub-btn { font-size:.85rem; padding:.3rem 1rem; }
+  .unit-btn { font-size:.75rem; padding:.2rem .8rem; }
+}
+
+/* ==== 返回入口悬浮按钮 ==== */
+.go-home {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 99999;
+  background: rgba(252,255,248,0.95);
+  border: 1px solid #cde0c3;
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #2d543b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(100,140,90,0.22);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s;
+}
+.go-home:hover { background: #eef9e6; transform: translateY(-1px); }
+.go-home:active { transform: scale(.96); }
+
+</style>
+</head>
+<body>
+
+<div id="homePage">
+  <div class="home-header">
+    <h1>Reborner 基础核心词汇</h1>
+    <div class="sub1">介词 · 连词 · 代词</div>
+    <div class="sub2">天天进步，每日新生</div>
+  </div>
+  <div class="home-buttons" id="homeButtons"></div>
+</div>
+
+<div class="part-page" id="partPage1"><div class="part-inner" id="partInner1"></div></div>
+<div class="part-page" id="partPage2"><div class="part-inner" id="partInner2"></div></div>
+<div class="part-page" id="partPage3"><div class="part-inner" id="partInner3"></div></div>
+
+<script>
+const VOCAB_DATA = {};
+
+VOCAB_DATA[1] = {
+'介词': { units: {
+'Unit 1': [
+{en:'about',ph:"'əbaut",pos:'prep.',posLabel:'介词',ch:'关于、在...周围',infl:{}},
+{en:'above',ph:"ə'bʌv",pos:'prep.',posLabel:'介词',ch:'在...上面、超过、高于',infl:{}},
+{en:'across',ph:"ə'krɔs",pos:'prep.',posLabel:'介词',ch:'横过、穿过、在...对面',infl:{}},
+{en:'after',ph:"'ɑ:ftə",pos:'prep.',posLabel:'介词',ch:'在...以后、次于',infl:{}},
+{en:'against',ph:"ə'genst",pos:'prep.',posLabel:'介词',ch:'倚在、逆、反对、违背',infl:{}},
+{en:'along',ph:"ə'lɔŋ",pos:'prep.',posLabel:'介词',ch:'沿着',infl:{}},
+{en:'among',ph:"ə'mʌŋ",pos:'prep.',posLabel:'介词',ch:'在...之中',infl:{}},
+{en:'amongst',ph:"ə'mʌŋst",pos:'prep.',posLabel:'介词',ch:'在...之中、在...之间',infl:{}},
+{en:'around',ph:"ə'raund",pos:'prep.',posLabel:'介词',ch:'在...周围、在...附近',infl:{}},
+{en:'as',ph:"æs",pos:'prep.',posLabel:'介词',ch:'当做',infl:{}},
+{en:'at',ph:"æt",pos:'prep.',posLabel:'介词',ch:'在...里、在...时',infl:{}},
+{en:'before',ph:"bi'fɔ:",pos:'prep.',posLabel:'介词',ch:'在...以前、向...',infl:{}},
+{en:'behind',ph:"bi'haind",pos:'prep.',posLabel:'介词',ch:'在...后面、落后于',infl:{}},
+{en:'below',ph:"bi'ləu",pos:'prep.',posLabel:'介词',ch:'在...下面、低于',infl:{}},
+{en:'beneath',ph:"bi'ni:θ",pos:'prep.',posLabel:'介词',ch:'在...下方、在...之下',infl:{}},
+{en:'beside',ph:"bi'said",pos:'prep.',posLabel:'介词',ch:'在...旁边、与...相比',infl:{}},
+{en:'besides',ph:"bi'saidz",pos:'prep.',posLabel:'介词',ch:'除...之外',infl:{}},
+{en:'between',ph:"bi'twi:n",pos:'prep.',posLabel:'介词',ch:'在...中间',infl:{}},
+{en:'beyond',ph:"bi'jɔnd",pos:'prep.',posLabel:'介词',ch:'在...的那边、超出',infl:{}},
+{en:'by',ph:"bai",pos:'prep.',posLabel:'介词',ch:'在...旁、被、由、经由',infl:{}},
+{en:'concerning',ph:"kən'sə:niŋ",pos:'prep.',posLabel:'介词',ch:'关于',infl:{}},
+{en:'despite',ph:"di'spait",pos:'prep.',posLabel:'介词',ch:'不管、尽管、不顾',infl:{}},
+{en:'down',ph:"daun",pos:'prep.',posLabel:'介词',ch:'沿着...而下',infl:{}},
+{en:'during',ph:"'djuəriŋ",pos:'prep.',posLabel:'介词',ch:'在...期间',infl:{}},
+{en:'except',ph:"ik'sept",pos:'prep.',posLabel:'介词',ch:'除了...之外',infl:{}},
+{en:'for',ph:"fɔ:",pos:'prep.',posLabel:'介词',ch:'为、给、因为、关于',infl:{}},
+{en:'from',ph:"frɔm",pos:'prep.',posLabel:'介词',ch:'从...来、离开',infl:{}},
+{en:'in',ph:"in",pos:'prep.',posLabel:'介词',ch:'在...里、在、穿着',infl:{}},
+{en:'inside',ph:"'in'said",pos:'prep.',posLabel:'介词',ch:'在...里面',infl:{}},
+{en:'into',ph:"'intu:",pos:'prep.',posLabel:'介词',ch:'进、入、进入到、到...里',infl:{}}
+],
+'Unit 2': [
+{en:'like',ph:"laik",pos:'prep.',posLabel:'介词',ch:'像、如同',infl:{}},
+{en:'near',ph:"niə",pos:'prep.',posLabel:'介词',ch:'靠近',infl:{}},
+{en:'of',ph:"ɔv",pos:'prep.',posLabel:'介词',ch:'...的、出生于、住在',infl:{}},
+{en:'off',ph:"ɔ:f",pos:'prep.',posLabel:'介词',ch:'离开、脱落、下班',infl:{}},
+{en:'on',ph:"ɔn",pos:'prep.',posLabel:'介词',ch:'在...上、在...旁',infl:{}},
+{en:'onto',ph:"'ɔntu:",pos:'prep.',posLabel:'介词',ch:'到...上',infl:{}},
+{en:'opposite',ph:"'ɔpəzit",pos:'prep.',posLabel:'介词',ch:'在...对面',infl:{}},
+{en:'out',ph:"aut",pos:'prep.',posLabel:'介词',ch:'向外、通过',infl:{}},
+{en:'outside',ph:"'aut'said",pos:'prep.',posLabel:'介词',ch:'在...外',infl:{}},
+{en:'over',ph:"'əuvə",pos:'prep.',posLabel:'介词',ch:'在...上方、超过',infl:{}},
+{en:'past',ph:"pɑ:st",pos:'prep.',posLabel:'介词',ch:'经过、越过',infl:{}},
+{en:'regarding',ph:"ri'gɑ:diŋ",pos:'prep.',posLabel:'介词',ch:'关于、至于',infl:{}},
+{en:'round',ph:"raund",pos:'prep.',posLabel:'介词',ch:'围绕、遍及',infl:{}},
+{en:'since',ph:"sins",pos:'prep.',posLabel:'介词',ch:'自从',infl:{}},
+{en:'through',ph:"θru:",pos:'prep.',posLabel:'介词',ch:'经过、穿过、凭借',infl:{}},
+{en:'throughout',ph:"θru:'aut",pos:'prep.',posLabel:'介词',ch:'遍及、贯穿',infl:{}},
+{en:'till',ph:"til",pos:'prep.',posLabel:'介词',ch:'直到...为止',infl:{}},
+{en:'to',ph:"tu:",pos:'prep.',posLabel:'介词',ch:'到、向、达到',infl:{}},
+{en:'toward',ph:"tə'wɔ:d",pos:'prep.',posLabel:'介词',ch:'向、对于、接近',infl:{}},
+{en:'towards',ph:"tə'wɔ:dz",pos:'prep.',posLabel:'介词',ch:'向、朝、关于',infl:{}},
+{en:'under',ph:"'ʌndə",pos:'prep.',posLabel:'介词',ch:'在...下面、低于',infl:{}},
+{en:'underneath',ph:".ʌndə'ni:θ",pos:'prep.',posLabel:'介词',ch:'在...下面',infl:{}},
+{en:'until',ph:"ən'til",pos:'prep.',posLabel:'介词',ch:'直到...为止',infl:{}},
+{en:'up',ph:"ʌp",pos:'prep.',posLabel:'介词',ch:'向上',infl:{}},
+{en:'upon',ph:"ə'pɔn",pos:'prep.',posLabel:'介词',ch:'在...上、在...旁',infl:{}},
+{en:'with',ph:"wið",pos:'prep.',posLabel:'介词',ch:'和...一起、具有、用',infl:{}},
+{en:'within',ph:"wi'ðin",pos:'prep.',posLabel:'介词',ch:'在...里面',infl:{}},
+{en:'without',ph:"wið'aut",pos:'prep.',posLabel:'介词',ch:'无、没有、不',infl:{}},
+{en:'via',ph:"'vaiə",pos:'prep.',posLabel:'介词',ch:'经过、通过',infl:{}},
+{en:'per',ph:"pə:",pos:'prep.',posLabel:'介词',ch:'每、每一',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[2] = {
+'连词': { units: {
+'Unit 1': [
+{en:'and',ph:"ənd",pos:'conj.',posLabel:'连词',ch:'和、又、并、则',infl:{}},
+{en:'or',ph:"ɔ:",pos:'conj.',posLabel:'连词',ch:'或、或者、即、还是',infl:{}},
+{en:'but',ph:"bʌt",pos:'conj.',posLabel:'连词',ch:'但是、可是',infl:{}},
+{en:'so',ph:"səu",pos:'conj.',posLabel:'连词',ch:'所以、因此',infl:{}},
+{en:'for',ph:"fɔ:",pos:'conj.',posLabel:'连词',ch:'因为',infl:{}},
+{en:'yet',ph:"jet",pos:'conj.',posLabel:'连词',ch:'而、然而、但是',infl:{}},
+{en:'nor',ph:"nɔ:",pos:'conj.',posLabel:'连词',ch:'也不、也没有、不',infl:{}},
+{en:'if',ph:"if",pos:'conj.',posLabel:'连词',ch:'假如、如果、是否',infl:{}},
+{en:'unless',ph:"ən'les",pos:'conj.',posLabel:'连词',ch:'除非、如果不',infl:{}},
+{en:'because',ph:"bi'kɔz",pos:'conj.',posLabel:'连词',ch:'由于、因为',infl:{}},
+{en:'since',ph:"sins",pos:'conj.',posLabel:'连词',ch:'从...以来、因为、既然',infl:{}},
+{en:'as',ph:"æs",pos:'conj.',posLabel:'连词',ch:'当...的时候、像...一样、因为',infl:{}},
+{en:'when',ph:"wen",pos:'conj.',posLabel:'连词',ch:'当...时、然后、可是',infl:{}},
+{en:'while',ph:"wail",pos:'conj.',posLabel:'连词',ch:'当...的时候、然而、虽然',infl:{}},
+{en:'whereas',ph:"wɛər'æz",pos:'conj.',posLabel:'连词',ch:'然而、反之',infl:{}},
+{en:'although',ph:"ɔ:l'ðəu",pos:'conj.',posLabel:'连词',ch:'尽管、虽然',infl:{}},
+{en:'though',ph:"ðəu",pos:'conj.',posLabel:'连词',ch:'虽然、尽管',infl:{}},
+{en:'even',ph:"'i:vən",pos:'conj.',posLabel:'连词',ch:'即使',infl:{}},
+{en:'whether',ph:"'weðə",pos:'conj.',posLabel:'连词',ch:'是否、无论、不管',infl:{}},
+{en:'that',ph:"ðæt",pos:'conj.',posLabel:'连词',ch:'引导从句',infl:{}},
+{en:'before',ph:"bi'fɔ:",pos:'conj.',posLabel:'连词',ch:'在...以前',infl:{}},
+{en:'after',ph:"'ɑ:ftə",pos:'conj.',posLabel:'连词',ch:'在...以后',infl:{}},
+{en:'until',ph:"ən'til",pos:'conj.',posLabel:'连词',ch:'直到...为止',infl:{}},
+{en:'till',ph:"til",pos:'conj.',posLabel:'连词',ch:'直到...为止',infl:{}},
+{en:'once',ph:"wʌns",pos:'conj.',posLabel:'连词',ch:'一旦',infl:{}},
+{en:'than',ph:"ðæn",pos:'conj.',posLabel:'连词',ch:'比',infl:{}},
+{en:'both',ph:"bəuθ",pos:'conj.',posLabel:'连词',ch:'不但…而且…',infl:{}},
+{en:'either',ph:"'i:ðə",pos:'conj.',posLabel:'连词',ch:'或、也',infl:{}},
+{en:'neither',ph:"'ni:ðə",pos:'conj.',posLabel:'连词',ch:'既非、既不',infl:{}},
+{en:'whether',ph:"'weðə",pos:'conj.',posLabel:'连词',ch:'是否',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[3] = {
+'代词': { units: {
+'Unit 1': [
+{en:'I',ph:"ai",pos:'pron.',posLabel:'代词',ch:'我',infl:{}},
+{en:'you',ph:"ju:",pos:'pron.',posLabel:'代词',ch:'你、你们',infl:{}},
+{en:'he',ph:"hi:",pos:'pron.',posLabel:'代词',ch:'他',infl:{}},
+{en:'she',ph:"ʃi:",pos:'pron.',posLabel:'代词',ch:'她',infl:{}},
+{en:'it',ph:"it",pos:'pron.',posLabel:'代词',ch:'这、那、它',infl:{}},
+{en:'we',ph:"wi:",pos:'pron.',posLabel:'代词',ch:'我们',infl:{}},
+{en:'they',ph:"ðei",pos:'pron.',posLabel:'代词',ch:'他(她)们',infl:{}},
+{en:'me',ph:"mi:",pos:'pron.',posLabel:'代词',ch:'我（宾格）',infl:{}},
+{en:'him',ph:"him",pos:'pron.',posLabel:'代词',ch:'他（宾格）',infl:{}},
+{en:'her',ph:"hə:",pos:'pron.',posLabel:'代词',ch:'她（宾格）',infl:{}},
+{en:'us',ph:"ʌs",pos:'pron.',posLabel:'代词',ch:'我们（宾格）',infl:{}},
+{en:'them',ph:"ðem",pos:'pron.',posLabel:'代词',ch:'他们（宾格）',infl:{}},
+{en:'my',ph:"mai",pos:'pron.',posLabel:'代词',ch:'我的',infl:{}},
+{en:'your',ph:"juə",pos:'pron.',posLabel:'代词',ch:'你的、你们的',infl:{}},
+{en:'his',ph:"hiz",pos:'pron.',posLabel:'代词',ch:'他的',infl:{}},
+{en:'its',ph:"its",pos:'pron.',posLabel:'代词',ch:'它的',infl:{}},
+{en:'our',ph:"'auə",pos:'pron.',posLabel:'代词',ch:'我们的',infl:{}},
+{en:'their',ph:"ðɛə",pos:'pron.',posLabel:'代词',ch:'他们的',infl:{}},
+{en:'mine',ph:"main",pos:'pron.',posLabel:'代词',ch:'我的',infl:{}},
+{en:'yours',ph:"juəz",pos:'pron.',posLabel:'代词',ch:'你们的',infl:{}},
+{en:'hers',ph:"hə:z",pos:'pron.',posLabel:'代词',ch:'她的',infl:{}},
+{en:'ours',ph:"'auəz",pos:'pron.',posLabel:'代词',ch:'我们的',infl:{}},
+{en:'theirs',ph:"ðɛəz",pos:'pron.',posLabel:'代词',ch:'他们的',infl:{}},
+{en:'myself',ph:"mai'self",pos:'pron.',posLabel:'代词',ch:'我自己',infl:{}},
+{en:'yourself',ph:"jɔ:'self",pos:'pron.',posLabel:'代词',ch:'你自己',infl:{}},
+{en:'himself',ph:"him'self",pos:'pron.',posLabel:'代词',ch:'他自己',infl:{}},
+{en:'herself',ph:"hə:'self",pos:'pron.',posLabel:'代词',ch:'她自己',infl:{}},
+{en:'itself',ph:"it'self",pos:'pron.',posLabel:'代词',ch:'它自己',infl:{}},
+{en:'ourselves',ph:".auə'selvz",pos:'pron.',posLabel:'代词',ch:'我们自己',infl:{}},
+{en:'themselves',ph:"ðəm'selvz",pos:'pron.',posLabel:'代词',ch:'他们自己',infl:{}}
+],
+'Unit 2': [
+{en:'this',ph:"ðis",pos:'pron.',posLabel:'代词',ch:'这、这个',infl:{}},
+{en:'that',ph:"ðæt",pos:'pron.',posLabel:'代词',ch:'那',infl:{}},
+{en:'these',ph:"ði:z",pos:'pron.',posLabel:'代词',ch:'这些',infl:{}},
+{en:'those',ph:"ðəuz",pos:'pron.',posLabel:'代词',ch:'那些',infl:{}},
+{en:'such',ph:"sʌtʃ",pos:'pron.',posLabel:'代词',ch:'这样的人或事',infl:{}},
+{en:'some',ph:"sʌm",pos:'pron.',posLabel:'代词',ch:'一些（人、物）',infl:{}},
+{en:'any',ph:"'eni",pos:'pron.',posLabel:'代词',ch:'任何',infl:{}},
+{en:'all',ph:"ɔ:l",pos:'pron.',posLabel:'代词',ch:'全部、所有',infl:{}},
+{en:'both',ph:"bəuθ",pos:'pron.',posLabel:'代词',ch:'两者（都）',infl:{}},
+{en:'either',ph:"'i:ðə",pos:'pron.',posLabel:'代词',ch:'（两者）任何一个',infl:{}},
+{en:'neither',ph:"'ni:ðə",pos:'pron.',posLabel:'代词',ch:'两者都不',infl:{}},
+{en:'none',ph:"nʌn",pos:'pron.',posLabel:'代词',ch:'没有人、没有任何东西',infl:{}},
+{en:'each',ph:"i:tʃ",pos:'pron.',posLabel:'代词',ch:'各、各自',infl:{}},
+{en:'every',ph:"'evri",pos:'pron.',posLabel:'代词',ch:'每一的',infl:{}},
+{en:'other',ph:"'ʌðə",pos:'pron.',posLabel:'代词',ch:'另一个人（或事）',infl:{}},
+{en:'another',ph:"ə'nʌðə",pos:'pron.',posLabel:'代词',ch:'另一个',infl:{}},
+{en:'many',ph:"'meni",pos:'pron.',posLabel:'代词',ch:'许多人或物',infl:{}},
+{en:'much',ph:"mʌtʃ",pos:'pron.',posLabel:'代词',ch:'许多',infl:{}},
+{en:'few',ph:"fju:",pos:'pron.',posLabel:'代词',ch:'少数',infl:{}},
+{en:'little',ph:"'litl",pos:'pron.',posLabel:'代词',ch:'几乎没有',infl:{}},
+{en:'several',ph:"'sevərəl",pos:'pron.',posLabel:'代词',ch:'若干',infl:{}},
+{en:'somebody',ph:"'sʌmbədi",pos:'pron.',posLabel:'代词',ch:'某人、有人',infl:{}},
+{en:'someone',ph:"'sʌmwʌn",pos:'pron.',posLabel:'代词',ch:'某人、有人',infl:{}},
+{en:'something',ph:"'sʌmθiŋ",pos:'pron.',posLabel:'代词',ch:'某事、某物',infl:{}},
+{en:'anybody',ph:"'eni.bɔdi",pos:'pron.',posLabel:'代词',ch:'任何人',infl:{}},
+{en:'anyone',ph:"'eniwʌn",pos:'pron.',posLabel:'代词',ch:'任何人',infl:{}},
+{en:'anything',ph:"'eni.θiŋ",pos:'pron.',posLabel:'代词',ch:'任何事物、一切',infl:{}},
+{en:'nobody',ph:"'nəubɔdi",pos:'pron.',posLabel:'代词',ch:'谁也不、无人',infl:{}},
+{en:'nothing',ph:"'nʌθiŋ",pos:'pron.',posLabel:'代词',ch:'没有东西',infl:{}},
+{en:'everybody',ph:"'evribɔdi",pos:'pron.',posLabel:'代词',ch:'每人、人人',infl:{}}
+],
+'Unit 3': [
+{en:'everyone',ph:"'evriwʌn",pos:'pron.',posLabel:'代词',ch:'每人、人人',infl:{}},
+{en:'everything',ph:"'evriθiŋ",pos:'pron.',posLabel:'代词',ch:'每件事、事事',infl:{}},
+{en:'who',ph:"hu:",pos:'pron.',posLabel:'代词',ch:'谁、...的人',infl:{}},
+{en:'whom',ph:"hu:m",pos:'pron.',posLabel:'代词',ch:'谁（宾格）',infl:{}},
+{en:'whose',ph:"hu:z",pos:'pron.',posLabel:'代词',ch:'谁的、哪个人的',infl:{}},
+{en:'what',ph:"wɔt",pos:'pron.',posLabel:'代词',ch:'什么',infl:{}},
+{en:'which',ph:"witʃ",pos:'pron.',posLabel:'代词',ch:'哪一个、哪些',infl:{}},
+{en:'whoever',ph:"hu'evə",pos:'pron.',posLabel:'代词',ch:'无论谁、不管谁',infl:{}},
+{en:'whatever',ph:"wɔt'evə",pos:'pron.',posLabel:'代词',ch:'无论什么',infl:{}},
+{en:'whichever',ph:"witʃ'evə",pos:'pron.',posLabel:'代词',ch:'无论哪个',infl:{}},
+{en:'myself',ph:"mai'self",pos:'pron.',posLabel:'代词',ch:'我自己',infl:{}},
+{en:'himself',ph:"him'self",pos:'pron.',posLabel:'代词',ch:'他自己',infl:{}},
+{en:'herself',ph:"hə:'self",pos:'pron.',posLabel:'代词',ch:'她自己',infl:{}},
+{en:'itself',ph:"it'self",pos:'pron.',posLabel:'代词',ch:'它自己',infl:{}},
+{en:'oneself',ph:"wʌn'self",pos:'pron.',posLabel:'代词',ch:'自己、亲自',infl:{}},
+{en:'one',ph:"wʌn",pos:'pron.',posLabel:'代词',ch:'一个人、某人',infl:{}},
+{en:'ones',ph:"wʌnz",pos:'pron.',posLabel:'代词',ch:'那些（人、物）',infl:{}},
+{en:'that',ph:"ðæt",pos:'pron.',posLabel:'代词',ch:'（引导定语从句）',infl:{}},
+{en:'those',ph:"ðəuz",pos:'pron.',posLabel:'代词',ch:'那些（引导定语从句）',infl:{}},
+{en:'there',ph:"ðɛə",pos:'pron.',posLabel:'代词',ch:'表示存在（与be连用）',infl:{}},
+{en:'it',ph:"it",pos:'pron.',posLabel:'代词',ch:'（作形式主语或宾语）',infl:{}},
+{en:'as',ph:"æs",pos:'pron.',posLabel:'代词',ch:'（引导定语从句）',infl:{}},
+{en:'than',ph:"ðæn",pos:'pron.',posLabel:'代词',ch:'（引导比较从句）',infl:{}},
+{en:'but',ph:"bʌt",pos:'pron.',posLabel:'代词',ch:'（引导定语从句）',infl:{}},
+{en:'some',ph:"sʌm",pos:'pron.',posLabel:'代词',ch:'一些',infl:{}},
+{en:'any',ph:"'eni",pos:'pron.',posLabel:'代词',ch:'任何',infl:{}},
+{en:'all',ph:"ɔ:l",pos:'pron.',posLabel:'代词',ch:'全部',infl:{}},
+{en:'none',ph:"nʌn",pos:'pron.',posLabel:'代词',ch:'没有人',infl:{}},
+{en:'half',ph:"hɑ:f",pos:'pron.',posLabel:'代词',ch:'一半',infl:{}},
+{en:'part',ph:"pɑ:t",pos:'pron.',posLabel:'代词',ch:'部分',infl:{}}
+]
+}}
+};
+
+/* ================================================================
+   主页按钮
+   ================================================================ */
+const homeButtons = document.getElementById('homeButtons');
+const PART_NAMES = ['介词', '连词', '代词'];
+
+function countWords(part){
+  let n = 0;
+  const data = VOCAB_DATA[part];
+  if (!data) return 0;
+  Object.values(data).forEach(theme => {
+    Object.values(theme.units).forEach(arr => { n += arr.length; });
+  });
+  return n;
+}
+
+[1,2,3].forEach(part => {
+  const btn = document.createElement('button');
+  btn.className = 'home-btn';
+  btn.innerHTML = `${PART_NAMES[part-1]} <span class="badge">${countWords(part)} 词</span>`;
+  btn.addEventListener('click', () => openPart(part));
+  homeButtons.appendChild(btn);
+});
+
+const PART_STATE = {};
+
+function buildPartPage(part){
+  const data = VOCAB_DATA[part];
+  if (!data) {
+    const inner = document.getElementById('partInner' + part);
+    inner.innerHTML = '<button class="back-btn" data-back="' + part + '">← 返回主页</button><p style="text-align:center;padding:2rem;color:#799e7a;">数据整理中</p>';
+    inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+    return;
+  }
+  const themeList = Object.keys(data);
+  const unitMap = {};
+  const allVocab = [];
+
+  themeList.forEach(theme => {
+    const unitNames = Object.keys(data[theme].units);
+    unitMap[theme] = unitNames;
+    unitNames.forEach(unitName => {
+      data[theme].units[unitName].forEach(w => {
+        allVocab.push({ ...w, theme, unit:unitName });
+      });
+    });
+  });
+
+  const state = {
+    part, themeList, unitMap, allVocab,
+    currentTheme: themeList[0],
+    currentUnit: unitMap[themeList[0]][0],
+    currentIndex: 0,
+    difficultSet: new Set(),
+    currentWords: []
+  };
+  state.currentWords = allVocab.filter(w => w.theme === state.currentTheme && w.unit === state.currentUnit);
+  PART_STATE[part] = state;
+
+  const inner = document.getElementById('partInner' + part);
+  inner.innerHTML = `
+    <button class="back-btn" data-back="${part}">← 返回主页</button>
+    <div class="header">
+      <h1>Reborner 基础核心词汇</h1>
+      <div class="sub1">${PART_NAMES[part-1]} 全量版</div>
+      <div class="sub2">基础核心词汇</div>
+      <div class="sub3">📂 ${themeList.length} 大主题 · ${Object.values(unitMap).reduce((a,b)=>a+b.length,0)} 个单元 · 共 ${allVocab.length} 个词条</div>
+    </div>
+    <div class="chapter-scroll"><div class="chap-flex"><button class="chap-btn active">${PART_NAMES[part-1]}</button></div></div>
+    <div class="subchapter-scroll"><div class="sub-flex" id="subFlex${part}"></div></div>
+    <div class="unit-scroll"><div class="unit-flex" id="unitFlex${part}"></div></div>
+    <div class="flip-container">
+      <div class="flipper" id="flipper${part}">
+        <div class="front"><div class="en-word" id="mainEn${part}">—</div></div>
+        <div class="back">
+          <div class="en-word" id="backEn${part}">—</div>
+          <div class="ph-word" id="phInfo${part}"></div>
+          <div class="pos" id="posInfo${part}"></div>
+          <div class="ch-word" id="mainCh${part}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" data-act="prev" data-p="${part}">← 前</button>
+      <button class="nav-btn" data-act="next" data-p="${part}">后 →</button>
+      <button class="nav-btn" data-act="speak" data-p="${part}">🔊 发音</button>
+    </div>
+    <div class="thumb-header">
+      <span>📌 当前单元词汇 · 勾选难词</span>
+      <div class="actions">
+        <button class="select-all-btn" data-act="all" data-p="${part}">✅ 全选</button>
+        <button class="select-all-btn" data-act="none" data-p="${part}">⬜ 取消</button>
+        <button data-act="export" data-p="${part}">📎 导出难词</button>
+      </div>
+    </div>
+    <div class="thumb-grid-container"><div class="thumb-grid" id="thumbGrid${part}"></div></div>
+    <div class="tip">✓ 点击卡片翻转 · 勾选方格标记难词</div>
+  `;
+
+  inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+  inner.querySelectorAll('[data-act]').forEach(b => {
+    b.addEventListener('click', () => handleAction(b.dataset.act, part));
+  });
+  document.getElementById('flipper' + part).addEventListener('click', function(){
+    this.classList.toggle('flipped');
+  });
+
+  renderThemes(part);
+  renderUnits(part);
+  renderCard(part);
+  renderThumbs(part);
+}
+
+function renderThemes(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('subFlex' + part);
+  box.innerHTML = '';
+  s.themeList.forEach(theme => {
+    const btn = document.createElement('button');
+    btn.className = 'sub-btn' + (theme === s.currentTheme ? ' active-sub' : '');
+    const cnt = s.allVocab.filter(w => w.theme === theme).length;
+    btn.innerHTML = `${theme}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentTheme = theme;
+      s.currentUnit = s.unitMap[theme][0];
+      renderThemes(part); renderUnits(part);
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === s.currentUnit);
+      s.currentIndex = 0;
+      renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderUnits(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('unitFlex' + part);
+  box.innerHTML = '';
+  s.unitMap[s.currentTheme].forEach(unitName => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-btn' + (unitName === s.currentUnit ? ' active-unit' : '');
+    const cnt = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName).length;
+    btn.innerHTML = `${unitName}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentUnit = unitName;
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName);
+      s.currentIndex = 0;
+      renderUnits(part); renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderCard(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const mainEn = document.getElementById('mainEn' + part);
+  const backEn = document.getElementById('backEn' + part);
+  const phInfo = document.getElementById('phInfo' + part);
+  const posInfo = document.getElementById('posInfo' + part);
+  const mainCh = document.getElementById('mainCh' + part);
+  const flipper = document.getElementById('flipper' + part);
+  flipper.classList.remove('flipped');
+
+  if (!s.currentWords.length) {
+    mainEn.textContent = '无'; backEn.textContent = '';
+    phInfo.textContent = ''; posInfo.textContent = ''; mainCh.textContent = '';
+    return;
+  }
+  const w = s.currentWords[s.currentIndex];
+  mainEn.textContent = w.en; backEn.textContent = w.en;
+  phInfo.textContent = w.ph ? '/' + w.ph + '/' : '';
+  posInfo.textContent = w.posLabel || w.pos || '';
+  mainCh.textContent = w.ch;
+  speak(w.en);
+}
+
+function renderThumbs(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('thumbGrid' + part);
+  box.innerHTML = '';
+  s.currentWords.forEach((w, idx) => {
+    const key = w.en + '|' + w.ch;
+    const card = document.createElement('div');
+    card.className = 'thumb-item';
+    card.innerHTML = `<input type="checkbox" class="diff-check" data-key="${key.replace(/"/g,'&quot;')}" ${s.difficultSet.has(key)?'checked':''}><label>${w.en}</label>`;
+    card.addEventListener('click', e => {
+      if (e.target.tagName !== 'INPUT') { s.currentIndex = idx; renderCard(part); }
+    });
+    const chk = card.querySelector('.diff-check');
+    chk.addEventListener('change', e => {
+      e.stopPropagation();
+      const k = e.target.dataset.key;
+      if (e.target.checked) s.difficultSet.add(k); else s.difficultSet.delete(k);
+    });
+    box.appendChild(card);
+  });
+}
+
+function handleAction(act, part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  if (act === 'prev') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex - 1 + s.currentWords.length) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'next') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex + 1) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'speak') {
+    if (s.currentWords[s.currentIndex]) speak(s.currentWords[s.currentIndex].en);
+  } else if (act === 'all') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = true; s.difficultSet.add(c.dataset.key);
+    });
+  } else if (act === 'none') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = false; s.difficultSet.delete(c.dataset.key);
+    });
+  } else if (act === 'export') {
+    exportCsv(part);
+  }
+}
+
+function exportCsv(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const selected = s.allVocab.filter(v => s.difficultSet.has(v.en + '|' + v.ch));
+  if (!selected.length) { alert('没有勾选难词'); return; }
+  const seen = new Set();
+  let csv = '英文,音标,词性,中文含义,主题,单元\n';
+  selected.forEach(w => {
+    const key = w.en;
+    if (seen.has(key)) return;
+    seen.add(key);
+    csv += `"${w.en}","${w.ph||''}","${w.posLabel||w.pos||''}","${w.ch}","${w.theme}","${w.unit}"\n`;
+  });
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `basic_${PART_NAMES[part-1]}_difficult.csv`;
+  link.click();
+}
+
+function openPart(part){
+  if (!PART_STATE[part]) buildPartPage(part);
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  home.classList.add('slide-left');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      page.classList.add('slide-in');
+      page.scrollTop = 0;
+    });
+  });
+}
+function closePart(part){
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  page.classList.remove('slide-in');
+  home.classList.remove('slide-left');
+}
+
+function speak(text){
+  if (window.parent && window.parent !== window) {
+    try {
+      window.parent.postMessage({ type: 'speak', text: text }, '*');
+      return;
+    } catch(e) {}
+  }
+  if ('speechSynthesis' in window) {
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+}
+</script>
+<a class="go-home" href="./">← 返回入口</a>
+</body>
+</html>

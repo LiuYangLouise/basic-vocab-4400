@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Reborner 基础核心词汇 · 副词</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; }
+html,body { height:100%; overflow:hidden; }
+body { background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); }
+#homePage { position:fixed; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:2rem 1rem; overflow-y:auto; -webkit-overflow-scrolling:touch; transition:transform .5s cubic-bezier(.65,0,.35,1); }
+#homePage.slide-left { transform:translateX(-30%); }
+.home-header { text-align:center; margin-bottom:1.8rem; flex-shrink:0; }
+.home-header h1 { font-size:1.8rem; font-weight:380; color:#2d543b; line-height:1.3; margin-bottom:.3rem; }
+.home-header .sub1 { font-size:1.15rem; color:#4f7b5a; font-weight:340; }
+.home-header .sub2 { font-size:.95rem; color:#618967; font-weight:300; margin-top:.2rem; }
+.home-buttons { display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; width:100%; max-width:420px; padding-bottom:2.5rem; }
+.home-btn { background:#fcfff8; border:1px solid #d2e2c7; border-radius:30px; padding:.9rem .6rem; font-size:.95rem; font-weight:460; color:#2b5538; cursor:pointer; box-shadow:0 4px 12px rgba(150,180,140,.16); transition:all .2s ease; text-align:center; line-height:1.4; }
+.home-btn:hover { background:#eef9e6; border-color:#9abb90; transform:translateY(-2px); }
+.home-btn:active { transform:translateY(0); }
+.home-btn .badge { display:block; font-size:.68rem; background:#c3ddb6; border-radius:20px; padding:.1rem .45rem; margin:.25rem auto 0; color:#23522e; font-weight:400; width:fit-content; }
+.part-page { position:fixed; inset:0; z-index:100; background:linear-gradient(165deg,#f0f7e9 0%,#deecd2 100%); transform:translateX(100%); transition:transform .5s cubic-bezier(.65,0,.35,1); overflow-y:auto; -webkit-overflow-scrolling:touch; padding:1.5rem 1rem 2rem 1rem; }
+.part-page.slide-in { transform:translateX(0); }
+.part-inner { max-width:620px; width:100%; margin:0 auto; }
+.back-btn { position:sticky; top:0; z-index:50; display:inline-flex; align-items:center; gap:.35rem; background:rgba(252,255,248,.92); backdrop-filter:blur(8px); border:1px solid #cde0c3; border-radius:40px; padding:.5rem 1.1rem; font-size:.95rem; color:#295e36; cursor:pointer; margin-bottom:.8rem; box-shadow:0 2px 8px rgba(150,180,140,.18); }
+.back-btn:active { transform:scale(.96); }
+.header { margin-bottom:1.5rem; text-align:center; }
+.header h1 { font-size:2.1rem; font-weight:380; color:#2d543b; line-height:1.3; letter-spacing:-.2px; margin-bottom:.2rem; }
+.header .sub1 { font-size:1.5rem; color:#4f7b5a; font-weight:340; line-height:1.4; }
+.header .sub2 { font-size:1.2rem; color:#618967; font-weight:300; line-height:1.4; }
+.header .sub3 { font-size:.9rem; color:#7a9f7e; font-weight:300; margin-top:.2rem; }
+.chapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:.2rem 0 .4rem 0; scrollbar-width:none; }
+.chapter-scroll::-webkit-scrollbar { display:none; }
+.chap-flex { display:inline-flex; gap:.7rem; padding:0 .2rem; }
+.chap-btn { background:#f3fcee; border:1px solid #d2e2c7; border-radius:40px; padding:.6rem 1.8rem; font-size:1.2rem; font-weight:430; color:#2b5538; white-space:nowrap; box-shadow:0 2px 6px rgba(150,180,140,.08); cursor:pointer; }
+.chap-btn.active { background:#cde5c2; border-color:#8bb282; color:#1b4125; font-weight:500; }
+.subchapter-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .4rem 0; scrollbar-width:none; }
+.subchapter-scroll::-webkit-scrollbar { display:none; }
+.sub-flex { display:inline-flex; gap:.6rem; padding:0 .2rem; }
+.sub-btn { background:#ecf7e4; border:1px solid #cde0c0; border-radius:30px; padding:.4rem 1.3rem; font-size:.96rem; font-weight:400; color:#336941; white-space:nowrap; box-shadow:0 1px 4px rgba(120,150,100,.1); cursor:pointer; }
+.sub-btn.active-sub { background:#d4ebc5; border-color:#9abb90; color:#1e4529; font-weight:460; }
+.unit-scroll { overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; padding:0 0 .8rem 0; scrollbar-width:none; }
+.unit-scroll::-webkit-scrollbar { display:none; }
+.unit-flex { display:inline-flex; gap:.5rem; padding:0 .2rem; }
+.unit-btn { background:#f5fcf0; border:1px solid #dae8cf; border-radius:20px; padding:.3rem 1.1rem; font-size:.85rem; font-weight:380; color:#3d734a; white-space:nowrap; box-shadow:0 1px 3px rgba(120,150,100,.06); cursor:pointer; }
+.unit-btn.active-unit { background:#d0e8c2; border-color:#9ec092; color:#1a4024; font-weight:460; }
+.word-count-badge { font-size:.7rem; background:#c3ddb6; border-radius:20px; padding:.1rem .5rem; margin-left:.4rem; color:#23522e; }
+.flip-container { perspective:1000px; width:100%; margin:.8rem 0 1.2rem 0; }
+.flipper { position:relative; width:100%; height:auto; transition:transform .4s ease; transform-style:preserve-3d; }
+.flipper.flipped { transform:rotateY(180deg); }
+.front,.back { backface-visibility:hidden; -webkit-backface-visibility:hidden; position:relative; top:0; left:0; width:100%; border-radius:42px; padding:2.2rem 1.2rem; background:#fcfff8; border:1px solid #e3f0da; box-shadow:0 10px 20px rgba(130,160,120,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:220px; }
+.back { position:absolute; transform:rotateY(180deg); min-height:220px; }
+.en-word { font-size:2.8rem; font-weight:370; color:#1c4a2a; line-height:1.3; word-break:break-word; text-align:center; width:100%; }
+.ph-word { font-size:1rem; color:#7a9f7e; font-weight:340; margin-top:.3rem; text-align:center; width:100%; }
+.pos { font-size:1.1rem; color:#719b79; font-weight:380; text-align:center; width:100%; margin-top:.2rem; }
+.ch-word { font-size:1.6rem; font-weight:340; color:#316a42; margin-top:.6rem; text-align:center; width:100%; }
+.inflection-box { width:100%; margin-top:.8rem; padding:.6rem .8rem; background:#f6ffee; border-radius:14px; border:1px dashed #cde0c3; }
+.inflection-row { display:flex; justify-content:space-between; font-size:.9rem; line-height:1.6; color:#5a8a63; }
+.inflection-row.irregular { color:#d97706; font-weight:500; }
+.inflection-label { color:#8aab8e; }
+.nav-row { display:flex; align-items:center; justify-content:center; gap:.8rem; margin:1.2rem 0 1.8rem 0; flex-wrap:wrap; }
+.nav-btn { background:#f1fde9; border:1px solid #cde0c3; border-radius:60px; padding:.6rem 1.5rem; font-size:1.1rem; color:#295e36; box-shadow:0 2px 6px rgba(0,0,0,.02); cursor:pointer; }
+.thumb-header { display:flex; justify-content:space-between; align-items:center; margin:1rem 0 .8rem; flex-wrap:wrap; gap:.5rem; }
+.thumb-header span { font-size:1.1rem; color:#3d6d4b; font-weight:330; }
+.thumb-header .actions { display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; }
+.thumb-header .actions button { background:#dbeace; border:1px solid #adc9a2; border-radius:40px; padding:.3rem 1.1rem; font-size:.9rem; color:#23562f; cursor:pointer; white-space:nowrap; }
+.thumb-grid-container { max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch; border-radius:20px; padding:.2rem .2rem .5rem .2rem; }
+.thumb-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; padding:.2rem; }
+.thumb-item { background:#f9fff3; border:1px solid #dbefd0; border-radius:24px; padding:.6rem .2rem .6rem .5rem; display:flex; align-items:center; gap:.2rem; box-shadow:0 2px 6px rgba(160,180,140,.1); min-width:0; }
+.thumb-item input[type="checkbox"] { width:1.1rem; height:1.1rem; accent-color:#86b07c; border-radius:4px; flex-shrink:0; }
+.thumb-item label { font-size:.85rem; color:#2e623d; font-weight:420; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; cursor:pointer; }
+.tip { color:#799e7a; font-size:.9rem; margin-top:.8rem; text-align:center; }
+@media (max-width:480px) {
+  .thumb-grid { grid-template-columns:repeat(3,1fr); }
+  .en-word { font-size:2.2rem; }
+  .ch-word { font-size:1.4rem; }
+  .front,.back { padding:1.6rem 1rem; min-height:180px; }
+  .header h1 { font-size:1.6rem; }
+  .home-header h1 { font-size:1.5rem; }
+  .chap-btn { font-size:1rem; padding:.4rem 1.2rem; }
+  .sub-btn { font-size:.85rem; padding:.3rem 1rem; }
+  .unit-btn { font-size:.75rem; padding:.2rem .8rem; }
+}
+/* ==== 返回入口悬浮按钮 ==== */
+.go-home {
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 99999;
+  background: rgba(252,255,248,0.95);
+  border: 1px solid #cde0c3;
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #2d543b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(100,140,90,0.22);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all .2s;
+}
+.go-home:hover { background: #eef9e6; transform: translateY(-1px); }
+.go-home:active { transform: scale(.96); }
+
+</style>
+</head>
+<body>
+
+<div id="homePage">
+  <div class="home-header">
+    <h1>Reborner 基础核心词汇</h1>
+    <div class="sub1">副词 · 全量版</div>
+    <div class="sub2">天天进步，每日新生</div>
+  </div>
+  <div class="home-buttons" id="homeButtons"></div>
+</div>
+
+<div class="part-page" id="partPage1"><div class="part-inner" id="partInner1"></div></div>
+<div class="part-page" id="partPage2"><div class="part-inner" id="partInner2"></div></div>
+<div class="part-page" id="partPage3"><div class="part-inner" id="partInner3"></div></div>
+<div class="part-page" id="partPage4"><div class="part-inner" id="partInner4"></div></div>
+<div class="part-page" id="partPage5"><div class="part-inner" id="partInner5"></div></div>
+<div class="part-page" id="partPage6"><div class="part-inner" id="partInner6"></div></div>
+
+<script>
+const VOCAB_DATA = {};
+
+VOCAB_DATA[1] = {
+'时间副词': { units: {
+'Unit 1': [
+{en:'now',ph:"nau",pos:'adv.',posLabel:'副词',ch:'现在、立刻、于是',infl:{}},
+{en:'then',ph:"ðen",pos:'adv.',posLabel:'副词',ch:'当时、然后、那么',infl:{}},
+{en:'today',ph:"tə'dei",pos:'adv.',posLabel:'副词',ch:'在今天、现在、当今',infl:{}},
+{en:'tomorrow',ph:"tə'mɔrəu",pos:'adv.',posLabel:'副词',ch:'在明天',infl:{}},
+{en:'yesterday',ph:"'jestədi",pos:'adv.',posLabel:'副词',ch:'昨天、昨日',infl:{}},
+{en:'soon',ph:"su:n",pos:'adv.',posLabel:'副词',ch:'不久、很快、早',infl:{}},
+{en:'early',ph:"'ə:li",pos:'adv.',posLabel:'副词',ch:'早',infl:{}},
+{en:'late',ph:"leit",pos:'adv.',posLabel:'副词',ch:'迟、很迟、晚',infl:{}},
+{en:'already',ph:"ɔ:l'redi",pos:'adv.',posLabel:'副词',ch:'早已、已经',infl:{}},
+{en:'yet',ph:"jet",pos:'adv.',posLabel:'副词',ch:'还、已经、仍然',infl:{}},
+{en:'still',ph:"stil",pos:'adv.',posLabel:'副词',ch:'仍然、更、静止地',infl:{}},
+{en:'just',ph:"dʒʌst",pos:'adv.',posLabel:'副词',ch:'刚才、只是、正好',infl:{}},
+{en:'recently',ph:"'ri:sntli",pos:'adv.',posLabel:'副词',ch:'最近、新近',infl:{}},
+{en:'lately',ph:"'leitli",pos:'adv.',posLabel:'副词',ch:'最近、不久前',infl:{}},
+{en:'immediately',ph:"i'mi:diətli",pos:'adv.',posLabel:'副词',ch:'立即、直接地',infl:{}},
+{en:'suddenly',ph:"'sʌdnli",pos:'adv.',posLabel:'副词',ch:'突然地',infl:{}},
+{en:'gradually',ph:"'grædjuəli",pos:'adv.',posLabel:'副词',ch:'逐渐地、逐步地',infl:{}},
+{en:'eventually',ph:"i'ventjuəli",pos:'adv.',posLabel:'副词',ch:'终于、最后',infl:{}},
+{en:'finally',ph:"'fainəli",pos:'adv.',posLabel:'副词',ch:'最后、最终',infl:{}},
+{en:'firstly',ph:"'fə:stli",pos:'adv.',posLabel:'副词',ch:'首先',infl:{}},
+{en:'secondly',ph:"'sekəndli",pos:'adv.',posLabel:'副词',ch:'第二、其次',infl:{}},
+{en:'thirdly',ph:"'θə:dli",pos:'adv.',posLabel:'副词',ch:'第三',infl:{}},
+{en:'once',ph:"wʌns",pos:'adv.',posLabel:'副词',ch:'一次、曾经',infl:{}},
+{en:'twice',ph:"twais",pos:'adv.',posLabel:'副词',ch:'两次、两倍',infl:{}},
+{en:'always',ph:"'ɔ:lweiz",pos:'adv.',posLabel:'副词',ch:'总是、一直、永远',infl:{}},
+{en:'forever',ph:"fə'revə",pos:'adv.',posLabel:'副词',ch:'永远、总是、老是',infl:{}},
+{en:'temporarily',ph:"'tempərərili",pos:'adv.',posLabel:'副词',ch:'暂时地',infl:{}},
+{en:'permanently',ph:"'pə:mənəntli",pos:'adv.',posLabel:'副词',ch:'永久地',infl:{}},
+{en:'previously',ph:"'pri:vjəsli",pos:'adv.',posLabel:'副词',ch:'先前、预先',infl:{}},
+{en:'currently',ph:"'kʌrəntli",pos:'adv.',posLabel:'副词',ch:'当前、目前',infl:{}}
+],
+'Unit 2': [
+{en:'originally',ph:"ə'ridʒənəli",pos:'adv.',posLabel:'副词',ch:'最初、原来',infl:{}},
+{en:'initially',ph:"i'niʃəli",pos:'adv.',posLabel:'副词',ch:'最初、开始',infl:{}},
+{en:'afterwards',ph:"'ɑ:ftəwədz",pos:'adv.',posLabel:'副词',ch:'后来、然后',infl:{}},
+{en:'meanwhile',ph:"'mi:n'wail",pos:'adv.',posLabel:'副词',ch:'同时、当时',infl:{}},
+{en:'nowadays',ph:"'nauədeiz",pos:'adv.',posLabel:'副词',ch:'现今、现在',infl:{}},
+{en:'nowhere',ph:"'nəuwɛə",pos:'adv.',posLabel:'副词',ch:'任何地方都不',infl:{}},
+{en:'sometime',ph:"'sʌmtaim",pos:'adv.',posLabel:'副词',ch:'在某一时候、从前',infl:{}},
+{en:'sometimes',ph:"'sʌmtaimz",pos:'adv.',posLabel:'副词',ch:'不时、有时、间或',infl:{}},
+{en:'someday',ph:"'sʌmdei",pos:'adv.',posLabel:'副词',ch:'有一天',infl:{}},
+{en:'anytime',ph:"'enitaim",pos:'adv.',posLabel:'副词',ch:'任何时候',infl:{}},
+{en:'everyday',ph:"'evri'dei",pos:'adv.',posLabel:'副词',ch:'每天',infl:{}},
+{en:'monthly',ph:"'mʌnθli",pos:'adv.',posLabel:'副词',ch:'每月、按月',infl:{}},
+{en:'weekly',ph:"'wi:kli",pos:'adv.',posLabel:'副词',ch:'每周、一周一次',infl:{}},
+{en:'yearly',ph:"'jə:li",pos:'adv.',posLabel:'副词',ch:'一年一度地、每年地',infl:{}},
+{en:'daily',ph:"'deili",pos:'adv.',posLabel:'副词',ch:'每日、天天',infl:{}},
+{en:'hourly',ph:"'auəli",pos:'adv.',posLabel:'副词',ch:'每小时地',infl:{}},
+{en:'briefly',ph:"'bri:fli",pos:'adv.',posLabel:'副词',ch:'短暂地、简要地',infl:{}},
+{en:'shortly',ph:"'ʃɔ:tli",pos:'adv.',posLabel:'副词',ch:'立刻、马上、简短地',infl:{}},
+{en:'instantly',ph:"'instəntli",pos:'adv.',posLabel:'副词',ch:'立即、即刻',infl:{}},
+{en:'promptly',ph:"'prɔmptli",pos:'adv.',posLabel:'副词',ch:'及时地、迅速地',infl:{}},
+{en:'punctually',ph:"'pʌŋktjuəli",pos:'adv.',posLabel:'副词',ch:'准时地',infl:{}},
+{en:'simultaneously',ph:".siməl'teiniəsli",pos:'adv.',posLabel:'副词',ch:'同时地',infl:{}},
+{en:'consequently',ph:"'kɔnsikwəntli",pos:'adv.',posLabel:'副词',ch:'因此、因而、所以',infl:{}},
+{en:'subsequently',ph:"'sʌbsikwəntli",pos:'adv.',posLabel:'副词',ch:'随后、后来',infl:{}},
+{en:'ultimately',ph:"'ʌltimitli",pos:'adv.',posLabel:'副词',ch:'最终、最后',infl:{}},
+{en:'momentarily',ph:"'məuməntərəli",pos:'adv.',posLabel:'副词',ch:'片刻地、随时地',infl:{}},
+{en:'formerly',ph:"'fɔ:məli",pos:'adv.',posLabel:'副词',ch:'以前、从前',infl:{}},
+{en:'henceforth',ph:"'hens'fɔ:θ",pos:'adv.',posLabel:'副词',ch:'从此以后',infl:{}},
+{en:'thereafter',ph:".ðɛər'ɑ:ftə",pos:'adv.',posLabel:'副词',ch:'此后、之后',infl:{}},
+{en:'hereafter',ph:".hiər'ɑ:ftə",pos:'adv.',posLabel:'副词',ch:'此后、将来',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[2] = {
+'地点副词': { units: {
+'Unit 1': [
+{en:'here',ph:"hiə",pos:'adv.',posLabel:'副词',ch:'这里、向这里',infl:{}},
+{en:'there',ph:"ðɛə",pos:'adv.',posLabel:'副词',ch:'在那里、在那点上',infl:{}},
+{en:'where',ph:"wɛə",pos:'adv.',posLabel:'副词',ch:'在哪里',infl:{}},
+{en:'everywhere',ph:"'evriwɛə",pos:'adv.',posLabel:'副词',ch:'到处、处处',infl:{}},
+{en:'somewhere',ph:"'sʌmwɛə",pos:'adv.',posLabel:'副词',ch:'在某处、到某种程度',infl:{}},
+{en:'anywhere',ph:"'eniweə",pos:'adv.',posLabel:'副词',ch:'在什么地方、任何地方',infl:{}},
+{en:'elsewhere',ph:"'els'wɛə",pos:'adv.',posLabel:'副词',ch:'在别处、向别处',infl:{}},
+{en:'abroad',ph:"ə'brɔ:d",pos:'adv.',posLabel:'副词',ch:'在国外、海外、到处',infl:{}},
+{en:'overseas',ph:"'əuvə'si:z",pos:'adv.',posLabel:'副词',ch:'在海外',infl:{}},
+{en:'indoors',ph:"'in'dɔ:z",pos:'adv.',posLabel:'副词',ch:'在室内、在屋里',infl:{}},
+{en:'outdoors',ph:"'aut'dɔ:z",pos:'adv.',posLabel:'副词',ch:'在户外、在野外',infl:{}},
+{en:'upstairs',ph:"'ʌp'stɛəz",pos:'adv.',posLabel:'副词',ch:'在楼上、往楼上',infl:{}},
+{en:'downstairs',ph:".daun'stɛəz",pos:'adv.',posLabel:'副词',ch:'在楼下、向楼下',infl:{}},
+{en:'underground',ph:"'ʌndəgraund",pos:'adv.',posLabel:'副词',ch:'在地下、秘密地',infl:{}},
+{en:'above',ph:"ə'bʌv",pos:'adv.',posLabel:'副词',ch:'在上面、超过',infl:{}},
+{en:'below',ph:"bi'ləu",pos:'adv.',posLabel:'副词',ch:'在下面、向下、下级',infl:{}},
+{en:'under',ph:"'ʌndə",pos:'adv.',posLabel:'副词',ch:'在...下、在昏迷中',infl:{}},
+{en:'over',ph:"'əuvə",pos:'adv.',posLabel:'副词',ch:'结束、落下、穿过',infl:{}},
+{en:'up',ph:"ʌp",pos:'adv.',posLabel:'副词',ch:'向上、起床、起来',infl:{}},
+{en:'down',ph:"daun",pos:'adv.',posLabel:'副词',ch:'向下、在下面、下跌',infl:{}},
+{en:'in',ph:"in",pos:'adv.',posLabel:'副词',ch:'进、入',infl:{}},
+{en:'out',ph:"aut",pos:'adv.',posLabel:'副词',ch:'出、在外、向外',infl:{}},
+{en:'inside',ph:"'in'said",pos:'adv.',posLabel:'副词',ch:'在里面',infl:{}},
+{en:'outside',ph:"'aut'said",pos:'adv.',posLabel:'副词',ch:'在外面',infl:{}},
+{en:'nearby',ph:"'niəbai",pos:'adv.',posLabel:'副词',ch:'在附近',infl:{}},
+{en:'near',ph:"niə",pos:'adv.',posLabel:'副词',ch:'近、接近、几乎',infl:{}},
+{en:'far',ph:"fɑ:",pos:'adv.',posLabel:'副词',ch:'远、遥远',infl:{}},
+{en:'away',ph:"ə'wei",pos:'adv.',posLabel:'副词',ch:'离开、远离、出去',infl:{}},
+{en:'back',ph:"bæk",pos:'adv.',posLabel:'副词',ch:'在后、回原处、回',infl:{}},
+{en:'forward',ph:"'fɔ:wəd",pos:'adv.',posLabel:'副词',ch:'向前、今后、往后',infl:{}}
+],
+'Unit 2': [
+{en:'backward',ph:"'bækwəd",pos:'adv.',posLabel:'副词',ch:'倒、向后',infl:{}},
+{en:'upward',ph:"'ʌpwəd",pos:'adv.',posLabel:'副词',ch:'向上、上升',infl:{}},
+{en:'downward',ph:"'daunwəd",pos:'adv.',posLabel:'副词',ch:'向下地',infl:{}},
+{en:'inward',ph:"'inwəd",pos:'adv.',posLabel:'副词',ch:'向内',infl:{}},
+{en:'outward',ph:"'autwəd",pos:'adv.',posLabel:'副词',ch:'向外、在外、表面',infl:{}},
+{en:'home',ph:"həum",pos:'adv.',posLabel:'副词',ch:'回家、在家',infl:{}},
+{en:'ashore',ph:"ə'ʃɔ:",pos:'adv.',posLabel:'副词',ch:'在岸上、向岸上',infl:{}},
+{en:'aboard',ph:"ə'bɔ:d",pos:'adv.',posLabel:'副词',ch:'在船(车)上、上船',infl:{}},
+{en:'along',ph:"ə'lɔŋ",pos:'adv.',posLabel:'副词',ch:'向前、一道',infl:{}},
+{en:'around',ph:"ə'raund",pos:'adv.',posLabel:'副词',ch:'大约、到处、在周围',infl:{}},
+{en:'about',ph:"'əbaut",pos:'adv.',posLabel:'副词',ch:'大约、到处、在周围',infl:{}},
+{en:'aside',ph:"ə'said",pos:'adv.',posLabel:'副词',ch:'在旁边、到旁边、在一边',infl:{}},
+{en:'apart',ph:"ə'pɑ:t",pos:'adv.',posLabel:'副词',ch:'相隔、分开、除去',infl:{}},
+{en:'abreast',ph:"ə'brest",pos:'adv.',posLabel:'副词',ch:'并肩地、并列地',infl:{}},
+{en:'aside',ph:"ə'said",pos:'adv.',posLabel:'副词',ch:'在旁边、到旁边',infl:{}},
+{en:'astray',ph:"ə'strei",pos:'adv.',posLabel:'副词',ch:'迷路地、误入邪道地',infl:{}},
+{en:'athwart',ph:"ə'θwɔ:t",pos:'adv.',posLabel:'副词',ch:'横跨着、逆地',infl:{}},
+{en:'beyond',ph:"bi'jɔnd",pos:'adv.',posLabel:'副词',ch:'在更远处、另外',infl:{}},
+{en:'hither',ph:"'hiðə",pos:'adv.',posLabel:'副词',ch:'到这里、向这里',infl:{}},
+{en:'thither',ph:"'ðiðə",pos:'adv.',posLabel:'副词',ch:'到那里、向那里',infl:{}},
+{en:'whence',ph:"wens",pos:'adv.',posLabel:'副词',ch:'从何处、从那里',infl:{}},
+{en:'whither',ph:"'wiðə",pos:'adv.',posLabel:'副词',ch:'向何处、到哪里',infl:{}},
+{en:'aloft',ph:"ə'lɔft",pos:'adv.',posLabel:'副词',ch:'在高处、在空中',infl:{}},
+{en:'alongside',ph:"ə'lɔŋ'said",pos:'adv.',posLabel:'副词',ch:'在旁边、并排地',infl:{}},
+{en:'ashore',ph:"ə'ʃɔ:",pos:'adv.',posLabel:'副词',ch:'在岸上、向岸上',infl:{}},
+{en:'crosswise',ph:"'krɔswaiz",pos:'adv.',posLabel:'副词',ch:'交叉地、横跨地',infl:{}},
+{en:'lengthwise',ph:"'leŋθwaiz",pos:'adv.',posLabel:'副词',ch:'纵长地',infl:{}},
+{en:'sideways',ph:"'saidweiz",pos:'adv.',posLabel:'副词',ch:'斜着、斜向一边地',infl:{}},
+{en:'clockwise',ph:"'klɔkwaiz",pos:'adv.',posLabel:'副词',ch:'顺时针方向地',infl:{}},
+{en:'counterclockwise',ph:".kauntə'klɔkwaiz",pos:'adv.',posLabel:'副词',ch:'逆时针方向地',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[3] = {
+'方式副词': { units: {
+'Unit 1': [
+{en:'well',ph:"wel",pos:'adv.',posLabel:'副词',ch:'很好地、适当地、完全地',infl:{}},
+{en:'badly',ph:"'bædli",pos:'adv.',posLabel:'副词',ch:'坏、差、严重地、恶劣地',infl:{}},
+{en:'quickly',ph:"'kwikli",pos:'adv.',posLabel:'副词',ch:'快、迅速',infl:{}},
+{en:'slowly',ph:"'sləuli",pos:'adv.',posLabel:'副词',ch:'慢慢地',infl:{}},
+{en:'carefully',ph:"'kɛəfəli",pos:'adv.',posLabel:'副词',ch:'小心地、仔细地',infl:{}},
+{en:'carelessly',ph:"'kɛəlisli",pos:'adv.',posLabel:'副词',ch:'粗心地、漫不经心地',infl:{}},
+{en:'easily',ph:"'i:zili",pos:'adv.',posLabel:'副词',ch:'容易地、舒适的、无疑地',infl:{}},
+{en:'hard',ph:"hɑ:d",pos:'adv.',posLabel:'副词',ch:'努力地、猛烈地、坚定地',infl:{}},
+{en:'suddenly',ph:"'sʌdnli",pos:'adv.',posLabel:'副词',ch:'突然地',infl:{}},
+{en:'quietly',ph:"'kwaiətli",pos:'adv.',posLabel:'副词',ch:'安静地、平静地',infl:{}},
+{en:'loudly',ph:"'laudli",pos:'adv.',posLabel:'副词',ch:'大声地、高声地',infl:{}},
+{en:'clearly',ph:"'kliəli",pos:'adv.',posLabel:'副词',ch:'明白地、清晰地',infl:{}},
+{en:'politely',ph:"pə'laitli",pos:'adv.',posLabel:'副词',ch:'有礼貌地',infl:{}},
+{en:'rudely',ph:"'ru:dli",pos:'adv.',posLabel:'副词',ch:'粗鲁地、无礼地',infl:{}},
+{en:'kindly',ph:"'kaindli",pos:'adv.',posLabel:'副词',ch:'仁慈地、友善地',infl:{}},
+{en:'angrily',ph:"'æŋgrili",pos:'adv.',posLabel:'副词',ch:'愤怒地',infl:{}},
+{en:'happily',ph:"'hæpili",pos:'adv.',posLabel:'副词',ch:'快乐地、幸福地',infl:{}},
+{en:'sadly',ph:"'sædli",pos:'adv.',posLabel:'副词',ch:'悲痛地、悲哀地',infl:{}},
+{en:'perfectly',ph:"'pə:fiktli",pos:'adv.',posLabel:'副词',ch:'完全地、完美地',infl:{}},
+{en:'properly',ph:"'prɔpəli",pos:'adv.',posLabel:'副词',ch:'适当地、彻底地、当然地',infl:{}},
+{en:'correctly',ph:"kə'rektli",pos:'adv.',posLabel:'副词',ch:'正确地',infl:{}},
+{en:'directly',ph:"di'rektli",pos:'adv.',posLabel:'副词',ch:'直接地、立即、完全',infl:{}},
+{en:'exactly',ph:"ig'zæktli",pos:'adv.',posLabel:'副词',ch:'确切地、恰恰正是',infl:{}},
+{en:'simply',ph:"'simpli",pos:'adv.',posLabel:'副词',ch:'简单地、朴素地、仅仅',infl:{}},
+{en:'truly',ph:"'tru:li",pos:'adv.',posLabel:'副词',ch:'真正地、忠实地、真实地',infl:{}},
+{en:'sincerely',ph:"sin'siəli",pos:'adv.',posLabel:'副词',ch:'真诚地、真挚地',infl:{}},
+{en:'honestly',ph:"'ɔnistli",pos:'adv.',posLabel:'副词',ch:'诚实地、正直地',infl:{}},
+{en:'seriously',ph:"'siəriəsli",pos:'adv.',posLabel:'副词',ch:'严肃地、认真地、严重地',infl:{}},
+{en:'patiently',ph:"'peiʃəntli",pos:'adv.',posLabel:'副词',ch:'耐心地',infl:{}},
+{en:'calmly',ph:"'kɑ:mli",pos:'adv.',posLabel:'副词',ch:'平静地、冷静地',infl:{}}
+],
+'Unit 2': [
+{en:'bravely',ph:"'breivli",pos:'adv.',posLabel:'副词',ch:'勇敢地',infl:{}},
+{en:'proudly',ph:"'praudli",pos:'adv.',posLabel:'副词',ch:'骄傲地、自豪地',infl:{}},
+{en:'frankly',ph:"'fræŋkli",pos:'adv.',posLabel:'副词',ch:'坦率地',infl:{}},
+{en:'strictly',ph:"'striktli",pos:'adv.',posLabel:'副词',ch:'严格地、严谨地',infl:{}},
+{en:'freely',ph:"'fri:li",pos:'adv.',posLabel:'副词',ch:'自由地、免费地、直率地',infl:{}},
+{en:'smoothly',ph:"smu:ðli",pos:'adv.',posLabel:'副词',ch:'光滑地、平滑地、流畅地',infl:{}},
+{en:'strongly',ph:"'strɔŋli",pos:'adv.',posLabel:'副词',ch:'强壮地、强烈地、坚固地',infl:{}},
+{en:'firmly',ph:"'fə:mli",pos:'adv.',posLabel:'副词',ch:'坚定地、稳固地',infl:{}},
+{en:'gently',ph:"'dʒentli",pos:'adv.',posLabel:'副词',ch:'有礼貌地、柔和地、轻轻地',infl:{}},
+{en:'warmly',ph:"'wɔ:mli",pos:'adv.',posLabel:'副词',ch:'温暖地、亲切地',infl:{}},
+{en:'eagerly',ph:"'i:gəli",pos:'adv.',posLabel:'副词',ch:'渴望地、热切地',infl:{}},
+{en:'anxiously',ph:"'æŋkʃəsli",pos:'adv.',posLabel:'副词',ch:'焦急地、忧虑地',infl:{}},
+{en:'nervously',ph:"'nə:vəsli",pos:'adv.',posLabel:'副词',ch:'紧张地、神经质地',infl:{}},
+{en:'curiously',ph:"'kjuəriəsli",pos:'adv.',posLabel:'副词',ch:'好奇地',infl:{}},
+{en:'surprisingly',ph:"sə'praiziŋli",pos:'adv.',posLabel:'副词',ch:'惊人地、意外地',infl:{}},
+{en:'fortunately',ph:"'fɔitʃənitli",pos:'adv.',posLabel:'副词',ch:'幸运地、幸亏',infl:{}},
+{en:'unfortunately',ph:"ʌn'fɔ:tʃənitli",pos:'adv.',posLabel:'副词',ch:'不幸地',infl:{}},
+{en:'naturally',ph:"'nætʃərəli",pos:'adv.',posLabel:'副词',ch:'自然地、天然地',infl:{}},
+{en:'necessarily',ph:"'nesəserili",pos:'adv.',posLabel:'副词',ch:'必然、必定、必需地',infl:{}},
+{en:'essentially',ph:"i'senʃəli",pos:'adv.',posLabel:'副词',ch:'本质上、基本上',infl:{}},
+{en:'basically',ph:"'beisikəli",pos:'adv.',posLabel:'副词',ch:'基本上、主要地',infl:{}},
+{en:'absolutely',ph:"'æbsəlu:tli",pos:'adv.',posLabel:'副词',ch:'独立地、完全地、绝对地',infl:{}},
+{en:'relatively',ph:"'relətivli",pos:'adv.',posLabel:'副词',ch:'相对地、比较地',infl:{}},
+{en:'comparatively',ph:"kəm'pærətivli",pos:'adv.',posLabel:'副词',ch:'比较地、相对地',infl:{}},
+{en:'increasingly',ph:"in'kri:siŋli",pos:'adv.',posLabel:'副词',ch:'日益、越来越多地',infl:{}},
+{en:'extremely',ph:"iks'tri:mli",pos:'adv.',posLabel:'副词',ch:'极端、极其、非常',infl:{}},
+{en:'desperately',ph:"'despərətli",pos:'adv.',posLabel:'副词',ch:'拼命地、绝望地',infl:{}},
+{en:'enthusiastically',ph:"in.θju:zi'æstikli",pos:'adv.',posLabel:'副词',ch:'热情地',infl:{}},
+{en:'deliberately',ph:"di'libərətli",pos:'adv.',posLabel:'副词',ch:'故意地、深思熟虑地',infl:{}},
+{en:'intentionally',ph:"in'tenʃənəli",pos:'adv.',posLabel:'副词',ch:'故意地、有意地',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[4] = {
+'程度副词': { units: {
+'Unit 1': [
+{en:'very',ph:"'veri",pos:'adv.',posLabel:'副词',ch:'很、完全、真正地',infl:{}},
+{en:'too',ph:"tu:",pos:'adv.',posLabel:'副词',ch:'也、还、太、过分',infl:{}},
+{en:'quite',ph:"kwait",pos:'adv.',posLabel:'副词',ch:'完全、很、相当、的确',infl:{}},
+{en:'rather',ph:"'rɑ:ðə",pos:'adv.',posLabel:'副词',ch:'宁可、宁愿、相当',infl:{}},
+{en:'fairly',ph:"'fɛəli",pos:'adv.',posLabel:'副词',ch:'相当、公平地、公正地',infl:{}},
+{en:'pretty',ph:"'priti",pos:'adv.',posLabel:'副词',ch:'相当地',infl:{}},
+{en:'extremely',ph:"iks'tri:mli",pos:'adv.',posLabel:'副词',ch:'极端、极其、非常',infl:{}},
+{en:'absolutely',ph:"'æbsəlu:tli",pos:'adv.',posLabel:'副词',ch:'独立地、完全地、绝对地',infl:{}},
+{en:'completely',ph:"kəm'pli:tli",pos:'adv.',posLabel:'副词',ch:'十分、完全地、全然',infl:{}},
+{en:'totally',ph:"'təutli",pos:'adv.',posLabel:'副词',ch:'完全地、全部地',infl:{}},
+{en:'entirely',ph:"in'taiəli",pos:'adv.',posLabel:'副词',ch:'完全地、全然地',infl:{}},
+{en:'utterly',ph:"'ʌtəli",pos:'adv.',posLabel:'副词',ch:'完全地、彻底地',infl:{}},
+{en:'thoroughly',ph:"'θʌrəli",pos:'adv.',posLabel:'副词',ch:'彻底地、完全地',infl:{}},
+{en:'perfectly',ph:"'pə:fiktli",pos:'adv.',posLabel:'副词',ch:'完全地、完美地',infl:{}},
+{en:'highly',ph:"'haili",pos:'adv.',posLabel:'副词',ch:'高度地、很、非常',infl:{}},
+{en:'deeply',ph:"'di:pli",pos:'adv.',posLabel:'副词',ch:'深深地、深刻地',infl:{}},
+{en:'strongly',ph:"'strɔŋli",pos:'adv.',posLabel:'副词',ch:'强壮地、强烈地、坚固地',infl:{}},
+{en:'greatly',ph:"'greitli",pos:'adv.',posLabel:'副词',ch:'大大地、非常、很',infl:{}},
+{en:'largely',ph:"'lɑ:dʒli",pos:'adv.',posLabel:'副词',ch:'大部分、大量地、主要地',infl:{}},
+{en:'mainly',ph:"'meinli",pos:'adv.',posLabel:'副词',ch:'主要地、大体上',infl:{}},
+{en:'mostly',ph:"'məustli",pos:'adv.',posLabel:'副词',ch:'主要的、大部分、大概',infl:{}},
+{en:'partly',ph:"'pɑ:tli",pos:'adv.',posLabel:'副词',ch:'部分地、在一定程度上',infl:{}},
+{en:'slightly',ph:"'slaitli",pos:'adv.',posLabel:'副词',ch:'稍微、些微地、有点',infl:{}},
+{en:'somewhat',ph:"'sʌmwɔt",pos:'adv.',posLabel:'副词',ch:'有点、多少、几分',infl:{}},
+{en:'nearly',ph:"'niəli",pos:'adv.',posLabel:'副词',ch:'差不多、几乎、密切地',infl:{}},
+{en:'almost',ph:"'ɔ:lməust",pos:'adv.',posLabel:'副词',ch:'几乎、差不多',infl:{}},
+{en:'hardly',ph:"'hɑ:dli",pos:'adv.',posLabel:'副词',ch:'几乎不、简直不',infl:{}},
+{en:'scarcely',ph:"'skɛəsli",pos:'adv.',posLabel:'副词',ch:'仅仅、几乎不、简直没有',infl:{}},
+{en:'barely',ph:"'bɛəli",pos:'adv.',posLabel:'副词',ch:'仅仅、勉强',infl:{}},
+{en:'merely',ph:"'miəli",pos:'adv.',posLabel:'副词',ch:'仅仅、只不过',infl:{}}
+],
+'Unit 2': [
+{en:'solely',ph:"'səulli",pos:'adv.',posLabel:'副词',ch:'单独地、独自地、唯一地',infl:{}},
+{en:'purely',ph:"'pjuəli",pos:'adv.',posLabel:'副词',ch:'纯粹地、完全地',infl:{}},
+{en:'exclusively',ph:"iks'klu:sivli",pos:'adv.',posLabel:'副词',ch:'专门地、排他地',infl:{}},
+{en:'particularly',ph:"pə'tikjuləli",pos:'adv.',posLabel:'副词',ch:'特别地、尤其',infl:{}},
+{en:'especially',ph:"is'peʃəli",pos:'adv.',posLabel:'副词',ch:'特别、尤其、格外',infl:{}},
+{en:'specially',ph:"'speʃəli",pos:'adv.',posLabel:'副词',ch:'专门地、特别地',infl:{}},
+{en:'notably',ph:"'nəutəbli",pos:'adv.',posLabel:'副词',ch:'显著地、尤其',infl:{}},
+{en:'remarkably',ph:"ri'mɑ:kəbli",pos:'adv.',posLabel:'副词',ch:'显著地、非常地',infl:{}},
+{en:'considerably',ph:"kən'sidərəbli",pos:'adv.',posLabel:'副词',ch:'相当地、非常地',infl:{}},
+{en:'significantly',ph:"sig'nifikəntli",pos:'adv.',posLabel:'副词',ch:'显著地、相当地',infl:{}},
+{en:'substantially',ph:"səb'stænʃəli",pos:'adv.',posLabel:'副词',ch:'实质上、相当多地',infl:{}},
+{en:'approximately',ph:"ə'prɔksimətli",pos:'adv.',posLabel:'副词',ch:'近似地、大约',infl:{}},
+{en:'roughly',ph:"'rʌfli",pos:'adv.',posLabel:'副词',ch:'粗糙地、粗略地、概略地',infl:{}},
+{en:'about',ph:"'əbaut",pos:'adv.',posLabel:'副词',ch:'大约、到处、在周围',infl:{}},
+{en:'exceedingly',ph:"ik'si:diŋli",pos:'adv.',posLabel:'副词',ch:'极端地、非常、很',infl:{}},
+{en:'awfully',ph:"'ɔ:fuli",pos:'adv.',posLabel:'副词',ch:'令人畏惧的、很、可怕地',infl:{}},
+{en:'terribly',ph:"'terəbli",pos:'adv.',posLabel:'副词',ch:'可怕地、非常',infl:{}},
+{en:'horribly',ph:"'hɔrəbli",pos:'adv.',posLabel:'副词',ch:'可怕地',infl:{}},
+{en:'incredibly',ph:"in'kredəbli",pos:'adv.',posLabel:'副词',ch:'难以置信地',infl:{}},
+{en:'amazingly',ph:"ə'meiziŋli",pos:'adv.',posLabel:'副词',ch:'令人惊讶地',infl:{}},
+{en:'surprisingly',ph:"sə'praiziŋli",pos:'adv.',posLabel:'副词',ch:'惊人地、意外地',infl:{}},
+{en:'astonishingly',ph:"əs'tɔniʃiŋli",pos:'adv.',posLabel:'副词',ch:'令人惊讶地',infl:{}},
+{en:'sufficiently',ph:"sə'fiʃəntli",pos:'adv.',posLabel:'副词',ch:'足够地、充分地',infl:{}},
+{en:'adequately',ph:"'ædikwitli",pos:'adv.',posLabel:'副词',ch:'足够地、适当地',infl:{}},
+{en:'inadequately',ph:"in'ædikwitli",pos:'adv.',posLabel:'副词',ch:'不充分地、不适当地',infl:{}},
+{en:'excessively',ph:"ik'sesivli",pos:'adv.',posLabel:'副词',ch:'过分地、过度地',infl:{}},
+{en:'moderately',ph:"'mɔdərətli",pos:'adv.',posLabel:'副词',ch:'适度地、温和地',infl:{}},
+{en:'reasonably',ph:"'ri:zənəbli",pos:'adv.',posLabel:'副词',ch:'合理地、相当地',infl:{}},
+{en:'unreasonably',ph:"ʌn'ri:zənəbli",pos:'adv.',posLabel:'副词',ch:'不合理地',infl:{}},
+{en:'comparatively',ph:"kəm'pærətivli",pos:'adv.',posLabel:'副词',ch:'比较地、相对地',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[5] = {
+'频率副词': { units: {
+'Unit 1': [
+{en:'always',ph:"'ɔ:lweiz",pos:'adv.',posLabel:'副词',ch:'总是、一直、永远',infl:{}},
+{en:'usually',ph:"'ju:ʒuəli",pos:'adv.',posLabel:'副词',ch:'通常',infl:{}},
+{en:'normally',ph:"'nɔ:məli",pos:'adv.',posLabel:'副词',ch:'通常、正常地',infl:{}},
+{en:'generally',ph:"'dʒenərəli",pos:'adv.',posLabel:'副词',ch:'一般地、通常地',infl:{}},
+{en:'commonly',ph:"'kɔmənli",pos:'adv.',posLabel:'副词',ch:'普通地、一般地、通常地',infl:{}},
+{en:'typically',ph:"'tipikli",pos:'adv.',posLabel:'副词',ch:'典型地、通常',infl:{}},
+{en:'often',ph:"'ɔ:fən",pos:'adv.',posLabel:'副词',ch:'经常、常常',infl:{}},
+{en:'frequently',ph:"'fri:kwəntli",pos:'adv.',posLabel:'副词',ch:'时常、常常、经常地',infl:{}},
+{en:'sometimes',ph:"'sʌmtaimz",pos:'adv.',posLabel:'副词',ch:'不时、有时、间或',infl:{}},
+{en:'occasionally',ph:"ə'keiʒənəli",pos:'adv.',posLabel:'副词',ch:'偶然、非经常地',infl:{}},
+{en:'rarely',ph:"'rɛəli",pos:'adv.',posLabel:'副词',ch:'很少、难得',infl:{}},
+{en:'seldom',ph:"'seldəm",pos:'adv.',posLabel:'副词',ch:'很少、不常、难得',infl:{}},
+{en:'never',ph:"'nevə",pos:'adv.',posLabel:'副词',ch:'永不、决不、不',infl:{}},
+{en:'ever',ph:"'evə",pos:'adv.',posLabel:'副词',ch:'在任何时候、曾经、永远',infl:{}},
+{en:'constantly',ph:"'kɔnstəntli",pos:'adv.',posLabel:'副词',ch:'不断地、经常地',infl:{}},
+{en:'continuously',ph:"kən'tinjuəsli",pos:'adv.',posLabel:'副词',ch:'连续不断地',infl:{}},
+{en:'continually',ph:"kən'tinjuəli",pos:'adv.',posLabel:'副词',ch:'不断地、频繁地',infl:{}},
+{en:'repeatedly',ph:"ri'pi:tidli",pos:'adv.',posLabel:'副词',ch:'重复地、再三地、一再',infl:{}},
+{en:'regularly',ph:"'regjuləli",pos:'adv.',posLabel:'副词',ch:'有规律地、定期地',infl:{}},
+{en:'irregularly',ph:"i'regjuləli",pos:'adv.',posLabel:'副词',ch:'不规则地',infl:{}},
+{en:'periodically',ph:".piəri'ɔdikəli",pos:'adv.',posLabel:'副词',ch:'周期性地、定期地',infl:{}},
+{en:'daily',ph:"'deili",pos:'adv.',posLabel:'副词',ch:'每日、天天',infl:{}},
+{en:'weekly',ph:"'wi:kli",pos:'adv.',posLabel:'副词',ch:'每周、一周一次',infl:{}},
+{en:'monthly',ph:"'mʌnθli",pos:'adv.',posLabel:'副词',ch:'每月、按月',infl:{}},
+{en:'yearly',ph:"'jə:li",pos:'adv.',posLabel:'副词',ch:'一年一度地、每年地',infl:{}},
+{en:'nightly',ph:"'naitli",pos:'adv.',posLabel:'副词',ch:'每夜',infl:{}},
+{en:'hourly',ph:"'auəli",pos:'adv.',posLabel:'副词',ch:'每小时地',infl:{}},
+{en:'twice',ph:"twais",pos:'adv.',posLabel:'副词',ch:'两次、两倍',infl:{}},
+{en:'once',ph:"wʌns",pos:'adv.',posLabel:'副词',ch:'一次、曾经',infl:{}},
+{en:'again',ph:"ə'gein",pos:'adv.',posLabel:'副词',ch:'又一次、而且、又、再',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[6] = {
+'连接副词': { units: {
+'Unit 1': [
+{en:'however',ph:"hau'evə",pos:'adv.',posLabel:'副词',ch:'然而、不管怎样',infl:{}},
+{en:'therefore',ph:"'ðɛəfɔ:",pos:'adv.',posLabel:'副词',ch:'因此、所以',infl:{}},
+{en:'thus',ph:"ðʌs",pos:'adv.',posLabel:'副词',ch:'如此、这样、因而',infl:{}},
+{en:'hence',ph:"hens",pos:'adv.',posLabel:'副词',ch:'因此、从此、所以',infl:{}},
+{en:'consequently',ph:"'kɔnsikwəntli",pos:'adv.',posLabel:'副词',ch:'因此、因而、所以',infl:{}},
+{en:'accordingly',ph:"ə'kɔ:diŋli",pos:'adv.',posLabel:'副词',ch:'因此、所以、于是',infl:{}},
+{en:'otherwise',ph:"'ʌðəwaiz",pos:'adv.',posLabel:'副词',ch:'另外、要不然、否则',infl:{}},
+{en:'conversely',ph:"kən'və:sli",pos:'adv.',posLabel:'副词',ch:'相反地',infl:{}},
+{en:'likewise',ph:"'laikwaiz",pos:'adv.',posLabel:'副词',ch:'同样地、也、又',infl:{}},
+{en:'similarly',ph:"'similəli",pos:'adv.',posLabel:'副词',ch:'类似地、相似地',infl:{}},
+{en:'equally',ph:"'i:kwəli",pos:'adv.',posLabel:'副词',ch:'相等地、同样地',infl:{}},
+{en:'namely',ph:"'neimli",pos:'adv.',posLabel:'副词',ch:'即、也就是',infl:{}},
+{en:'meanwhile',ph:"'mi:n'wail",pos:'adv.',posLabel:'副词',ch:'同时、当时',infl:{}},
+{en:'moreover',ph:"mɔ:r'əuvə",pos:'adv.',posLabel:'副词',ch:'再者、加之、此外',infl:{}},
+{en:'furthermore',ph:"'fə:ðə'mɔ:",pos:'adv.',posLabel:'副词',ch:'而且、此外',infl:{}},
+{en:'besides',ph:"bi'saidz",pos:'adv.',posLabel:'副词',ch:'而且、也、此外',infl:{}},
+{en:'then',ph:"ðen",pos:'adv.',posLabel:'副词',ch:'当时、然后、那么',infl:{}},
+{en:'also',ph:"'ɔ:lsəu",pos:'adv.',posLabel:'副词',ch:'亦、也、而且、还',infl:{}},
+{en:'too',ph:"tu:",pos:'adv.',posLabel:'副词',ch:'也、还、太、过分',infl:{}},
+{en:'either',ph:"'i:ðə",pos:'adv.',posLabel:'副词',ch:'也',infl:{}},
+{en:'neither',ph:"'ni:ðə",pos:'adv.',posLabel:'副词',ch:'两者都不',infl:{}},
+{en:'so',ph:"səu",pos:'adv.',posLabel:'副词',ch:'这样、这么、非常',infl:{}},
+{en:'such',ph:"sʌtʃ",pos:'adv.',posLabel:'副词',ch:'如此地',infl:{}},
+{en:'yet',ph:"jet",pos:'adv.',posLabel:'副词',ch:'还、已经、仍然',infl:{}},
+{en:'still',ph:"stil",pos:'adv.',posLabel:'副词',ch:'仍然、更、静止地',infl:{}},
+{en:'nevertheless',ph:".nevəðə'les",pos:'adv.',posLabel:'副词',ch:'仍然、不过',infl:{}},
+{en:'nonetheless',ph:".nʌnðə'les",pos:'adv.',posLabel:'副词',ch:'尽管如此',infl:{}},
+{en:'instead',ph:"in'sted",pos:'adv.',posLabel:'副词',ch:'代替、顶替、反而',infl:{}},
+{en:'anyway',ph:"'eniwei",pos:'adv.',posLabel:'副词',ch:'无论如何、不管怎样',infl:{}},
+{en:'anyhow',ph:"'eni:.hau",pos:'adv.',posLabel:'副词',ch:'无论如何、不管怎样',infl:{}}
+]
+}}
+};
+
+VOCAB_DATA[7] = {
+'情态副词': { units: {
+'Unit 1': [
+{en:'perhaps',ph:"pə'hæps",pos:'adv.',posLabel:'副词',ch:'也许、可能',infl:{}},
+{en:'maybe',ph:"'meibi",pos:'adv.',posLabel:'副词',ch:'大概、或许、也许',infl:{}},
+{en:'possibly',ph:"'pɔsəbli",pos:'adv.',posLabel:'副词',ch:'可能地、也许',infl:{}},
+{en:'probably',ph:"'prɔbəbli",pos:'adv.',posLabel:'副词',ch:'或许、大概',infl:{}},
+{en:'certainly',ph:"'sə:tənli",pos:'adv.',posLabel:'副词',ch:'一定、必定、当然',infl:{}},
+{en:'surely',ph:"'ʃuəli",pos:'adv.',posLabel:'副词',ch:'确实、稳当地、安全地',infl:{}},
+{en:'definitely',ph:"'definitli",pos:'adv.',posLabel:'副词',ch:'一定地、明确地、确切地',infl:{}},
+{en:'undoubtedly',ph:"ʌn'dautidli",pos:'adv.',posLabel:'副词',ch:'无容置疑、肯定地',infl:{}},
+{en:'indeed',ph:"in'di:d",pos:'adv.',posLabel:'副词',ch:'真正地、确实、的确',infl:{}},
+{en:'actually',ph:"'æktʃuəli",pos:'adv.',posLabel:'副词',ch:'实际上、事实上、居然',infl:{}},
+{en:'really',ph:"'riəli",pos:'adv.',posLabel:'副词',ch:'真正地、实在、事实上',infl:{}},
+{en:'truly',ph:"'tru:li",pos:'adv.',posLabel:'副词',ch:'真正地、忠实地、真实地',infl:{}},
+{en:'apparently',ph:"ə'pærəntli",pos:'adv.',posLabel:'副词',ch:'表面上、显然',infl:{}},
+{en:'obviously',ph:"'ɔbviəsli",pos:'adv.',posLabel:'副词',ch:'明显地、显然地',infl:{}},
+{en:'clearly',ph:"'kliəli",pos:'adv.',posLabel:'副词',ch:'明白地、清晰地',infl:{}},
+{en:'evidently',ph:"'evidəntli",pos:'adv.',posLabel:'副词',ch:'明显地、显然',infl:{}},
+{en:'supposedly',ph:"sə'pəuzidli",pos:'adv.',posLabel:'副词',ch:'据推测、大概',infl:{}},
+{en:'allegedly',ph:"ə'ledʒidli",pos:'adv.',posLabel:'副词',ch:'据称',infl:{}},
+{en:'reportedly',ph:"ri'pɔ:tidli",pos:'adv.',posLabel:'副词',ch:'据报道',infl:{}},
+{en:'presumably',ph:"pri'zju:məbli",pos:'adv.',posLabel:'副词',ch:'大概、可能、据推测',infl:{}},
+{en:'hopefully',ph:"'həupfəli",pos:'adv.',posLabel:'副词',ch:'但愿、有希望地',infl:{}},
+{en:'frankly',ph:"'fræŋkli",pos:'adv.',posLabel:'副词',ch:'坦率地',infl:{}},
+{en:'honestly',ph:"'ɔnistli",pos:'adv.',posLabel:'副词',ch:'诚实地、正直地',infl:{}},
+{en:'strictly',ph:"'striktli",pos:'adv.',posLabel:'副词',ch:'严格地、严谨地',infl:{}},
+{en:'literally',ph:"'litərəli",pos:'adv.',posLabel:'副词',ch:'字面上、确实地',infl:{}},
+{en:'virtually',ph:"'və:tʃuəli",pos:'adv.',posLabel:'副词',ch:'实际上、事实上、几乎',infl:{}},
+{en:'practically',ph:"'præktikəli",pos:'adv.',posLabel:'副词',ch:'实际上、几乎、简直',infl:{}},
+{en:'theoretically',ph:"θiə'retikli",pos:'adv.',posLabel:'副词',ch:'理论上',infl:{}},
+{en:'technically',ph:"'teknikli",pos:'adv.',posLabel:'副词',ch:'技术上、严格来说',infl:{}},
+{en:'essentially',ph:"i'senʃəli",pos:'adv.',posLabel:'副词',ch:'本质上、基本上',infl:{}}
+]
+}}
+};
+
+/* ================================================================
+   主页按钮
+   ================================================================ */
+const homeButtons = document.getElementById('homeButtons');
+const PART_NAMES = ['时间副词', '地点副词', '方式副词', '程度副词', '频率副词', '连接副词', '情态副词'];
+
+function countWords(part){
+  let n = 0;
+  const data = VOCAB_DATA[part];
+  if (!data) return 0;
+  Object.values(data).forEach(theme => {
+    Object.values(theme.units).forEach(arr => { n += arr.length; });
+  });
+  return n;
+}
+
+[1,2,3,4,5,6,7].forEach(part => {
+  const btn = document.createElement('button');
+  btn.className = 'home-btn';
+  btn.innerHTML = `${PART_NAMES[part-1]} <span class="badge">${countWords(part)} 词</span>`;
+  btn.addEventListener('click', () => openPart(part));
+  homeButtons.appendChild(btn);
+});
+
+/* ================================================================
+   Part 页面构建
+   ================================================================ */
+const PART_STATE = {};
+
+function buildPartPage(part){
+  const data = VOCAB_DATA[part];
+  if (!data) {
+    const inner = document.getElementById('partInner' + part);
+    inner.innerHTML = '<button class="back-btn" data-back="' + part + '">← 返回主页</button><p style="text-align:center;padding:2rem;color:#799e7a;">数据整理中</p>';
+    inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+    return;
+  }
+  const themeList = Object.keys(data);
+  const unitMap = {};
+  const allVocab = [];
+
+  themeList.forEach(theme => {
+    const unitNames = Object.keys(data[theme].units);
+    unitMap[theme] = unitNames;
+    unitNames.forEach(unitName => {
+      data[theme].units[unitName].forEach(w => {
+        allVocab.push({ ...w, theme, unit:unitName });
+      });
+    });
+  });
+
+  const state = {
+    part, themeList, unitMap, allVocab,
+    currentTheme: themeList[0],
+    currentUnit: unitMap[themeList[0]][0],
+    currentIndex: 0,
+    difficultSet: new Set(),
+    currentWords: []
+  };
+  state.currentWords = allVocab.filter(w => w.theme === state.currentTheme && w.unit === state.currentUnit);
+  PART_STATE[part] = state;
+
+  const inner = document.getElementById('partInner' + part);
+  inner.innerHTML = `
+    <button class="back-btn" data-back="${part}">← 返回主页</button>
+    <div class="header">
+      <h1>Reborner 基础核心词汇</h1>
+      <div class="sub1">副词 · ${PART_NAMES[part-1]}</div>
+      <div class="sub2">副词全量版</div>
+      <div class="sub3">📂 ${themeList.length} 大主题 · ${Object.values(unitMap).reduce((a,b)=>a+b.length,0)} 个单元 · 共 ${allVocab.length} 个词条</div>
+    </div>
+    <div class="chapter-scroll"><div class="chap-flex"><button class="chap-btn active">${PART_NAMES[part-1]}</button></div></div>
+    <div class="subchapter-scroll"><div class="sub-flex" id="subFlex${part}"></div></div>
+    <div class="unit-scroll"><div class="unit-flex" id="unitFlex${part}"></div></div>
+    <div class="flip-container">
+      <div class="flipper" id="flipper${part}">
+        <div class="front"><div class="en-word" id="mainEn${part}">—</div></div>
+        <div class="back">
+          <div class="en-word" id="backEn${part}">—</div>
+          <div class="ph-word" id="phInfo${part}"></div>
+          <div class="pos" id="posInfo${part}"></div>
+          <div class="ch-word" id="mainCh${part}"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" data-act="prev" data-p="${part}">← 前</button>
+      <button class="nav-btn" data-act="next" data-p="${part}">后 →</button>
+      <button class="nav-btn" data-act="speak" data-p="${part}">🔊 发音</button>
+    </div>
+    <div class="thumb-header">
+      <span>📌 当前单元词汇 · 勾选难词</span>
+      <div class="actions">
+        <button class="select-all-btn" data-act="all" data-p="${part}">✅ 全选</button>
+        <button class="select-all-btn" data-act="none" data-p="${part}">⬜ 取消</button>
+        <button data-act="export" data-p="${part}">📎 导出难词</button>
+      </div>
+    </div>
+    <div class="thumb-grid-container"><div class="thumb-grid" id="thumbGrid${part}"></div></div>
+    <div class="tip">✓ 点击卡片翻转 · 勾选方格标记难词 · 三级分类层层筛选</div>
+  `;
+
+  inner.querySelector('[data-back]').addEventListener('click', () => closePart(part));
+  inner.querySelectorAll('[data-act]').forEach(b => {
+    b.addEventListener('click', () => handleAction(b.dataset.act, part));
+  });
+  document.getElementById('flipper' + part).addEventListener('click', function(){
+    this.classList.toggle('flipped');
+  });
+
+  renderThemes(part);
+  renderUnits(part);
+  renderCard(part);
+  renderThumbs(part);
+}
+
+function renderThemes(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('subFlex' + part);
+  box.innerHTML = '';
+  s.themeList.forEach(theme => {
+    const btn = document.createElement('button');
+    btn.className = 'sub-btn' + (theme === s.currentTheme ? ' active-sub' : '');
+    const cnt = s.allVocab.filter(w => w.theme === theme).length;
+    btn.innerHTML = `${theme}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentTheme = theme;
+      s.currentUnit = s.unitMap[theme][0];
+      renderThemes(part); renderUnits(part);
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === s.currentUnit);
+      s.currentIndex = 0;
+      renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderUnits(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('unitFlex' + part);
+  box.innerHTML = '';
+  s.unitMap[s.currentTheme].forEach(unitName => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-btn' + (unitName === s.currentUnit ? ' active-unit' : '');
+    const cnt = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName).length;
+    btn.innerHTML = `${unitName}<span class="word-count-badge">${cnt}</span>`;
+    btn.addEventListener('click', () => {
+      s.currentUnit = unitName;
+      s.currentWords = s.allVocab.filter(w => w.theme === s.currentTheme && w.unit === unitName);
+      s.currentIndex = 0;
+      renderUnits(part); renderCard(part); renderThumbs(part);
+    });
+    box.appendChild(btn);
+  });
+}
+
+function renderCard(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const mainEn = document.getElementById('mainEn' + part);
+  const backEn = document.getElementById('backEn' + part);
+  const phInfo = document.getElementById('phInfo' + part);
+  const posInfo = document.getElementById('posInfo' + part);
+  const mainCh = document.getElementById('mainCh' + part);
+  const flipper = document.getElementById('flipper' + part);
+  flipper.classList.remove('flipped');
+
+  if (!s.currentWords.length) {
+    mainEn.textContent = '无'; backEn.textContent = '';
+    phInfo.textContent = ''; posInfo.textContent = ''; mainCh.textContent = '';
+    return;
+  }
+  const w = s.currentWords[s.currentIndex];
+  mainEn.textContent = w.en; backEn.textContent = w.en;
+  phInfo.textContent = w.ph ? '/' + w.ph + '/' : '';
+  posInfo.textContent = w.posLabel || w.pos || '';
+  mainCh.textContent = w.ch;
+  speak(w.en);
+}
+
+function renderThumbs(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const box = document.getElementById('thumbGrid' + part);
+  box.innerHTML = '';
+  s.currentWords.forEach((w, idx) => {
+    const key = w.en + '|' + w.ch;
+    const card = document.createElement('div');
+    card.className = 'thumb-item';
+    card.innerHTML = `<input type="checkbox" class="diff-check" data-key="${key.replace(/"/g,'&quot;')}" ${s.difficultSet.has(key)?'checked':''}><label>${w.en}</label>`;
+    card.addEventListener('click', e => {
+      if (e.target.tagName !== 'INPUT') { s.currentIndex = idx; renderCard(part); }
+    });
+    const chk = card.querySelector('.diff-check');
+    chk.addEventListener('change', e => {
+      e.stopPropagation();
+      const k = e.target.dataset.key;
+      if (e.target.checked) s.difficultSet.add(k); else s.difficultSet.delete(k);
+    });
+    box.appendChild(card);
+  });
+}
+
+function handleAction(act, part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  if (act === 'prev') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex - 1 + s.currentWords.length) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'next') {
+    if (!s.currentWords.length) return;
+    s.currentIndex = (s.currentIndex + 1) % s.currentWords.length;
+    renderCard(part);
+  } else if (act === 'speak') {
+    if (s.currentWords[s.currentIndex]) speak(s.currentWords[s.currentIndex].en);
+  } else if (act === 'all') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = true; s.difficultSet.add(c.dataset.key);
+    });
+  } else if (act === 'none') {
+    document.querySelectorAll('#thumbGrid' + part + ' .diff-check').forEach(c => {
+      c.checked = false; s.difficultSet.delete(c.dataset.key);
+    });
+  } else if (act === 'export') {
+    exportCsv(part);
+  }
+}
+
+function exportCsv(part){
+  const s = PART_STATE[part];
+  if (!s) return;
+  const selected = s.allVocab.filter(v => s.difficultSet.has(v.en + '|' + v.ch));
+  if (!selected.length) { alert('没有勾选难词'); return; }
+  const seen = new Set();
+  let csv = '英文,音标,词性,中文含义,主题,单元\n';
+  selected.forEach(w => {
+    const key = w.en;
+    if (seen.has(key)) return;
+    seen.add(key);
+    csv += `"${w.en}","${w.ph||''}","${w.posLabel||w.pos||''}","${w.ch}","${w.theme}","${w.unit}"\n`;
+  });
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `basic_adv_difficult_${PART_NAMES[part-1]}.csv`;
+  link.click();
+}
+
+function openPart(part){
+  if (!PART_STATE[part]) buildPartPage(part);
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  home.classList.add('slide-left');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      page.classList.add('slide-in');
+      page.scrollTop = 0;
+    });
+  });
+}
+function closePart(part){
+  const home = document.getElementById('homePage');
+  const page = document.getElementById('partPage' + part);
+  page.classList.remove('slide-in');
+  home.classList.remove('slide-left');
+}
+
+function speak(text){
+  if (window.parent && window.parent !== window) {
+    try {
+      window.parent.postMessage({ type: 'speak', text: text }, '*');
+      return;
+    } catch(e) {}
+  }
+  if ('speechSynthesis' in window) {
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+}
+</script>
+
+<a class="go-home" href="./">← 返回入口</a>
+
+</body>
+</html>
